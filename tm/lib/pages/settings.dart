@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-class Settings extends StatelessWidget{
+class Settings extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Settings Page',
-        style: TextStyle(fontSize: 20,color: Colors.white),
-        
-      ),
-    );
-  }
+  _Settings createState() => _Settings();
+}
+
+class _Settings extends State<Settings> {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.all(24),
+            children: <Widget>[
+              //buildLogout(),
+            ],
+          ),
+        ),
+      );
 }

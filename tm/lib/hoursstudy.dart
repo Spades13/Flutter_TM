@@ -13,7 +13,7 @@ class SHours extends StatelessWidget {
           child: Center(
         child: Text(shours.toString(),
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 25,
               color: Color.fromARGB(255, 255, 255, 255),
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,

@@ -13,7 +13,7 @@ class BMinutes extends StatelessWidget {
           child: Center(
         child: Text(bmins.toString(),
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 25,
               color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.bold,
             )),
