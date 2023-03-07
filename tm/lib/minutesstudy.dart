@@ -14,7 +14,7 @@ class SMinutes extends StatelessWidget {
         child: Text(smins.toString(),
             style: TextStyle(
               fontSize: 20,
-              color: Colors.black,
+              color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.bold,
             )),
       )),

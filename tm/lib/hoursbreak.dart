@@ -14,7 +14,7 @@ class BHours extends StatelessWidget {
         child: Text(bhours.toString(),
             style: TextStyle(
               fontSize: 20,
-              color: Colors.grey,
+              color: Color.fromARGB(255, 255, 255, 255),
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,
             )),

@@ -14,7 +14,7 @@ class SHours extends StatelessWidget {
         child: Text(shours.toString(),
             style: TextStyle(
               fontSize: 20,
-              color: Colors.black,
+              color: Color.fromARGB(255, 255, 255, 255),
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,
             )),
