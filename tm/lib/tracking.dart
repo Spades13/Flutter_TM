@@ -4,6 +4,7 @@ import 'package:usage_stats/usage_stats.dart';
 //import 'package:permission_handler/permission_handler.dart';
 import 'main.dart';
 import 'package:flutter/services.dart';
+import 'pages/userhomepage.dart';
 
 void main() {
   runApp(Tracking());
@@ -16,7 +17,7 @@ class Tracking extends StatefulWidget {
 
 class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   late Timer timer;
-  int count = 0;
+  int count_study_seconds = 0;
   bool active = true;
 
   @override
@@ -26,7 +27,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active) {
         setState(() {
-          count += 1;
+          count_study_seconds -= 1;
         });
       }
     });
@@ -60,15 +61,26 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('App Usage Example'),
-              backgroundColor: Colors.green,
-            ),
-            body: Center(
-                child: Text(
-              "$count",
-            ))));
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            Color.fromARGB(255, 5, 4, 76),
+            Color.fromARGB(255, 5, 4, 76),
+            Color.fromARGB(255, 5, 4, 51),
+            Color.fromARGB(255, 5, 4, 26),
+            Color.fromARGB(255, 5, 4, 26),
+          ])),
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+              child: Text("$count_study_seconds",
+                  style: TextStyle(
+                      color: Color.fromRGBO(234, 245, 132, 12),
+                      fontSize: 60,
+                      fontWeight: FontWeight.bold)))),
+    );
   }
 }
