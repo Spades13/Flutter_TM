@@ -86,7 +86,7 @@ class UserHome extends StatelessWidget {
                                     physics: const FixedExtentScrollPhysics(),
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                            childCount: 5,
+                                            childCount: 6,
                                             builder: (context, index) {
                                               return SHours(
                                                 shours: index,
@@ -144,7 +144,7 @@ class UserHome extends StatelessWidget {
                                     magnification: 1.5,
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                            childCount: 5,
+                                            childCount: 6,
                                             builder: (context, index) {
                                               return BHours(
                                                 bhours: index,
