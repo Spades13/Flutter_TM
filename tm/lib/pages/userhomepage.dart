@@ -4,10 +4,11 @@ import 'package:tm/hoursstudy.dart';
 import 'package:tm/minutesbreak.dart';
 import 'package:tm/minutesstudy.dart';
 import 'package:tm/startbutton.dart';
+import 'package:tm/globals.dart' as globals;
 
 class UserHome extends StatelessWidget {
   //variables
-  int study_hour = 0;
+  //int study_hour = 0;
   int study_minutes = 0;
   int break_hour = 0;
   int break_minutes = 0;
@@ -77,7 +78,7 @@ class UserHome extends StatelessWidget {
                                 height: 250,
                                 child: ListWheelScrollView.useDelegate(
                                     onSelectedItemChanged: (value) =>
-                                        study_hour = value,
+                                        globals.study_hour = value,
                                     itemExtent: 40,
                                     perspective: 0.005,
                                     diameterRatio: 1.2,
@@ -105,7 +106,7 @@ class UserHome extends StatelessWidget {
                                 height: 250,
                                 child: ListWheelScrollView.useDelegate(
                                     onSelectedItemChanged: (value1) =>
-                                        study_minutes = value1,
+                                        globals.study_minutes = value1,
                                     itemExtent: 40,
                                     perspective: 0.005,
                                     diameterRatio: 1.2,

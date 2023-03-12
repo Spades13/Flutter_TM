@@ -4,7 +4,8 @@ import 'package:usage_stats/usage_stats.dart';
 //import 'package:permission_handler/permission_handler.dart';
 import 'main.dart';
 import 'package:flutter/services.dart';
-import 'pages/userhomepage.dart';
+import 'pages/userhomepage.dart' as userhomepage;
+import 'globals.dart' as globals;
 
 void main() {
   runApp(Tracking());
@@ -17,7 +18,8 @@ class Tracking extends StatefulWidget {
 
 class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   late Timer timer;
-  int count_study_seconds = 0;
+  Duration count_study =
+      Duration(hours: globals.study_hour, minutes: globals.study_minutes);
   bool active = true;
 
   @override
@@ -26,9 +28,13 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active) {
-        setState(() {
-          count_study_seconds -= 1;
-        });
+        if (count_study > Duration(seconds: 0)) {
+          setState(() {
+            count_study -= Duration(seconds: 1);
+          });
+        } else {
+          timer.cancel();
+        }
       }
     });
   }
@@ -76,7 +82,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
-              child: Text("$count_study_seconds",
+              child: Text(
+                  "${(count_study.inHours).toString().padLeft(2, "0")}:${(count_study.inMinutes % 60).toString().padLeft(2, "0")}:${(count_study.inSeconds % 60).toString().padLeft(2, "0")}",
                   style: TextStyle(
                       color: Color.fromRGBO(234, 245, 132, 12),
                       fontSize: 60,
