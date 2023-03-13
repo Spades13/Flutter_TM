@@ -58,14 +58,15 @@ class _Settings extends State<Settings> {
                           }
                           if (isSelected2[index] == true) {
                             _currentIcon = 0;
-                            //_themeManager.toggleTheme(true);
+                            //_themeManager.toggleTheme(false);
                           }
                           if (isSelected2[index] == false) {
                             _currentIcon = 1;
-                            //_themeManager.toggleTheme(false);
+                            //_themeManager.toggleTheme(true);
                           }
                         } //when clicked it returns: 0
                         // MAKE ICON CHANGE WHEN TAPPED WITH THE NEW LISTS I MADE
+                        //Make the themes work with true or false statments(TOGGLETHEME(FALSE)
                       });
                     },
                     renderBorder: false,
