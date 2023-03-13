@@ -23,6 +23,9 @@ class _Settings extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(actions: [Switch(value: _themeManager.themeMode == ThemeMode.dark, onChanged: (newValue){
+        _themeManager.toggleTheme(newValue);
+      })]),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -44,6 +47,7 @@ class _Settings extends State<Settings> {
                     ],
                     isSelected: isSelected,
                     onPressed: (int newIndex) {
+                     
                       //print(newIndex);
                       setState(() {
                         for (int index = 0;
@@ -54,11 +58,11 @@ class _Settings extends State<Settings> {
                           }
                           if (isSelected2[index] == true) {
                             _currentIcon = 0;
-                            _themeManager.toggleTheme(true);
+                            //_themeManager.toggleTheme(true);
                           }
                           if (isSelected2[index] == false) {
                             _currentIcon = 1;
-                            _themeManager.toggleTheme(false);
+                            //_themeManager.toggleTheme(false);
                           }
                         } //when clicked it returns: 0
                         // MAKE ICON CHANGE WHEN TAPPED WITH THE NEW LISTS I MADE
