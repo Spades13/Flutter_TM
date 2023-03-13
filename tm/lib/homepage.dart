@@ -6,10 +6,12 @@ import 'minutesbreak.dart';
 import 'hoursbreak.dart';
 import 'startbutton.dart';
 import 'tracking.dart';
-import 'pages/settings.dart';
+//import 'pages/settings.dart';
 import 'pages/userhomepage.dart';
 import 'pages/graphic.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'main.dart';
+import 'theme/theme_constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,8 +31,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: _pages[_currentIndex],
-      backgroundColor: Color.fromARGB(255, 5, 4, 51),
+      //backgroundColor: Color.fromARGB(255, 5, 4, 51),
       bottomNavigationBar: GNav(
         selectedIndex: _currentIndex,
         onTabChange: (index) {

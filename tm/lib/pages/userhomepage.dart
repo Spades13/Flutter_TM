@@ -15,18 +15,19 @@ class UserHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme _textTheme = Theme.of(context).textTheme;
     return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-            Color.fromARGB(255, 5, 4, 76),
-            Color.fromARGB(255, 5, 4, 76),
-            Color.fromARGB(255, 5, 4, 51),
-            Color.fromARGB(255, 5, 4, 26),
-            Color.fromARGB(255, 5, 4, 26),
-          ])),
+      //decoration: const BoxDecoration(
+        //  gradient: LinearGradient(
+        //      begin: Alignment.topCenter,
+      //        end: Alignment.bottomCenter,
+       //       colors: [
+       //     Color.fromARGB(255, 5, 4, 76),
+       //     Color.fromARGB(255, 5, 4, 76),
+       //     Color.fromARGB(255, 5, 4, 51),
+      //      Color.fromARGB(255, 5, 4, 26),
+       //     Color.fromARGB(255, 5, 4, 26),
+          //])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -43,17 +44,13 @@ class UserHome extends StatelessWidget {
                       Container(
                           //color: Colors.black,
                           child: Text("Study",
-                              style: TextStyle(
-                                  color: Color.fromRGBO(234, 245, 132, 12),
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold))),
+                              style: _textTheme.headlineMedium 
+                          ),
+                          ),
                       Container(
                           //color: Colors.black,
                           child: Text("Break",
-                              style: TextStyle(
-                                  color: Color.fromRGBO(234, 245, 132, 12),
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold))),
+                              style: _textTheme.headlineMedium )),
                     ],
                   ),
                 ),

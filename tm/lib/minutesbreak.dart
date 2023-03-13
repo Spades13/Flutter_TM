@@ -7,16 +7,14 @@ class BMinutes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme _textTheme = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
           child: Center(
         child: Text(bmins.toString(),
-            style: TextStyle(
-              fontSize: 25,
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontWeight: FontWeight.bold,
-            )),
+            style: _textTheme.headlineSmall),
       )),
     );
   }
