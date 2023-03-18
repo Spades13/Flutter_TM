@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "homepage.dart";
 import 'tracking.dart';
@@ -37,6 +38,8 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,14 +59,12 @@ class Settings extends StatefulWidget {
 
 class _Settings extends State<Settings> {
   
-
-  List<bool> isSelected = [false];
-  List<bool> isSelected2 = [true];
   List<Widget> lighticon = [
-    Icon(Icons.lightbulb),
-    Icon(Icons.lightbulb_outline)
+    Icon(Icons.dark_mode_sharp),
+    Icon(Icons.light_mode_sharp)
   ];
-
+  bool value = false;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
@@ -73,7 +74,8 @@ class _Settings extends State<Settings> {
       
         child: Padding(
           padding: const EdgeInsets.all(12),
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
             children: [
               Text("Settings",
                   style: _textTheme.headlineMedium ),
@@ -81,46 +83,108 @@ class _Settings extends State<Settings> {
                 children: [
                   Row(
                     children: const [
-                      Text("Dark/Light", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 30,)
                     ],
                   ),
-                  ToggleButtons(
-                    // ignore: sort_child_properties_last
-                    children: <Widget>[
-                      lighticon[_currentIcon],
-                    ],
-                    isSelected: isSelected,
-                    onPressed: (int newIndex) {
-                     
-                      //print(newIndex);
-                      setState(() {
-                        for (int index = 0;
-                            index < isSelected.length;
-                            index++) {
-                          if (index == newIndex) {
-                            isSelected2[index] = !isSelected2[index];
-                          }
-                          if (isSelected2[index] == true) {
-                            _currentIcon = 0;
-                            _themeManager.toggleTheme(false);
-                          }
-                          if (isSelected2[index] == false) {
-                            _currentIcon = 1;
-                            _themeManager.toggleTheme(true);
-                          }
-                        } //when clicked it returns: 0
-                        // MAKE ICON CHANGE WHEN TAPPED WITH THE NEW LISTS I MADE
-                        //Make the themes work with true or false statments(TOGGLETHEME(FALSE)
-                      });
-                    },
-                    renderBorder: false,
-                  ),
+                
                 ],
               ),
+
+              Column(//one settigns widget 
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      
+                      
+                      
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        SizedBox(width: 15),
+                        Text("Dark/Light", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        SizedBox(width: 120),
+
+                        lighticon[index],
+                        SizedBox(width: 10),
+                        CupertinoSwitch(value: value, onChanged: (value)=> setState(() {
+                          this.value = value;
+                          if(value == true){
+                            _themeManager.toggleTheme(true);
+                            index = 1 ;
+
+                          }
+                          if(value == false){
+                            _themeManager.toggleTheme(false);
+                            index = 0;
+
+                          }
+                        })),
+                        
+                        ],),),],),
+
+                      
+                Column(//one settigns widget 
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container( 
+                      //color: Colors.black,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20),
+                          ExpansionTile(
+                        title: Text('Sounds/Music', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        children: [
+                          Text('select sound')
+                        ],
+                        ),
+                        ], ))], ),
+                Column(//one settigns widget 
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container( 
+                      //color: Colors.black,
+                      child: Column(
+                        children: [
+                          ExpansionTile(
+                        title: Text('Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        children: [
+                          Text('account name and other thingfs')
+                        ],
+                        ),
+                        ], ))], ),
+                  Column(//one settigns widget 
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container( 
+                      //color: Colors.black,
+                      child: Column(
+                        children: [
+                          ExpansionTile(
+                        title: Text('FAQ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        children: [
+                          Text('About us:'),
+                          Text("TM:")
+                        ],
+                        ),
+                        ], ))], ),
+                        
+
+
+                  Column(//one settigns widget 
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
+                    child: Container( 
+                    child: Text('Button', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                    
+                    ))
+                    ], )
+                
             ],
           ),
         ),
       ),
+      )
     );
   }
 }
