@@ -5,8 +5,12 @@ import 'tracking.dart';
 //import 'pages/settings.dart';
 import 'theme/theme_manager.dart';
 import 'theme/theme_constants.dart';
+import 'utils/user_simple_preferences.dart';
 
-void main() {
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await UserSimplePreferences.init();
+
   runApp(MyApp());
 }
 
@@ -28,6 +32,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _themeManager.addListener(themeListener);
     super.initState();
+    
+
+
   }
 
   themeListener() {
@@ -37,8 +44,20 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
+// changes theme ON LOAD UP depending on the set preference
+  setTheme(){
+    if(UserSimplePreferences.getValue() == false){
+      
+      return ThemeMode.light;
+    }else{
+      return ThemeMode.dark;
+    }
+
+    }
 
   
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +66,10 @@ class _MyAppState extends State<MyApp> {
       home: HomePage(),
       theme: darkTheme,
       darkTheme: lightTheme,
-      themeMode: _themeManager.themeMode,
+      themeMode: setTheme(),
     );
   }
 }
-int _currentIcon = 0;
 class Settings extends StatefulWidget {
   @override
   _Settings createState() => _Settings();
@@ -63,10 +81,26 @@ class _Settings extends State<Settings> {
     Icon(Icons.dark_mode_sharp),
     Icon(Icons.light_mode_sharp)
   ];
-  bool value = false;
-  int index = 0;
+  bool value = UserSimplePreferences.getValue() ?? false ;
+
+//changes icon depending of the set preference
+  setIcon(){
+    if(UserSimplePreferences.getValue() == true){
+      return  1;
+    }
+    if(UserSimplePreferences.getValue() == false){
+      return  0;
+    }
+  }
+  
+  
+  
+  
   @override
   Widget build(BuildContext context) {
+    
+    
+
     TextTheme _textTheme = Theme.of(context).textTheme;
     return Scaffold(
     //TODO : ADD SCROLL FUNCTION AND MAKE ALL THE SETTINGS WIDGETS(POP OUT SCREENS ETC) ONLY THEN START WORKING ON EACH   
@@ -104,18 +138,22 @@ class _Settings extends State<Settings> {
                         Text("Dark/Light", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         SizedBox(width: 120),
 
-                        lighticon[index],
+                        lighticon[setIcon()],
                         SizedBox(width: 10),
-                        CupertinoSwitch(value: value, onChanged: (value)=> setState(() {
+                        CupertinoSwitch(value: value, onChanged: (value)=> setState(() async {
                           this.value = value;
                           if(value == true){
                             _themeManager.toggleTheme(true);
-                            index = 1 ;
+                            //sets theme preference(bool)
+                            await UserSimplePreferences.setValue(value);
 
                           }
                           if(value == false){
                             _themeManager.toggleTheme(false);
-                            index = 0;
+                            //sets theme preference(bool)
+                            
+                            await UserSimplePreferences.setValue(value);
+
 
                           }
                         })),
