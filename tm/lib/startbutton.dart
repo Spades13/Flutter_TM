@@ -7,6 +7,7 @@ import 'package:tm/globals.dart' as globals;
 
 
 
+
 class Startbutton extends StatelessWidget {
   Startbutton({Key? key}) : super(key: key);
   bool isButtonActive = true;
@@ -29,12 +30,21 @@ class Startbutton extends StatelessWidget {
             onPrimary: Color.fromRGBO(234, 245, 132, 12),
           ),
           child: Text('Start'),
-          onPressed: isButtonActive? () {
-            Navigator.push(
+          
+          onPressed: () {
+            //check if time is not 0, if so it will make a popup that sais to select a time
+            if(globals.study_hour==0 && globals.study_minutes==0){
+              final snackBar = SnackBar(content: Text("Select a time"),
+              duration: Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }else{
+               Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Tracking()));
-                
-
-          }: null,
+            }
+          
+          },
         ),
       ),
     );
