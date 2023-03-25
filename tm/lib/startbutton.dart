@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:tm/hoursstudy.dart';
 //import 'countDown.dart';
 import 'tracking.dart';
 import 'timer.dart';
+import 'package:tm/globals.dart' as globals;
+
+
 
 class Startbutton extends StatelessWidget {
-  const Startbutton({Key? key}) : super(key: key);
-
+  Startbutton({Key? key}) : super(key: key);
+  bool isButtonActive = true;
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
-
+  
     return Scaffold(
+      
       backgroundColor: Colors.transparent,
       body: Container(
         alignment: Alignment.center,
@@ -24,10 +29,12 @@ class Startbutton extends StatelessWidget {
             onPrimary: Color.fromRGBO(234, 245, 132, 12),
           ),
           child: Text('Start'),
-          onPressed: () {
+          onPressed: isButtonActive? () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Tracking()));
-          },
+                
+
+          }: null,
         ),
       ),
     );

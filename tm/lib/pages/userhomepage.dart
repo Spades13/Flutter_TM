@@ -160,7 +160,7 @@ class UserHome extends StatelessWidget {
                                 height: 250,
                                 child: ListWheelScrollView.useDelegate(
                                     onSelectedItemChanged: (value3) =>
-                                        break_minutes = value3,
+                                    break_minutes = value3,
                                     itemExtent: 40,
                                     perspective: 0.005,
                                     diameterRatio: 1.2,
@@ -174,6 +174,7 @@ class UserHome extends StatelessWidget {
                                               return BMinutes(
                                                 bmins: index,
                                               );
+
                                             }))),
                           ],
                         ),
@@ -192,10 +193,13 @@ class UserHome extends StatelessWidget {
                       //Startbutton(),
                     ]),
               ],
+
             ),
           ],
         ),
       ),
     );
+    
   }
 }
+
