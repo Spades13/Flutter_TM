@@ -1,0 +1,7 @@
+Documentation:
+
+Todo:
+
+Bug_lis:
+-when you change timer from 0 and then navigate to another page(like settings), and return to the timer page, the time resets to 0 but if you press the start button,
+it will be the time selected in the begining.
