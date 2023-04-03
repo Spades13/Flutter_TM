@@ -1,6 +1,9 @@
 Documentation:
 
 Todo:
+make the timer work and loop through sessions
+make quit button ADD TEXT TO INDICATE BREAK AND STUDY 
+ADD TEXT ABOVE SCROLL WHEEL
 
 Bug_lis:
 -when you change timer from 0 and then navigate to another page(like settings), and return to the timer page, the time resets to 0 but if you press the start button,
