@@ -1,0 +1,7 @@
+SETTINGS PAGE:
+-Dark theme and light theme
+-Change bg while studying
+-Change to rain sounds or lofi music
+-sign out button
+-User Name/account settings
+-report bug

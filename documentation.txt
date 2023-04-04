@@ -35,7 +35,6 @@ theme accordingly
 
 
 Todo:
-<<<<<<< HEAD
 make timer stop after study, wait a few seconds and do beeping noise, then move on to
 break time, then wait again and do beeping noise, and start new study session(looped until
 quit button is pressed)
@@ -45,13 +44,10 @@ Add bg according to theme
 Add text on userhomepage that says which is minutes and hours
 Add text on tracking.dart that says if "Break" or "Study"
 Add "i" button to explain functionality of certain fetures
-START WORKING ON DATABASE TO STORE USER STUDY DATA(SQL OR FLASK)
-=======
+START WORKING ON DATABASE TO STORE USER STUDY DATA(SQL OR FLASK) 
 make the timer work and loop through sessions
 make quit button ADD TEXT TO INDICATE BREAK AND STUDY 
 ADD TEXT ABOVE SCROLL WHEEL
->>>>>>> cfb8c12441f93b0c3b3be63a662fe772b231d542
-
 Bug_list:
 -when you change timer from 0 and then navigate to another page(like settings), and return to the timer page, the time resets to 0 but if you press the start button,
 it will be the time selected in the begining.
