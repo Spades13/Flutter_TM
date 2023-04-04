@@ -1,7 +1,53 @@
 Documentation:
+Main.dart-> init funcitons and setttings page(to change global theme var)
+Pages->
+	graphic(graphs)->graphs page(not complete)
+	userhomepage->contains the scroll wheel to select time and calls "startbutton"
+theme->
+	theme_constants->All theme design(how light theme and dark theme look)
+	theme_manager->class that can return current theme
+utils->
+	user_simple_preferences-> local storage setup for user preferences(theme)
+
+
+startbutton.dart->button to start session, called in userhomepage
+theme_constants->//
+minutsstudy->scroll wheel setup
+minutsbreak->scroll wheel setup
+hoursstudy->scroll wheel setup
+hoursbreak->scroll wheel setup
+homepage->page contains main background color and also bottom app bar/nav bar
+tracking->different page of app, contains the countdown timer and quit button
+
+Functionalities:
+timer-> global var for user input(through scroll wheel), which is called back in tracking,
+which is the countdown page. we also use this global var to forbid the button from working 
+when study min or hour = 0
+
+setTheme() --> checks if local storage for variable "variable" is true or false, and sets
+theme accordingly
+
+
+
+
+
+
+
 
 Todo:
+make timer stop after study, wait a few seconds and do beeping noise, then move on to
+break time, then wait again and do beeping noise, and start new study session(looped until
+quit button is pressed)
+Make quit button have a "are you sure you want to quit?" popup
+Add rain sounds that can be selected in settings
+Add bg according to theme
+Add text on userhomepage that says which is minutes and hours
+Add text on tracking.dart that says if "Break" or "Study"
+Add "i" button to explain functionality of certain fetures
+START WORKING ON DATABASE TO STORE USER STUDY DATA(SQL OR FLASK)
 
-Bug_lis:
+Bug_list:
 -when you change timer from 0 and then navigate to another page(like settings), and return to the timer page, the time resets to 0 but if you press the start button,
 it will be the time selected in the begining.
+
+
