@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "homepage.dart";
-import 'tracking.dart';
+import 'timer.dart';
 //import 'pages/settings.dart';
 import 'theme/theme_manager.dart';
 import 'theme/theme_constants.dart';
 import 'utils/user_simple_preferences.dart';
 
-Future main() async{
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserSimplePreferences.init();
 
@@ -32,32 +32,22 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _themeManager.addListener(themeListener);
     super.initState();
-    
-
-
   }
 
   themeListener() {
     if (mounted) {
-      setState(() {
-        
-      });
+      setState(() {});
     }
   }
+
 // changes theme ON LOAD UP depending on the set preference
-  setTheme(){
-    if(UserSimplePreferences.getValue() == false){
-      
+  setTheme() {
+    if (UserSimplePreferences.getValue() == false) {
       return ThemeMode.light;
-    }else{
+    } else {
       return ThemeMode.dark;
     }
-
-    }
-
-  
-  
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,159 +60,168 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
 class Settings extends StatefulWidget {
   @override
   _Settings createState() => _Settings();
 }
 
 class _Settings extends State<Settings> {
-  
   List<Widget> lighticon = [
     Icon(Icons.dark_mode_sharp),
     Icon(Icons.light_mode_sharp)
   ];
-  bool value = UserSimplePreferences.getValue() ?? false ;
+  bool value = UserSimplePreferences.getValue() ?? false;
 
 //changes icon depending of the set preference
-  setIcon(){
-    if(UserSimplePreferences.getValue() == true){
-      return  1;
+  setIcon() {
+    if (UserSimplePreferences.getValue() == true) {
+      return 1;
     }
-    if(UserSimplePreferences.getValue() == false){
-      return  0;
+    if (UserSimplePreferences.getValue() == false) {
+      return 0;
     }
   }
-  
-  
-  
-  
+
   @override
   Widget build(BuildContext context) {
-    
-    
-
     TextTheme _textTheme = Theme.of(context).textTheme;
     return Scaffold(
-    //TODO : ADD SCROLL FUNCTION AND MAKE ALL THE SETTINGS WIDGETS(POP OUT SCREENS ETC) ONLY THEN START WORKING ON EACH   
-      body: SafeArea(
-      
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: SingleChildScrollView(
-            child: Column(
+        //TODO : ADD SCROLL FUNCTION AND MAKE ALL THE SETTINGS WIDGETS(POP OUT SCREENS ETC) ONLY THEN START WORKING ON EACH
+        body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Text("Settings",
-                  style: _textTheme.headlineMedium ),
+              Text("Settings", style: _textTheme.headlineMedium),
               Row(
                 children: [
                   Row(
                     children: const [
-                      SizedBox(height: 30,)
+                      SizedBox(
+                        height: 30,
+                      )
                     ],
                   ),
-                
                 ],
               ),
-
-              Column(//one settigns widget 
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      
-                      
-                      
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+              Column(
+                //one settigns widget
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         SizedBox(width: 15),
-                        Text("Dark/Light", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        Text("Dark/Light",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         SizedBox(width: 120),
-
                         lighticon[setIcon()],
                         SizedBox(width: 10),
-                        CupertinoSwitch(value: value, onChanged: (value)=> setState(() async {
-                          this.value = value;
-                          if(value == true){
-                            _themeManager.toggleTheme(true);
-                            //sets theme preference(bool)
-                            await UserSimplePreferences.setValue(value);
+                        CupertinoSwitch(
+                            value: value,
+                            onChanged: (value) => setState(() async {
+                                  this.value = value;
+                                  if (value == true) {
+                                    _themeManager.toggleTheme(true);
+                                    //sets theme preference(bool)
+                                    await UserSimplePreferences.setValue(value);
+                                  }
+                                  if (value == false) {
+                                    _themeManager.toggleTheme(false);
+                                    //sets theme preference(bool)
 
-                          }
-                          if(value == false){
-                            _themeManager.toggleTheme(false);
-                            //sets theme preference(bool)
-                            
-                            await UserSimplePreferences.setValue(value);
-
-
-                          }
-                        })),
-                        
-                        ],),),],),
-
-                      
-                Column(//one settigns widget 
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container( 
+                                    await UserSimplePreferences.setValue(value);
+                                  }
+                                })),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                //one settigns widget
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
                       //color: Colors.black,
                       child: Column(
-                        children: [
-                          SizedBox(height: 20),
-                          ExpansionTile(
-                        title: Text('Sounds/Music', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        children: [
-                          Text('select sound')
-                        ],
+                    children: [
+                      SizedBox(height: 20),
+                      ExpansionTile(
+                        title: Text(
+                          'Sounds/Music',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        ], ))], ),
-                Column(//one settigns widget 
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container( 
+                        children: [Text('select sound')],
+                      ),
+                    ],
+                  ))
+                ],
+              ),
+              Column(
+                //one settigns widget
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
                       //color: Colors.black,
                       child: Column(
-                        children: [
-                          ExpansionTile(
-                        title: Text('Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        children: [
-                          Text('account name and other thingfs')
-                        ],
+                    children: [
+                      ExpansionTile(
+                        title: Text(
+                          'Account',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        ], ))], ),
-                  Column(//one settigns widget 
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container( 
+                        children: [Text('account name and other thingfs')],
+                      ),
+                    ],
+                  ))
+                ],
+              ),
+              Column(
+                //one settigns widget
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
                       //color: Colors.black,
                       child: Column(
-                        children: [
-                          ExpansionTile(
-                        title: Text('FAQ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        children: [
-                          Text('About us:'),
-                          Text("TM:")
-                        ],
+                    children: [
+                      ExpansionTile(
+                        title: Text(
+                          'FAQ',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        ], ))], ),
-                        
-
-
-                  Column(//one settigns widget 
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-                    child: Container( 
-                    child: Text('Button', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                    
-                    ))
-                    ], )
-                
+                        children: [Text('About us:'), Text("TM:")],
+                      ),
+                    ],
+                  ))
+                ],
+              ),
+              Column(
+                //one settigns widget
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
+                      child: Container(
+                        child: Text(
+                          'Button',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ))
+                ],
+              )
             ],
           ),
         ),
       ),
-      )
-    );
+    ));
   }
 }

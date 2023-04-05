@@ -5,7 +5,7 @@ import 'hoursstudy.dart';
 import 'minutesbreak.dart';
 import 'hoursbreak.dart';
 import 'startbutton.dart';
-import 'tracking.dart';
+import 'timer.dart';
 //import 'pages/settings.dart';
 import 'pages/userhomepage.dart';
 import 'pages/graphic.dart';
@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: _pages[_currentIndex],
       //backgroundColor: Color.fromARGB(255, 5, 4, 51),
       bottomNavigationBar: GNav(

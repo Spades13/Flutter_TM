@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tm/hoursstudy.dart';
 //import 'countDown.dart';
-import 'tracking.dart';
 import 'timer.dart';
+import '_.dart';
 import 'package:tm/globals.dart' as globals;
-
-
-
 
 class Startbutton extends StatelessWidget {
   Startbutton({Key? key}) : super(key: key);
@@ -14,9 +11,8 @@ class Startbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
-  
+
     return Scaffold(
-      
       backgroundColor: Colors.transparent,
       body: Container(
         alignment: Alignment.center,
@@ -30,20 +26,19 @@ class Startbutton extends StatelessWidget {
             onPrimary: Color.fromRGBO(234, 245, 132, 12),
           ),
           child: Text('Start'),
-          
           onPressed: () {
             //check if time is not 0, if so it will make a popup that sais to select a time
-            if(globals.study_hour==0 && globals.study_minutes==0){
-              final snackBar = SnackBar(content: Text("Select a time"),
-              duration: Duration(seconds: 3),
-              behavior: SnackBarBehavior.floating,
+            if (globals.study_hour == 0 && globals.study_minutes == 0) {
+              final snackBar = SnackBar(
+                content: Text("Select a time"),
+                duration: Duration(seconds: 3),
+                behavior: SnackBarBehavior.floating,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }else{
-               Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Tracking()));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Tracking()));
             }
-          
           },
         ),
       ),

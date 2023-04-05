@@ -8,26 +8,32 @@ import 'package:tm/globals.dart' as globals;
 
 class UserHome extends StatelessWidget {
   //variables
-  //int study_hour = 0;
+
+  int study_hour = 0;
   int study_minutes = 0;
   int break_hour = 0;
   int break_minutes = 0;
 
   @override
   Widget build(BuildContext context) {
+    globals.study_hour = 0;
+    globals.study_minutes = 0;
+    globals.break_hour = 0;
+    globals.break_minutes = 0;
+
     TextTheme _textTheme = Theme.of(context).textTheme;
     return Container(
       //decoration: const BoxDecoration(
-        //  gradient: LinearGradient(
-        //      begin: Alignment.topCenter,
+      //  gradient: LinearGradient(
+      //      begin: Alignment.topCenter,
       //        end: Alignment.bottomCenter,
-       //       colors: [
-       //     Color.fromARGB(255, 5, 4, 76),
-       //     Color.fromARGB(255, 5, 4, 76),
-       //     Color.fromARGB(255, 5, 4, 51),
+      //       colors: [
+      //     Color.fromARGB(255, 5, 4, 76),
+      //     Color.fromARGB(255, 5, 4, 76),
+      //     Color.fromARGB(255, 5, 4, 51),
       //      Color.fromARGB(255, 5, 4, 26),
-       //     Color.fromARGB(255, 5, 4, 26),
-          //])),
+      //     Color.fromARGB(255, 5, 4, 26),
+      //])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -42,15 +48,13 @@ class UserHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                          //color: Colors.black,
-                          child: Text("Study",
-                              style: _textTheme.headlineMedium 
-                          ),
-                          ),
+                        //color: Colors.black,
+                        child: Text("Study", style: _textTheme.headlineMedium),
+                      ),
                       Container(
                           //color: Colors.black,
-                          child: Text("Break",
-                              style: _textTheme.headlineMedium )),
+                          child:
+                              Text("Break", style: _textTheme.headlineMedium)),
                     ],
                   ),
                 ),
@@ -84,7 +88,7 @@ class UserHome extends StatelessWidget {
                                     physics: const FixedExtentScrollPhysics(),
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                            childCount: 6,
+                                            childCount: 24,
                                             builder: (context, index) {
                                               return SHours(
                                                 shours: index,
@@ -133,7 +137,7 @@ class UserHome extends StatelessWidget {
                                 height: 250,
                                 child: ListWheelScrollView.useDelegate(
                                     onSelectedItemChanged: (value2) =>
-                                        break_hour = value2,
+                                        globals.break_hour = value2,
                                     itemExtent: 40,
                                     perspective: 0.005,
                                     diameterRatio: 1.2,
@@ -160,7 +164,7 @@ class UserHome extends StatelessWidget {
                                 height: 250,
                                 child: ListWheelScrollView.useDelegate(
                                     onSelectedItemChanged: (value3) =>
-                                    break_minutes = value3,
+                                        globals.break_minutes = value3,
                                     itemExtent: 40,
                                     perspective: 0.005,
                                     diameterRatio: 1.2,
@@ -174,7 +178,6 @@ class UserHome extends StatelessWidget {
                                               return BMinutes(
                                                 bmins: index,
                                               );
-
                                             }))),
                           ],
                         ),
@@ -193,13 +196,10 @@ class UserHome extends StatelessWidget {
                       //Startbutton(),
                     ]),
               ],
-
             ),
           ],
         ),
       ),
     );
-    
   }
 }
-
