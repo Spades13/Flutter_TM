@@ -32,6 +32,7 @@ ThemeData darkTheme = ThemeData(
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light, 
   scaffoldBackgroundColor: Color.fromARGB(255, 240, 237, 219),
+  
   textTheme:  const TextTheme(
     headlineMedium:  TextStyle(
                                  color: Color.fromRGBO(39, 39, 39, 0.957),
@@ -50,7 +51,7 @@ ThemeData lightTheme = ThemeData(
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,
             ),
-  )
+  ),
   
   
   //textTheme for numbers

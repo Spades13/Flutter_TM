@@ -8,6 +8,11 @@ import 'package:flutter/services.dart';
 import 'pages/userhomepage.dart' as userhomepage;
 import 'globals.dart' as globals;
 import 'package:audioplayers/audioplayers.dart';
+import 'theme/theme_manager.dart';
+import 'theme/theme_constants.dart';
+import 'utils/user_simple_preferences.dart';
+
+ThemeManager _themeManager = ThemeManager();
 
 void main() {
   runApp(Tracking());
@@ -110,7 +115,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       return index;
     }
   }
+ checkBg(){
+  if(UserSimplePreferences.getValue() == true){
+    return 'assets/lightmode.jpg';
+  }else{
+    return 'assets/lofi-cozy-house-rainy-night-thumb.jpg';
+  }
 
+
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +133,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         style: _textTheme.headlineLarge),
 
     Text( "${(count_break.inHours).toString().padLeft(2, "0")}:${(count_break.inMinutes % 60).toString().padLeft(2, "0")}:${(count_break.inSeconds % 60).toString().padLeft(2, "0")}",
-                        style: _textTheme.headlineLarge)
+                        style: _textTheme.headlineLarge),
+    
   ];
+
 
     
         /*decoration: const BoxDecoration(
@@ -135,7 +150,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
               Color.fromARGB(255, 5, 4, 26),
               Color.fromARGB(255, 5, 4, 26),
             ])),*/
-      return Scaffold(
+      return Container(
+        decoration:  BoxDecoration(
+                    image: DecorationImage(image: AssetImage(checkBg()),
+                    fit: BoxFit.cover
+                    )
+
+                  ),
+                  
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
           body: 
           Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -163,9 +187,14 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
           }),
           ],)
-],),
+],)
+
+
+        ),);
+          
+
+
         
-            
-        );
+        
   }
 }
