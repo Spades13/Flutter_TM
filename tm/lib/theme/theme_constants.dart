@@ -15,7 +15,13 @@ ThemeData darkTheme = ThemeData(
               color: Color.fromRGBO(255, 255, 255, 0.957),
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,
-            ) 
+            ),
+    headlineLarge:  TextStyle(
+              fontSize: 60,
+              color:  Color.fromRGBO(234, 245, 132, 12),
+              //color: Color.fromARGB(255, 30, 217, 230),
+              fontWeight: FontWeight.bold,
+            ), 
   )
   
   
@@ -36,8 +42,16 @@ ThemeData lightTheme = ThemeData(
               color: Color.fromRGBO(39, 39, 39, 0.957),
               //color: Color.fromARGB(255, 30, 217, 230),
               fontWeight: FontWeight.bold,
-            ) 
+            ),
+
+    headlineLarge:  TextStyle(
+              fontSize: 60,
+              color: Color.fromRGBO(39, 39, 39, 0.957),
+              //color: Color.fromARGB(255, 30, 217, 230),
+              fontWeight: FontWeight.bold,
+            ),
   )
+  
   
   //textTheme for numbers
   
