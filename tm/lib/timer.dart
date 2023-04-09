@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
 import 'dart:async';
@@ -34,12 +36,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       Duration(hours: globals.break_hour, minutes: globals.break_minutes);
   bool active_break = false;
 //list to overlap timers
+  final audioPlayer = AudioPlayer();
   
+  
+
 
   @override
   void initState() {
     
     super.initState();
+    //setAudio();
     WidgetsBinding.instance.addObserver(this);
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active == true) {
@@ -72,8 +78,35 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         }
       }
     });
+  
+
   }
-  //set var to  1 or 2 depending on break or study to change body:
+
+  checkTimer(){
+    int index = 0;
+    if(active == true){
+      index = 0;
+      return index;
+
+    }else{
+      index = 1;
+      return index;
+    }
+  }
+  Future setAudio() async{
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    final player = AudioCache(prefix: 'assets/audio/');
+    final url =  await player.load(selectSound());
+    audioPlayer.setSourceUrl(url.path);
+    //audioPlayer.resume();
+
+  }
+  //check if break and assign music to it
+  selectSound(){
+    if (checkTimer()==0){
+      return 'rain2.mp3';
+      }else{return 'lofi.mp3';}
+  }
 
   @override
   void dispose() {
@@ -81,6 +114,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     timer.cancel();
     break_timer.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    audioPlayer.dispose();
   }
 
   @override
@@ -104,17 +138,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       print("Paused");
     }
   }
-  checkTimer(){
-    int index = 0;
-    if(active == true){
-      index = 0;
-      return index;
-
-    }else{
-      index = 1;
-      return index;
-    }
-  }
+  
  checkBg(){
   if(UserSimplePreferences.getValue() == true){
     return 'assets/lightmode.jpg';
@@ -136,6 +160,11 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         style: _textTheme.headlineLarge),
     
   ];
+  //play music
+  //audioPlayer.resume();
+  setAudio();
+  audioPlayer.resume();
+  
 
 
     
@@ -181,8 +210,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           ),
           child: Text('QUIT'),
           onPressed: () {
+            //get rid of page and audio.stop is to stop musci(duhh)
              Navigator.pop(
                   context, MaterialPageRoute(builder: (context) => Tracking()));
+              audioPlayer.stop();
             
 
           }),
