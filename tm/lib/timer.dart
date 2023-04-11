@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
 import 'dart:async';
@@ -37,13 +35,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   bool active_break = false;
 //list to overlap timers
   final audioPlayer = AudioPlayer();
-  
-  
-
 
   @override
   void initState() {
-    
     super.initState();
     //setAudio();
     WidgetsBinding.instance.addObserver(this);
@@ -78,34 +72,34 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         }
       }
     });
-  
-
   }
 
-  checkTimer(){
+  checkTimer() {
     int index = 0;
-    if(active == true){
+    if (active == true) {
       index = 0;
       return index;
-
-    }else{
+    } else {
       index = 1;
       return index;
     }
   }
-  Future setAudio() async{
+
+  Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.loop);
     final player = AudioCache(prefix: 'assets/audio/');
-    final url =  await player.load(selectSound());
+    final url = await player.load(selectSound());
     audioPlayer.setSourceUrl(url.path);
     //audioPlayer.resume();
-
   }
+
   //check if break and assign music to it
-  selectSound(){
-    if (checkTimer()==0){
+  selectSound() {
+    if (checkTimer() == 0) {
       return 'rain2.mp3';
-      }else{return 'lofi.mp3';}
+    } else {
+      return 'lofi.mp3';
+    }
   }
 
   @override
@@ -138,37 +132,33 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       print("Paused");
     }
   }
-  
- checkBg(){
-  if(UserSimplePreferences.getValue() == true){
-    return 'assets/lightmode.jpg';
-  }else{
-    return 'assets/lofi-cozy-house-rainy-night-thumb.jpg';
+
+  checkBg() {
+    if (UserSimplePreferences.getValue() == true) {
+      return 'assets/lightmode.jpg';
+    } else {
+      return 'assets/lofi-cozy-house-rainy-night-thumb.jpg';
+    }
   }
-
-
- }
 
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
     List<Widget> _timerstate = [
-    Text("${(count_study.inHours).toString().padLeft(2, "0")}:${(count_study.inMinutes % 60).toString().padLeft(2, "0")}:${(count_study.inSeconds % 60).toString().padLeft(2, "0")}",
-                        style: _textTheme.headlineLarge),
+      Text(
+        "${(count_study.inHours).toString().padLeft(2, "0")}:${(count_study.inMinutes % 60).toString().padLeft(2, "0")}:${(count_study.inSeconds % 60).toString().padLeft(2, "0")}",
+        style: _textTheme.headlineLarge,
+      ),
+      Text(
+          "${(count_break.inHours).toString().padLeft(2, "0")}:${(count_break.inMinutes % 60).toString().padLeft(2, "0")}:${(count_break.inSeconds % 60).toString().padLeft(2, "0")}",
+          style: _textTheme.headlineLarge),
+    ];
+    //play music
+    //audioPlayer.resume();
+    setAudio();
+    audioPlayer.resume();
 
-    Text( "${(count_break.inHours).toString().padLeft(2, "0")}:${(count_break.inMinutes % 60).toString().padLeft(2, "0")}:${(count_break.inSeconds % 60).toString().padLeft(2, "0")}",
-                        style: _textTheme.headlineLarge),
-    
-  ];
-  //play music
-  //audioPlayer.resume();
-  setAudio();
-  audioPlayer.resume();
-  
-
-
-    
-        /*decoration: const BoxDecoration(
+    /*decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -179,53 +169,43 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
               Color.fromARGB(255, 5, 4, 26),
               Color.fromARGB(255, 5, 4, 26),
             ])),*/
-      return Container(
-        decoration:  BoxDecoration(
-                    image: DecorationImage(image: AssetImage(checkBg()),
-                    fit: BoxFit.cover
-                    )
-
-                  ),
-                  
-        child: Scaffold(
+    return Container(
+      decoration: BoxDecoration(
+          image:
+              DecorationImage(image: AssetImage(checkBg()), fit: BoxFit.cover)),
+      child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: 
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                    child: _timerstate[checkTimer()]),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: _timerstate[checkTimer()]),
               SizedBox(height: 80),
-                Column(
-                  
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
-            minimumSize: Size(110, 75),
-            textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            primary: Color.fromARGB(61, 21, 142, 223),
-            onPrimary: Color.fromRGBO(234, 245, 132, 12),
-          ),
-          child: Text('QUIT'),
-          onPressed: () {
-            //get rid of page and audio.stop is to stop musci(duhh)
-             Navigator.pop(
-                  context, MaterialPageRoute(builder: (context) => Tracking()));
-              audioPlayer.stop();
-            
-
-          }),
-          ],)
-],)
-
-
-        ),);
-          
-
-
-        
-        
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        minimumSize: Size(110, 75),
+                        textStyle: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                        //primary: Color.fromARGB(500, 23, 228, 255),
+                        primary: Color.fromARGB(61, 21, 142, 223),
+                        onPrimary: Color.fromRGBO(234, 245, 132, 12),
+                      ),
+                      child: Text('QUIT'),
+                      onPressed: () {
+                        //get rid of page and audio.stop is to stop music(duhh)
+                        Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Tracking()));
+                        audioPlayer.stop();
+                      }),
+                ],
+              )
+            ],
+          )),
+    );
   }
 }

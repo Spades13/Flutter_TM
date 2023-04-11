@@ -81,6 +81,9 @@ class _Settings extends State<Settings> {
     if (UserSimplePreferences.getValue() == false) {
       return 0;
     }
+    if (UserSimplePreferences.getValue() == null) {
+      return 1;
+    }
   }
 
   @override
@@ -123,18 +126,18 @@ class _Settings extends State<Settings> {
                         SizedBox(width: 10),
                         CupertinoSwitch(
                             value: value,
-                            onChanged: (value) => setState(() async {
+                            onChanged: (value) => setState(() {
                                   this.value = value;
                                   if (value == true) {
                                     _themeManager.toggleTheme(true);
                                     //sets theme preference(bool)
-                                    await UserSimplePreferences.setValue(value);
+                                    UserSimplePreferences.setValue(value);
                                   }
                                   if (value == false) {
                                     _themeManager.toggleTheme(false);
                                     //sets theme preference(bool)
 
-                                    await UserSimplePreferences.setValue(value);
+                                    UserSimplePreferences.setValue(value);
                                   }
                                 })),
                       ],
