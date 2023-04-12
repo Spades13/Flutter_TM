@@ -40,9 +40,10 @@ ThemeData lightTheme = ThemeData(
     ),
     headlineLarge: TextStyle(
       fontSize: 60,
-      color: Color.fromRGBO(39, 39, 39, 0.957),
+      color: Color.fromRGBO(92, 91, 91, 0.957),
       //color: Color.fromARGB(255, 30, 217, 230),
       fontWeight: FontWeight.bold,
+      
     ),
   ),
 

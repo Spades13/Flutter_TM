@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "homepage.dart";
@@ -6,9 +7,15 @@ import 'timer.dart';
 import 'theme/theme_manager.dart';
 import 'theme/theme_constants.dart';
 import 'utils/user_simple_preferences.dart';
+import 'pages/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await UserSimplePreferences.init();
 
   runApp(MyApp());
@@ -53,7 +60,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: MyAuth(),
       theme: darkTheme,
       darkTheme: lightTheme,
       themeMode: setTheme(),
@@ -72,6 +79,7 @@ class _Settings extends State<Settings> {
     Icon(Icons.light_mode_sharp)
   ];
   bool value = UserSimplePreferences.getValue() ?? false;
+  final user =FirebaseAuth.instance.currentUser!;
 
 //changes icon depending of the set preference
   setIcon() {
@@ -180,7 +188,14 @@ class _Settings extends State<Settings> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        children: [Text('account name and other thingfs')],
+                        children: [Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Text('Email: '+user.email!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                            ],
+                          ),
+                        )],
                       ),
                     ],
                   ))
@@ -206,19 +221,35 @@ class _Settings extends State<Settings> {
                   ))
                 ],
               ),
+              Divider(
+              thickness: 1,
+              color: Color.fromARGB(255, 129, 129, 129),
+
+              ),
+              SizedBox(height: 60),
               Column(
                 //one settigns widget
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-                      child: Container(
-                        child: Text(
-                          'Button',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ))
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                     shape: StadiumBorder(),
+                    primary: Color.fromARGB(127, 15, 6, 141)
+            ),
+            
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Container(
+                          child: Text(
+                            'LOG OUT',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+                          ),
+                        )),
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                        },
+                  )
                 ],
               )
             ],

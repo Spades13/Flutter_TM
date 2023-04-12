@@ -41,6 +41,9 @@ dependencies:
   provider: ^6.0.5
   scaffold_gradient_background: ^1.0.3+1
   audioplayers: ^3.0.1
+  lottie: ^2.3.2
+  firebase_auth: ^4.4.0
+  firebase_core: ^2.9.0
   
 
 
