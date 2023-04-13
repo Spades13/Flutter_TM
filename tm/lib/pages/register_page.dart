@@ -8,34 +8,42 @@ import 'package:lottie/lottie.dart';
 
 
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   void Function()? onTap;
   
-   LoginPage({super.key, required this.onTap});
+   RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text options
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  //acces to sign in user
-  void signIn() async{
+  //acces to sign up user
+  void signUp() async{
     //loading
     showDialog(context: context, builder: (context){
       return Center(child: CircularProgressIndicator(),);
     });
 
    try {
-     await FirebaseAuth.instance.signInWithEmailAndPassword(
+     //check if confirm pass is same
+     if (passwordController.text == confirmPasswordController.text){
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text, 
       password: passwordController.text
       );
-    Navigator.pop(context);
+     } else{
+      //show that passwords do not match
+      showErrorMessage("Passowrds don't match!");
+      
+     }
+    
 
    } on FirebaseAuthException catch (error){
     Navigator.pop(context);
@@ -74,12 +82,12 @@ class _LoginPageState extends State<LoginPage> {
               size: 80,
               ),*/
               //REPLACE WITH LOGO WHEN LOGO IS MADE FOR APP
-              Lottie.network('https://assets1.lottiefiles.com/packages/lf20_UHhZXv9VWn.json', width:150, height: 150,fit: BoxFit.fill),
+              Lottie.network('https://assets1.lottiefiles.com/packages/lf20_UHhZXv9VWn.json', width:80, height: 80,fit: BoxFit.fill),
           
-              SizedBox(height: 25),
+              SizedBox(height: 20),
           
               Text(
-                'Welcome!',
+                'Let\'s create an account!',
                 style: _textTheme.headlineSmall),
               SizedBox(height: 25),
           
@@ -89,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: 'Email',
                 obscureText: false,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
           
               //password
               Text_Field(
@@ -98,25 +106,22 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
               const SizedBox(height:10),
-              //i forgor
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  
-                  children: [
-                    Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Color.fromARGB(255, 206, 205, 205))
-                      ),
-                  ],
-                ),
+
+
+              Text_Field(
+                controller: confirmPasswordController,
+                hintText: 'Confirm Passowrd',
+                obscureText: true,
               ),
+              const SizedBox(height:10),
+              //i forgor
+              
               
               const SizedBox(height: 25),
           
               SigninButton(
-                onTap: signIn,
-                text: 'Sign In',
+                onTap: signUp,
+                text: 'Sign up',
               ),
           
               const SizedBox(height: 50),
@@ -154,12 +159,12 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                Text('No account?'),
+                Text('Already have an accounts?'),
                 const SizedBox(width: 4),
                 GestureDetector(
                   onTap: widget.onTap,
                   child: Text(
-                    'Register now',
+                    'Login now',
                     style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                     ),
                 ),

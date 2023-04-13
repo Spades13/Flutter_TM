@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
 import 'package:tm/pages/login.dart';
 
+import 'login_or_register.dart';
+
 
 class MyAuth extends StatelessWidget {
   const MyAuth({super.key});
@@ -17,7 +19,7 @@ class MyAuth extends StatelessWidget {
           return HomePage();
         }
         else{
-          return LoginPage();
+          return LoginOrRegisterPage();
         }
         //not login
       },
