@@ -6,6 +6,45 @@ import 'package:tm/minutesstudy.dart';
 import 'package:tm/startbutton.dart';
 import 'package:tm/globals.dart' as globals;
 
+const List<String> list = <String>['1', '2', '3', '4', '5', '6'];
+
+class DropdownButtonItem extends StatefulWidget {
+  const DropdownButtonItem({super.key});
+
+  @override
+  State<DropdownButtonItem> createState() => _DropdownButtonItemState();
+}
+
+class _DropdownButtonItemState extends State<DropdownButtonItem> {
+  String dropdownValue = list.first;
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme _textTheme = Theme.of(context).textTheme;
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_drop_down_circle),
+      elevation: 0,
+      style: _textTheme.headlineSmall,
+      underline: Container(height: 0),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+        print(dropdownValue);
+        globals.cycle_num = int.parse(dropdownValue);
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}
+
 class UserHome extends StatelessWidget {
   //variables
 
@@ -37,13 +76,24 @@ class UserHome extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                      child: Text("Cycles", style: _textTheme.headlineMedium)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 6, 0, 0),
+                    child: Container(child: DropdownButtonItem()),
+                  )
+                ])),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 150, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -68,7 +118,7 @@ class UserHome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 30, 100),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 30, 50),
                       child: Container(
                         padding: const EdgeInsets.all(0.0),
                         child: Row(
@@ -127,7 +177,7 @@ class UserHome extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 20, 100),
+                      padding: const EdgeInsets.fromLTRB(30, 0, 20, 50),
                       child: Container(
                         padding: const EdgeInsets.all(0.0),
                         child: Row(
@@ -190,7 +240,11 @@ class UserHome extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(height: 100, width: 280, child: Startbutton()),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                        child: Container(
+                            height: 100, width: 280, child: Startbutton()),
+                      ),
                       //Container(height: 100, child: AppBarOur()),
                       //AppBarOur(),
                       //Startbutton(),

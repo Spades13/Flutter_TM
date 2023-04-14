@@ -79,7 +79,7 @@ class _Settings extends State<Settings> {
     Icon(Icons.light_mode_sharp)
   ];
   bool value = UserSimplePreferences.getValue() ?? false;
-  final user =FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser!;
 
 //changes icon depending of the set preference
   setIcon() {
@@ -188,14 +188,22 @@ class _Settings extends State<Settings> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        children: [Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Row(
-                            children: [
-                              Text('Email: '+user.email!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                            ],
-                          ),
-                        )],
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Email: ' + user.email!,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ))
@@ -222,9 +230,8 @@ class _Settings extends State<Settings> {
                 ],
               ),
               Divider(
-              thickness: 1,
-              color: Color.fromARGB(255, 129, 129, 129),
-
+                thickness: 1,
+                color: Color.fromARGB(255, 129, 129, 129),
               ),
               SizedBox(height: 60),
               Column(
@@ -233,22 +240,22 @@ class _Settings extends State<Settings> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                     shape: StadiumBorder(),
-                    primary: Color.fromARGB(127, 15, 6, 141)
-            ),
-            
+                        shape: StadiumBorder(),
+                        primary: Color.fromARGB(127, 15, 6, 141)),
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
                           child: Text(
                             'LOG OUT',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         )),
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut();
-                        },
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    },
                   )
                 ],
               )
