@@ -36,47 +36,45 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 //list to overlap timers
   final audioPlayer = AudioPlayer();
 
+  int cycle = globals.cycle_num;
   @override
   void initState() {
     //setAudio();
-    int cycle = globals.cycle_num;
-    while (cycle > 0) {
-      super.initState();
-      //for (int cycle = globals.cycle_num; cycle > 0; cycle--) {
-      WidgetsBinding.instance.addObserver(this);
-      timer = Timer.periodic(Duration(seconds: cycle), (tm) {
-        if (active == true) {
-          if (count_study > Duration(seconds: 0)) {
-            setState(() {
-              count_study -= Duration(seconds: 1);
-            });
-          } else {
-            timer.cancel();
-            active_break = true;
-            active = false;
-            /*count_break += Duration(
-                  hours: globals.break_hour, minutes: globals.break_minutes);*/
-          }
+    super.initState();
+    //for (int cycle = globals.cycle_num; cycle > 0; cycle--) {
+    WidgetsBinding.instance.addObserver(this);
+    timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active == true) {
+        if (count_study > Duration(seconds: 0)) {
+          setState(() {
+            count_study -= Duration(seconds: 1);
+          });
+        } else {
+          timer.cancel();
+          active_break = true;
+          active = false;
+          /*count_break += Duration(
+              hours: globals.break_hour, minutes: globals.break_minutes);*/
         }
-      });
-      break_timer = Timer.periodic(Duration(seconds: cycle), (tm) {
-        if (active_break == true) {
-          if (count_break > Duration(seconds: 0)) {
-            setState(() {
-              count_break -= Duration(seconds: 1);
-            });
-          } else {
-            break_timer.cancel();
-            active_break = false;
-            active = true;
-            /*count_study += Duration(
-                    hours: globals.study_hour, minutes: globals.study_minutes);
-                print(count_study);*/
-          }
+      }
+    });
+    break_timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active_break == true) {
+        if (count_break > Duration(seconds: 0)) {
+          setState(() {
+            count_break -= Duration(seconds: 1);
+          });
+        } else {
+          break_timer.cancel();
+          active_break = false;
+          active = true;
+          /*count_study += Duration(
+                  hours: globals.study_hour, minutes: globals.study_minutes);
+              print(count_study);*/
         }
-      });
-      cycle--;
-    }
+      }
+    });
+    cycle--;
   }
 
   checkTimer() {
