@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
+
 import 'dart:async';
 import 'package:usage_stats/usage_stats.dart';
 //import 'package:permission_handler/permission_handler.dart';
@@ -11,6 +14,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'theme/theme_manager.dart';
 import 'theme/theme_constants.dart';
 import 'utils/user_simple_preferences.dart';
+import 'package:confetti/confetti.dart';
 
 ThemeManager _themeManager = ThemeManager();
 
@@ -24,6 +28,8 @@ class Tracking extends StatefulWidget {
 }
 
 class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
+  final _controller = ConfettiController();
+
   late Timer timer;
   Duration count_study =
       Duration(hours: globals.study_hour, minutes: globals.study_minutes);
@@ -43,6 +49,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     super.initState();
     //for (int cycle = globals.cycle_num; cycle > 0; cycle--) {
     WidgetsBinding.instance.addObserver(this);
+    print(cycle);
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active == true) {
         if (count_study > Duration(seconds: 0)) {
@@ -50,9 +57,23 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             count_study -= Duration(seconds: 1);
           });
         } else {
-          timer.cancel();
+          //timer.cancel();
           active_break = true;
           active = false;
+          cycle--;
+          if (cycle > 0) {
+            print(cycle);
+            count_break = Duration(
+                hours: globals.break_hour, minutes: globals.break_minutes);
+          } else {
+            count_break = Duration(hours: 0, minutes: 0);
+            timer.cancel();
+            checkend();
+            //count_break = Duration(hours: 0, minutes: 0);
+            //break_timer.cancel();
+            // _controller.play();
+          }
+
           /*count_break += Duration(
               hours: globals.break_hour, minutes: globals.break_minutes);*/
         }
@@ -65,16 +86,28 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             count_break -= Duration(seconds: 1);
           });
         } else {
-          break_timer.cancel();
+          //break_timer.cancel();
           active_break = false;
           active = true;
+          //cycle--;
+          if (cycle > 0) {
+            print(cycle);
+            count_study = Duration(
+                hours: globals.break_hour, minutes: globals.break_minutes);
+          } else {
+            count_study = Duration(hours: 0, minutes: 0);
+            break_timer.cancel();
+            checkend();
+
+            // _controller.play();
+          }
+
           /*count_study += Duration(
                   hours: globals.study_hour, minutes: globals.study_minutes);
               print(count_study);*/
         }
       }
     });
-    cycle--;
   }
 
   checkTimer() {
@@ -89,7 +122,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   }
 
   Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.setReleaseMode(ReleaseMode.release);
     final player = AudioCache(prefix: 'assets/audio/');
     final url = await player.load(selectSound());
     audioPlayer.setSourceUrl(url.path);
@@ -112,6 +145,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     break_timer.cancel();
     WidgetsBinding.instance.removeObserver(this);
     audioPlayer.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -136,6 +170,14 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     }
   }
 
+  checkend() {
+    if (cycle <= 0) {
+      _controller.play();
+    } else {
+      _controller.stop();
+    }
+  }
+
   checkBg() {
     if (UserSimplePreferences.getValue() == true) {
       return 'assets/lightmode.jpg';
@@ -155,6 +197,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       Text(
           "${(count_break.inHours).toString().padLeft(2, "0")}:${(count_break.inMinutes % 60).toString().padLeft(2, "0")}:${(count_break.inSeconds % 60).toString().padLeft(2, "0")}",
           style: _textTheme.headlineLarge),
+    ];
+    List<Widget> _breakorstudy = [
+      Text('Study', style: _textTheme.headlineMedium),
+      Text('Break', style: _textTheme.headlineMedium)
     ];
     //play music
     //audioPlayer.resume();
@@ -181,8 +227,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _breakorstudy[checkTimer()],
               Center(child: _timerstate[checkTimer()]),
               SizedBox(height: 80),
+              ConfettiWidget(
+                confettiController: _controller,
+                blastDirection: -pi / 2,
+                colors: [Colors.yellow, Colors.blue],
+                gravity: 0.05,
+                emissionFrequency: 0.1,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -198,12 +252,14 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                       ),
                       child: Text('QUIT'),
                       onPressed: () {
+                        Future.delayed(const Duration(seconds: 5), () {
+                          Navigator.pop(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Tracking()));
+                          audioPlayer.stop();
+                        });
                         //get rid of page and audio.stop is to stop music(duhh)
-                        Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Tracking()));
-                        audioPlayer.stop();
                       }),
                 ],
               )
