@@ -152,21 +152,64 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state == AppLifecycleState.resumed) {
-      active = true;
-      print("Resumed");
-    } else if (state == AppLifecycleState.inactive) {
-      active = false;
-      active_break = false;
-      print("Inactive");
-    } else if (state == AppLifecycleState.detached) {
-      active = false;
-      active_break = false;
-      print("Paused");
-    } else if (state == AppLifecycleState.paused) {
-      active = false;
-      active_break = false;
-      print("Paused");
+    
+    if (active == true && active_break == false) {
+      if (state == AppLifecycleState.resumed) {
+        active = true;
+        //active_break = true;
+        print("Resumed");
+      } else if (state == AppLifecycleState.inactive) {
+        active = false;
+        //active_break = false;
+        print("Inactive");
+      } else if (state == AppLifecycleState.detached) {
+        active = false;
+        //active_break = false;
+        print("Paused");
+      } else if (state == AppLifecycleState.paused) {
+        active = false;
+        //active_break = false;
+        print("Paused");
+      }
+    }
+    
+    if (active == false && active_break == false) {
+      if (state == AppLifecycleState.resumed) {
+        active = true;
+        //active_break = true;
+        print("Resumed");
+      } else if (state == AppLifecycleState.inactive) {
+        active = false;
+        //active_break = false;
+        print("Inactive");
+      } else if (state == AppLifecycleState.detached) {
+        active = false;
+        //active_break = false;
+        print("Paused");
+      } else if (state == AppLifecycleState.paused) {
+        active = false;
+        //active_break = false;
+        print("Paused");
+      }
+    }
+
+    if (active_break == true && active == false) {
+      if (state == AppLifecycleState.resumed) {
+        active_break = true;
+        print("Resumed");
+      } else if (state == AppLifecycleState.inactive) {
+        active_break = true;
+        //active_break = false;
+        print("Inactive");
+      } else if (state == AppLifecycleState.detached) {
+        active_break = true;
+        //active_break = false;
+        print("Paused");
+      } else if (state == AppLifecycleState.paused) {
+        active_break = true;
+        //active_break = false;
+        print("Paused");
+      }
     }
   }
 
@@ -252,13 +295,22 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                       ),
                       child: Text('QUIT'),
                       onPressed: () {
-                        Future.delayed(const Duration(seconds: 5), () {
+                        //check if cycles are over and display confetti, if not just quit.
+                        if (cycle <= 0) {
+                          Future.delayed(const Duration(seconds: 3), () {
                           Navigator.pop(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Tracking()));
                           audioPlayer.stop();
                         });
+                        } else {
+                          Navigator.pop(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Tracking()));
+                          audioPlayer.stop();
+                        }
                         //get rid of page and audio.stop is to stop music(duhh)
                       }),
                 ],
