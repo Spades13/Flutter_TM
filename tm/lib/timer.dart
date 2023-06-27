@@ -39,6 +39,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   Duration count_break =
       Duration(hours: globals.break_hour, minutes: globals.break_minutes);
   bool active_break = false;
+
+  late Timer total_timer;
+  Duration count_total =
+      Duration(hours: 0, minutes: 0);
+
+  late Timer active_timer;
+  Duration count_active =
+      Duration(hours: 0, minutes: 0);
+  bool active_active = true;
+
 //list to overlap timers
   final audioPlayer = AudioPlayer();
 
@@ -108,6 +118,43 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         }
       }
     });
+
+    total_timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active_break == true) {
+        //pass, meaning nothing is added
+      } else {
+        setState((){
+          count_total += Duration(seconds: 1);
+          print(count_total);
+        });
+        
+        if (count_total >= const Duration(seconds: 90)) {
+          total_timer.cancel();
+          int  time_worked = count_active.inSeconds;
+          active_timer.cancel();
+          print("finished");
+          double total_eff = (time_worked / 90);
+          print(total_eff);
+        } else {
+          //pass
+        }
+      }
+    }
+    );
+
+    active_timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active_break == true) {
+        //pass, meaning timer isnt working
+      } else {
+        if (active_active == true) {
+          setState(() {
+            count_active += Duration(seconds: 1);
+          });
+        } else {
+          print("not working");
+        }
+      }
+    });
   }
 
   checkTimer() {
@@ -120,6 +167,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       return index;
     }
   }
+
+    
 
   Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.release);
@@ -143,6 +192,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     super.dispose();
     timer.cancel();
     break_timer.cancel();
+    total_timer.cancel();
+    active_timer.cancel();
     WidgetsBinding.instance.removeObserver(this);
     audioPlayer.dispose();
     _controller.dispose();
