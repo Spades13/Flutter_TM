@@ -4,6 +4,7 @@ import 'package:tm/components/prompt.dart';
 import 'package:tm/components/button.dart';
 import 'package:tm/components/square_tile.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tm/services/auth_service.dart';
 
 
 
@@ -152,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                SquareTile()
+                SquareTile(onTap: () => AuthService().signInWithGoogle(),)
               ],),
               const SizedBox(height: 50),
           
