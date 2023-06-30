@@ -41,12 +41,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   bool active_break = false;
 
   late Timer total_timer;
-  Duration count_total =
-      Duration(hours: 0, minutes: 0);
+  Duration count_total = Duration(hours: 0, minutes: 0);
 
   late Timer active_timer;
-  Duration count_active =
-      Duration(hours: 0, minutes: 0);
+  Duration count_active = Duration(hours: 0, minutes: 0);
   bool active_active = true;
 
 //list to overlap timers
@@ -123,24 +121,36 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       if (active_break == true) {
         //pass, meaning nothing is added
       } else {
-        setState((){
+        setState(() {
           count_total += Duration(seconds: 1);
           print(count_total);
         });
-        
+
         if (count_total >= const Duration(seconds: 90)) {
-          total_timer.cancel();
-          int  time_worked = count_active.inSeconds;
-          active_timer.cancel();
+          //total_timer.cancel();
+          int time_worked = count_active.inSeconds;
+          //active_timer.cancel();
           print("finished");
           double total_eff = (time_worked / 90);
           print(total_eff);
+          AlertDialog alert = AlertDialog(
+            title: Text("EFF"),
+            content: Text(total_eff.toString()),
+            actions: [TextButton(onPressed: () {}, child: Text("leave"))],
+          );
+
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return alert;
+              });
+          count_total = Duration(seconds: 0);
+          count_active = Duration(seconds: 0);
         } else {
           //pass
         }
       }
-    }
-    );
+    });
 
     active_timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active_break == true) {
@@ -150,7 +160,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           setState(() {
             count_active += Duration(seconds: 1);
           });
-        } else {
+        } else if (active_active == false) {
           print("not working");
         }
       }
@@ -167,8 +177,6 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       return index;
     }
   }
-
-    
 
   Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.release);
@@ -203,7 +211,6 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    
     if (active == true && active_break == false) {
       if (state == AppLifecycleState.resumed) {
         active = true;
@@ -223,7 +230,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         print("Paused");
       }
     }
-    
+
     if (active == false && active_break == false) {
       if (state == AppLifecycleState.resumed) {
         active = true;
@@ -258,6 +265,44 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active_break = true;
+        //active_break = false;
+        print("Paused");
+      }
+    }
+
+    if (active_active == true) {
+      if (state == AppLifecycleState.resumed) {
+        active_active = true;
+        print("Resumed");
+      } else if (state == AppLifecycleState.inactive) {
+        active_active = false;
+        //active_break = false;
+        print("Inactive");
+      } else if (state == AppLifecycleState.detached) {
+        active_active = false;
+        //active_break = false;
+        print("Paused");
+      } else if (state == AppLifecycleState.paused) {
+        active_active = false;
+        //active_break = false;
+        print("Paused");
+      }
+    }
+
+    if (active_active == false) {
+      if (state == AppLifecycleState.resumed) {
+        active_active = true;
+        print("Resumed");
+      } else if (state == AppLifecycleState.inactive) {
+        active_active = false;
+        //active_break = false;
+        print("Inactive");
+      } else if (state == AppLifecycleState.detached) {
+        active_active = false;
+        //active_break = false;
+        print("Paused");
+      } else if (state == AppLifecycleState.paused) {
+        active_active = false;
         //active_break = false;
         print("Paused");
       }
@@ -349,12 +394,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         //check if cycles are over and display confetti, if not just quit.
                         if (cycle <= 0) {
                           Future.delayed(const Duration(seconds: 3), () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Tracking()));
-                          audioPlayer.stop();
-                        });
+                            Navigator.pop(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Tracking()));
+                            audioPlayer.stop();
+                          });
                         } else {
                           Navigator.pop(
                               context,
