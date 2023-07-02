@@ -117,6 +117,51 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       }
     });
 
+    if (count_study <= Duration(minutes: 15)) {
+      int time_block = count_study.inSeconds;
+      double full_block = 0;
+
+      globals.time_block = time_block;
+    } else {
+      double block_amount = count_study.inMinutes / 15;
+      int int_block_amount = block_amount.ceil();
+      int time_block = 900;
+
+      globals.time_block = time_block;
+
+      /*if (int_block_amount < block_amount) {
+        double ratio = block_amount - int_block_amount;
+        double full_block = block_amount - ratio;
+        int time_block = 15;
+        int time_block1 = (ratio * 15).ceil();
+
+        globals.ratio = ratio;
+        globals.full_block = full_block;
+        globals.time_block = time_block;
+        globals.time_block1 = time_block1;
+      } else if (int_block_amount > block_amount) {
+        double ratio = 1 - (int_block_amount - block_amount);
+        double full_block = block_amount - ratio;
+        int time_block = 15;
+        int time_block1 = (ratio * 15).ceil();
+
+        globals.ratio = ratio;
+        globals.full_block = full_block;
+        globals.time_block = time_block;
+        globals.time_block1 = time_block1;
+      } else if (int_block_amount == block_amount) {
+        double ratio = 0;
+        double full_block = block_amount;
+        int time_block = 15;
+        int time_block1 = (ratio * 15).ceil();
+
+        globals.ratio = ratio;
+        globals.full_block = full_block;
+        globals.time_block = time_block;
+        globals.time_block1 = time_block1;
+      }*/
+    }
+
     total_timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active_break == true) {
         //pass, meaning nothing is added
@@ -126,30 +171,31 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           print(count_total);
         });
 
-        if (count_total >= const Duration(seconds: 90)) {
-          //total_timer.cancel();
-          int time_worked = count_active.inSeconds;
-          //active_timer.cancel();
-          print("finished");
-          double total_eff = (time_worked / 90);
-          print(total_eff);
-          AlertDialog alert = AlertDialog(
-            title: Text("EFF"),
-            content: Text(total_eff.toString()),
-            actions: [TextButton(onPressed: () {}, child: Text("leave"))],
-          );
+        int time_block = globals.time_block;
 
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return alert;
-              });
-          count_total = Duration(seconds: 0);
-          count_active = Duration(seconds: 0);
+        if (cycle == 0 && count_study.inSeconds == 0) {
+          int time_worked = count_active.inSeconds;
+          double total_eff = (time_worked / (count_total.inSeconds));
+          print("complete");
+          print(total_eff);
+
+          total_timer.cancel();
+          active_timer.cancel();
         } else {
-          //pass
+          if (count_total >= Duration(seconds: time_block)) {
+            int time_worked = count_active.inSeconds;
+            double total_eff = (time_worked / (time_block));
+            print("finished");
+            print(total_eff);
+
+            count_total = Duration(seconds: 0);
+            count_active = Duration(seconds: 0);
+          } else {
+            //pass
+          }
         }
       }
+      //}
     });
 
     active_timer = Timer.periodic(Duration(seconds: 1), (tm) {
@@ -159,9 +205,11 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         if (active_active == true) {
           setState(() {
             count_active += Duration(seconds: 1);
+            print("Active:");
+            print(count_active);
           });
         } else if (active_active == false) {
-          print("not working");
+          print("Not Working");
         }
       }
     });
@@ -393,7 +441,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                       onPressed: () {
                         //check if cycles are over and display confetti, if not just quit.
                         if (cycle <= 0) {
-                          Future.delayed(const Duration(seconds: 3), () {
+                          Future.delayed(const Duration(seconds: 0), () {
                             Navigator.pop(
                                 context,
                                 MaterialPageRoute(
