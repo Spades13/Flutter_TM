@@ -41,10 +41,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   bool active_break = false;
 
   late Timer total_timer;
-  Duration count_total = Duration(hours: 0, minutes: 0);
+  Duration count_total = Duration(hours: 0, minutes: 0, seconds: -1);
 
   late Timer active_timer;
-  Duration count_active = Duration(hours: 0, minutes: 0);
+  Duration count_active = Duration(hours: 0, minutes: 0, seconds: 0);
   bool active_active = true;
 
 //list to overlap timers
@@ -178,6 +178,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           double total_eff = (time_worked / (count_total.inSeconds));
           print("complete");
           print(total_eff);
+          var time = DateTime.now();
+          print(time.hour.toString() + ":" + time.minute.toString());
+          print("Weekday: " + time.weekday.toString());
+          print("Day: " + time.day.toString());
+          print("Month: " + time.month.toString());
+          print("Year: " + time.year.toString());
 
           total_timer.cancel();
           active_timer.cancel();
@@ -187,9 +193,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             double total_eff = (time_worked / (time_block));
             print("finished");
             print(total_eff);
+            var time = DateTime.now();
+            print(time.hour.toString() + ":" + time.minute.toString());
+            print("Weekday: " + time.weekday.toString());
+            print("Day: " + time.day.toString());
+            print("Month: " + time.month.toString());
+            print("Year: " + time.year.toString());
 
-            count_total = Duration(seconds: 0);
-            count_active = Duration(seconds: 0);
+            count_total = Duration(seconds: -1);
+            count_active = Duration(seconds: -1);
           } else {
             //pass
           }
@@ -440,6 +452,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                       child: Text('QUIT'),
                       onPressed: () {
                         //check if cycles are over and display confetti, if not just quit.
+                        double total_eff = count_active.inSeconds /
+                            (count_total.inSeconds + 1);
+                        print(total_eff);
+                        var time = DateTime.now();
+                        print(time.hour.toString() + time.minute.toString());
+                        print("Weekday: " + time.weekday.toString());
+                        print("Day: " + time.day.toString());
+                        print("Month: " + time.month.toString());
+                        print("Year: " + time.year.toString());
                         if (cycle <= 0) {
                           Future.delayed(const Duration(seconds: 0), () {
                             Navigator.pop(
@@ -453,6 +474,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Tracking()));
+
                           audioPlayer.stop();
                         }
                         //get rid of page and audio.stop is to stop music(duhh)
