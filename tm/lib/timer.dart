@@ -1,7 +1,8 @@
 import 'dart:math';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'dart:async';
 import 'package:usage_stats/usage_stats.dart';
@@ -15,11 +16,18 @@ import 'theme/theme_manager.dart';
 import 'theme/theme_constants.dart';
 import 'utils/user_simple_preferences.dart';
 import 'package:confetti/confetti.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 ThemeManager _themeManager = ThemeManager();
 
 void main() {
   runApp(Tracking());
+}
+
+class StudyDataMessage {
+  StudyDataMessage({required this.time, required this.eff});
+  final String time;
+  final String eff;
 }
 
 class Tracking extends StatefulWidget {
@@ -46,6 +54,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   late Timer active_timer;
   Duration count_active = Duration(hours: 0, minutes: 0, seconds: 0);
   bool active_active = true;
+  final user = FirebaseAuth.instance.currentUser!;
 
 //list to overlap timers
   final audioPlayer = AudioPlayer();
@@ -185,6 +194,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           print("Month: " + time.month.toString());
           print("Year: " + time.year.toString());
 
+          FirebaseFirestore.instance.collection(user.email!).add({
+            "Time": time.hour.toString() + ":" + time.minute.toString(),
+            "Weekday": time.weekday.toString(),
+            "Day": time.day.toString(),
+            "Month": time.month.toString(),
+            "Year": time.year.toString(),
+            "Eff": total_eff,
+            "userId": FirebaseAuth.instance.currentUser!.uid,
+          });
+
           total_timer.cancel();
           active_timer.cancel();
         } else {
@@ -199,6 +218,16 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             print("Day: " + time.day.toString());
             print("Month: " + time.month.toString());
             print("Year: " + time.year.toString());
+
+            FirebaseFirestore.instance.collection(user.email!).add({
+              "Time": time.hour.toString() + ":" + time.minute.toString(),
+              "Weekday": time.weekday.toString(),
+              "Day": time.day.toString(),
+              "Month": time.month.toString(),
+              "Year": time.year.toString(),
+              "Eff": total_eff,
+              "userId": FirebaseAuth.instance.currentUser!.uid,
+            });
 
             count_total = Duration(seconds: -1);
             count_active = Duration(seconds: -1);
@@ -461,6 +490,40 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         print("Day: " + time.day.toString());
                         print("Month: " + time.month.toString());
                         print("Year: " + time.year.toString());
+                        var user_email = user.email!;
+
+                        FirebaseFirestore.instance.collection(user.email!).add({
+                          "Time": time.hour.toString() +
+                              ":" +
+                              time.minute.toString(),
+                          "Weekday": time.weekday.toString(),
+                          "Day": time.day.toString(),
+                          "Month": time.month.toString(),
+                          "Year": time.year.toString(),
+                          "Eff": total_eff,
+                          "userId": FirebaseAuth.instance.currentUser!.uid,
+                        });
+
+                        StreamSubscription<QuerySnapshot>? _studyData;
+                        List _studyDataMessages = [];
+
+                        FirebaseAuth.instance.userChanges().listen((user) {
+                          _studyData = FirebaseFirestore.instance
+                              .collection(user_email)
+                              .orderBy("Time", descending: true)
+                              .snapshots()
+                              .listen((snapshot) {
+                            _studyDataMessages = [];
+                            snapshot.docs.forEach((document) {
+                              print(document.get("Time"));
+                              /*_studyDataMessages.add(StudyDataMessage(
+                                time: document.data()["Time"],
+                                eff: document.data()["Eff"],
+                              ));*/
+                            });
+                          });
+                        });
+
                         if (cycle <= 0) {
                           Future.delayed(const Duration(seconds: 0), () {
                             Navigator.pop(
