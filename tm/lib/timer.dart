@@ -49,15 +49,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   bool active_break = false;
 
   late Timer total_timer;
-  Duration count_total = Duration(hours: 0, minutes: 0, seconds: -1);
+  Duration count_total = Duration(hours: 0, minutes: 0, seconds: 0);
 
   late Timer active_timer;
-  Duration count_active = Duration(hours: 0, minutes: 0, seconds: 0);
+  Duration count_active = Duration(hours: 0, minutes: 0, seconds: 1);
   bool active_active = true;
   final user = FirebaseAuth.instance.currentUser!;
 
 //list to overlap timers
-  final audioPlayer = AudioPlayer();
+  //final audioPlayer = AudioPlayer();
 
   int cycle = globals.cycle_num;
   @override
@@ -66,7 +66,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     super.initState();
     //for (int cycle = globals.cycle_num; cycle > 0; cycle--) {
     WidgetsBinding.instance.addObserver(this);
-    print(cycle);
+    //print(cycle);
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active == true) {
         if (count_study > Duration(seconds: 0)) {
@@ -79,7 +79,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           active = false;
           cycle--;
           if (cycle > 0) {
-            print(cycle);
+            //print(cycle);
             count_break = Duration(
                 hours: globals.break_hour, minutes: globals.break_minutes);
           } else {
@@ -108,7 +108,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           active = true;
           //cycle--;
           if (cycle > 0) {
-            print(cycle);
+            //print(cycle);
             count_study = Duration(
                 hours: globals.break_hour, minutes: globals.break_minutes);
           } else {
@@ -177,7 +177,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       } else {
         setState(() {
           count_total += Duration(seconds: 1);
+          print("Total: ");
           print(count_total);
+          //print(count_total);
         });
 
         int time_block = globals.time_block;
@@ -201,6 +203,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             "Month": time.month.toString(),
             "Year": time.year.toString(),
             "Eff": total_eff,
+            "TT": count_total.inSeconds,
             "userId": FirebaseAuth.instance.currentUser!.uid,
           });
 
@@ -226,6 +229,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
               "Month": time.month.toString(),
               "Year": time.year.toString(),
               "Eff": total_eff,
+              "TT": count_total.inSeconds,
               "userId": FirebaseAuth.instance.currentUser!.uid,
             });
 
@@ -267,22 +271,22 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     }
   }
 
-  Future setAudio() async {
+  /*Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.release);
     final player = AudioCache(prefix: 'assets/audio/');
     final url = await player.load(selectSound());
     audioPlayer.setSourceUrl(url.path);
     //audioPlayer.resume();
-  }
+  }*/
 
   //check if break and assign music to it
-  selectSound() {
+  /*selectSound() {
     if (checkTimer() == 0) {
       return 'rain2.mp3';
     } else {
       return 'lofi.mp3';
     }
-  }
+  }*/
 
   @override
   void dispose() {
@@ -292,7 +296,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     total_timer.cancel();
     active_timer.cancel();
     WidgetsBinding.instance.removeObserver(this);
-    audioPlayer.dispose();
+    //audioPlayer.dispose();
     _controller.dispose();
   }
 
@@ -304,19 +308,19 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       if (state == AppLifecycleState.resumed) {
         active = true;
         //active_break = true;
-        print("Resumed");
+        //print("Resumed");
       } else if (state == AppLifecycleState.inactive) {
         active = false;
         //active_break = false;
-        print("Inactive");
+        //print("Inactive");
       } else if (state == AppLifecycleState.detached) {
         active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       }
     }
 
@@ -324,76 +328,76 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       if (state == AppLifecycleState.resumed) {
         active = true;
         //active_break = true;
-        print("Resumed");
+        //print("Resumed");
       } else if (state == AppLifecycleState.inactive) {
         active = false;
         //active_break = false;
-        print("Inactive");
+        //print("Inactive");
       } else if (state == AppLifecycleState.detached) {
         active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       }
     }
 
     if (active_break == true && active == false) {
       if (state == AppLifecycleState.resumed) {
         active_break = true;
-        print("Resumed");
+        //print("Resumed");
       } else if (state == AppLifecycleState.inactive) {
         active_break = true;
         //active_break = false;
-        print("Inactive");
+        //print("Inactive");
       } else if (state == AppLifecycleState.detached) {
         active_break = true;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active_break = true;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       }
     }
 
     if (active_active == true) {
       if (state == AppLifecycleState.resumed) {
         active_active = true;
-        print("Resumed");
+        //print("Resumed");
       } else if (state == AppLifecycleState.inactive) {
         active_active = false;
         //active_break = false;
-        print("Inactive");
+        //print("Inactive");
       } else if (state == AppLifecycleState.detached) {
         active_active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active_active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       }
     }
 
     if (active_active == false) {
       if (state == AppLifecycleState.resumed) {
         active_active = true;
-        print("Resumed");
+        //print("Resumed");
       } else if (state == AppLifecycleState.inactive) {
         active_active = false;
         //active_break = false;
-        print("Inactive");
+        //print("Inactive");
       } else if (state == AppLifecycleState.detached) {
         active_active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       } else if (state == AppLifecycleState.paused) {
         active_active = false;
         //active_break = false;
-        print("Paused");
+        //print("Paused");
       }
     }
   }
@@ -432,8 +436,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     ];
     //play music
     //audioPlayer.resume();
-    setAudio();
-    audioPlayer.resume();
+    //setAudio();
+    //audioPlayer.resume();
 
     /*decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -481,48 +485,57 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                       child: Text('QUIT'),
                       onPressed: () {
                         //check if cycles are over and display confetti, if not just quit.
-                        double total_eff = count_active.inSeconds /
-                            (count_total.inSeconds + 1);
-                        print(total_eff);
-                        var time = DateTime.now();
-                        print(time.hour.toString() + time.minute.toString());
-                        print("Weekday: " + time.weekday.toString());
-                        print("Day: " + time.day.toString());
-                        print("Month: " + time.month.toString());
-                        print("Year: " + time.year.toString());
-                        var user_email = user.email!;
+                        if (cycle == 0 && count_study.inSeconds == 0) {
+                          int divider = count_total.inSeconds;
+                          globals.divider = divider;
+                        } else {
+                          int divider = count_total.inSeconds + 1;
 
-                        FirebaseFirestore.instance.collection(user.email!).add({
-                          "Time": time.hour.toString() +
-                              ":" +
-                              time.minute.toString(),
-                          "Weekday": time.weekday.toString(),
-                          "Day": time.day.toString(),
-                          "Month": time.month.toString(),
-                          "Year": time.year.toString(),
-                          "Eff": total_eff,
-                          "userId": FirebaseAuth.instance.currentUser!.uid,
-                        });
+                          print("Divider");
+                          print(divider);
+                          double total_eff =
+                              count_active.inSeconds / (globals.divider);
+                          //print(total_eff);
+                          var time = DateTime.now();
+                          var user_email = user.email!;
 
-                        StreamSubscription<QuerySnapshot>? _studyData;
-                        List _studyDataMessages = [];
+                          FirebaseFirestore.instance
+                              .collection(user.email!)
+                              .add({
+                            "Time": time.hour.toString() +
+                                ":" +
+                                time.minute.toString(),
+                            "Weekday": time.weekday.toString(),
+                            "Day": time.day.toString(),
+                            "Month": time.month.toString(),
+                            "Year": time.year.toString(),
+                            "Eff": total_eff,
+                            "TT": count_total.inSeconds,
+                            "userId": FirebaseAuth.instance.currentUser!.uid,
+                          });
 
-                        FirebaseAuth.instance.userChanges().listen((user) {
-                          _studyData = FirebaseFirestore.instance
-                              .collection(user_email)
-                              .orderBy("Time", descending: true)
-                              .snapshots()
-                              .listen((snapshot) {
-                            _studyDataMessages = [];
-                            snapshot.docs.forEach((document) {
-                              print(document.get("Time"));
-                              /*_studyDataMessages.add(StudyDataMessage(
-                                time: document.data()["Time"],
-                                eff: document.data()["Eff"],
-                              ));*/
+                          StreamSubscription<QuerySnapshot>? _studyData;
+                          List _studyDataMessages = [];
+
+                          FirebaseAuth.instance.userChanges().listen((user) {
+                            _studyData = FirebaseFirestore.instance
+                                .collection(user_email)
+                                .orderBy("Time", descending: true)
+                                .snapshots()
+                                .listen((snapshot) {
+                              _studyDataMessages = [];
+                              snapshot.docs.forEach((document) {
+                                print(/*document.get("Time")*/ document
+                                    .get("Time"));
+                                print(document.get("Eff"));
+                                /*_studyDataMessages.add(StudyDataMessage(
+                                  time: document.data()["Time"],
+                                  eff: document.data()["Eff"],
+                                ));*/
+                              });
                             });
                           });
-                        });
+                        }
 
                         if (cycle <= 0) {
                           Future.delayed(const Duration(seconds: 0), () {
@@ -530,7 +543,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Tracking()));
-                            audioPlayer.stop();
+                            //audioPlayer.stop();
                           });
                         } else {
                           Navigator.pop(
@@ -538,7 +551,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                               MaterialPageRoute(
                                   builder: (context) => Tracking()));
 
-                          audioPlayer.stop();
+                          //audioPlayer.stop();
                         }
                         //get rid of page and audio.stop is to stop music(duhh)
                       }),
