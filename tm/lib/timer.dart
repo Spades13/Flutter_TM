@@ -493,8 +493,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
                           print("Divider");
                           print(divider);
-                          double total_eff =
-                              count_active.inSeconds / (globals.divider);
+                          double total_eff = count_active.inSeconds / (divider);
                           //print(total_eff);
                           var time = DateTime.now();
                           var user_email = user.email!;
