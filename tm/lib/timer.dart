@@ -488,6 +488,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         if (cycle == 0 && count_study.inSeconds == 0) {
                           int divider = count_total.inSeconds;
                           globals.divider = divider;
+                          /*} else if (active_break = true) {
+                          //pass
+                          print("Nothing");*/
                         } else {
                           int divider = count_total.inSeconds + 1;
 

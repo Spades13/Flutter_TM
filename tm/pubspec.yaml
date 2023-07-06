@@ -47,6 +47,7 @@ dependencies:
   confetti: ^0.7.0
   google_sign_in: ^6.1.4
   cloud_firestore: ^4.8.2
+  fl_chart: ^0.62.0
   
 
 
