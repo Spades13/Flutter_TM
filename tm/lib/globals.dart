@@ -14,3 +14,5 @@ double full_block = 0;
 var email = "null";
 
 int divider = 0;
+
+Color? mainColor = Colors.white;

@@ -12,7 +12,8 @@ ThemeData darkTheme = ThemeData(
           fontWeight: FontWeight.bold),
       headlineSmall: TextStyle(
         fontSize: 25,
-        color: Color.fromRGBO(255, 255, 255, 0.957),
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //Color.fromRGBO(255, 255, 255, 0.957),
         //color: Color.fromARGB(255, 30, 217, 230),
         fontWeight: FontWeight.bold,
       ),
@@ -28,19 +29,6 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: const Color.fromARGB(255, 240, 237, 219),
   secondaryHeaderColor: Color.fromRGBO(39, 39, 39, 0.957),
-  colorScheme: ColorScheme(
-    primary: Color.fromRGBO(39, 39, 39, 0.957),
-    secondary: Color.fromRGBO(39, 39, 39, 0.957),
-    brightness: Brightness.light,
-    error: Color.fromRGBO(39, 39, 39, 0.957),
-    onPrimary: Color.fromRGBO(39, 39, 39, 0.957),
-    onSecondary: Color.fromRGBO(39, 39, 39, 0.957),
-    surface: Color.fromRGBO(39, 39, 39, 0.957),
-    onSurface: Color.fromRGBO(39, 39, 39, 0.957),
-    onBackground: Color.fromRGBO(39, 39, 39, 0.957),
-    background: Color.fromRGBO(39, 39, 39, 0.957),
-    onError: Color.fromRGBO(39, 39, 39, 0.957),
-  ),
   textTheme: const TextTheme(
     headlineMedium: TextStyle(
         color: Color.fromRGBO(39, 39, 39, 0.957),
