@@ -19,3 +19,9 @@ Color? mainColor = Colors.white;
 
 // ignore: constant_identifier_names
 Object? data_line = 0;
+
+double hours_line = 0;
+double minutes_line = 0;
+double eff_line = 0;
+List times_list = [];
+List effs_list = [];

@@ -78,22 +78,6 @@ class _GraphsState extends State<Graphs> {
         print(_date);
       });
     });
-  }
-
-  void initState() {
-    super.initState();
-
-    var year = _date.year.toString();
-    print(year);
-    var month = _date.month.toString();
-    print(month);
-    var day = _date.day.toString();
-    print(day);
-    var weekday = _date.weekday.toString();
-    print(weekday);
-  }
-
-  void _click() {
     var user_email = user.email!;
     var year = _date.year.toString();
     var month = _date.month.toString();
@@ -102,22 +86,44 @@ class _GraphsState extends State<Graphs> {
 
     StreamSubscription<QuerySnapshot>? _studyData;
 
-    //List _studyDataMessages = [];
-    var db = FirebaseFirestore.instance;
-    final docRef = db.collection(user.email!).doc(_date.year.toString() +
-        "/" +
-        _date.month.toString() +
-        "/" +
-        _date.day.toString() +
-        "/" +
-        _date.weekday.toString() +
-        "/" +
-        _date.hour.toString() +
-        ":" +
-        _date.minute.toString());
-    docRef.get().then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      Widget okButton = TextButton(
+    List _studyDataMessages = [];
+    List _times = [1];
+    List _effs = [1];
+    FirebaseAuth.instance.userChanges().listen((user) {
+      _studyData = FirebaseFirestore.instance
+          .collection(user_email)
+          .doc(year)
+          .collection(month)
+          .doc(day)
+          .collection(weekday)
+          .orderBy("Time", descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        _studyDataMessages = [];
+        snapshot.docs.forEach((document) {
+          double time = document.get("Hours") + document.get("Minutes") / 60;
+          double eff = document.get("Eff") * 100;
+          _times.add(time);
+          _effs.add(eff);
+
+          print(_times);
+          print("hi");
+
+          globals.times_list = _times;
+          globals.effs_list = _effs;
+
+          //final graph_time = globals.hours_line + globals.minutes_line / 60;
+          //final graph_eff = globals.eff_line * 100;
+
+          /*_studyDataMessages.add(StudyDataMessage(
+                                  time: document.data()["Time"],
+                                  eff: document.data()["Eff"],
+                                ));*/
+        });
+      });
+    });
+
+    /* Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () {},
       );
@@ -127,18 +133,18 @@ class _GraphsState extends State<Graphs> {
         content: Text(data.toString()),
         actions: [
           okButton,
-        ],
-      );
+        ],*/
+    //);
 
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-      // ...
-    });
+    // show the dialog
+    //  showDialog(
+    //  context: context,
+    //  builder: (BuildContext context) {
+    //    return alert;
+    //  },
+    // );
+    // ...
+    //});
 
     //.orderBy("Time", descending: true)
     //.snapshots()
@@ -160,6 +166,13 @@ class _GraphsState extends State<Graphs> {
     Color? mainColor = _textTheme.headlineLarge?.color!;
     globals.mainColor = mainColor;
 
+    final List<FlSpot> datalist =
+        List.generate(globals.times_list.length, (index) {
+      return FlSpot(globals.times_list[index], globals.effs_list[index]);
+    });
+    //print(datalist);
+    //print(globals.times_list.length);
+    //List<String>.generate(1000,(counter) => "Item $counter");
     BarData myBarData = BarData(
       monAmount: weeklySummary[0],
       tueAmount: weeklySummary[1],
@@ -197,7 +210,7 @@ class _GraphsState extends State<Graphs> {
                       Container(
                         width: 60,
                         child: MaterialButton(
-                            onPressed: _click,
+                            onPressed: _showDatePicker,
                             child: Icon(Icons.calendar_month),
                             color: globals.mainColor,
                             shape: StadiumBorder()),
@@ -303,15 +316,7 @@ class _GraphsState extends State<Graphs> {
                             borderData: FlBorderData(show: false),
                             lineBarsData: [
                               LineChartBarData(
-                                spots: [
-                                  FlSpot(0, 30),
-                                  FlSpot(2.5, 30),
-                                  FlSpot(2.5, 5),
-                                  FlSpot(6.8, 5),
-                                  FlSpot(8, 40),
-                                  FlSpot(9.5, 30),
-                                  FlSpot(11, 40),
-                                ],
+                                spots: datalist,
                                 isCurved: false,
                                 color: globals.mainColor,
                                 barWidth: 5.5,
