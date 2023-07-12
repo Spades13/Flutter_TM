@@ -16,3 +16,6 @@ var email = "null";
 int divider = 0;
 
 Color? mainColor = Colors.white;
+
+// ignore: constant_identifier_names
+Object? data_line = 0;

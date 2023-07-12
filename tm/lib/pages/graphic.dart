@@ -89,36 +89,69 @@ class _GraphsState extends State<Graphs> {
     print(month);
     var day = _date.day.toString();
     print(day);
+    var weekday = _date.weekday.toString();
+    print(weekday);
+  }
 
+  void _click() {
     var user_email = user.email!;
+    var year = _date.year.toString();
+    var month = _date.month.toString();
+    var day = _date.day.toString();
+    var weekday = _date.weekday.toString();
 
     StreamSubscription<QuerySnapshot>? _studyData;
 
     //List _studyDataMessages = [];
+    var db = FirebaseFirestore.instance;
+    final docRef = db.collection(user.email!).doc(_date.year.toString() +
+        "/" +
+        _date.month.toString() +
+        "/" +
+        _date.day.toString() +
+        "/" +
+        _date.weekday.toString() +
+        "/" +
+        _date.hour.toString() +
+        ":" +
+        _date.minute.toString());
+    docRef.get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      Widget okButton = TextButton(
+        child: Text("OK"),
+        onPressed: () {},
+      );
 
-    FirebaseAuth.instance.userChanges().listen((user) {
-      FirebaseFirestore.instance
-          .collection(user_email)
-          .doc(year + "/" + month + "/" + day)
-          .get()
-          .then((DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        print(data);
-      });
+      AlertDialog alert = AlertDialog(
+        title: Text("My title"),
+        content: Text(data.toString()),
+        actions: [
+          okButton,
+        ],
+      );
 
-      //.orderBy("Time", descending: true)
-      //.snapshots()
-      //.listen((snapshot) {
-      //_studyDataMessages = [];
-      // snapshot.docs.forEach((document) {
-      // print(document.get("Time"));
-      //print(document.get("Eff"));
-      //print(document.get("TT"));
-      /*_studyDataMessages.add(StudyDataMessage(
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+      // ...
+    });
+
+    //.orderBy("Time", descending: true)
+    //.snapshots()
+    //.listen((snapshot) {
+    //_studyDataMessages = [];
+    // snapshot.docs.forEach((document) {
+    // print(document.get("Time"));
+    //print(document.get("Eff"));
+    //print(document.get("TT"));
+    /*_studyDataMessages.add(StudyDataMessage(
                                   time: document.data()["Time"],
                                   eff: document.data()["Eff"],
                                 ));*/
-    });
   }
 
   @override
@@ -164,7 +197,7 @@ class _GraphsState extends State<Graphs> {
                       Container(
                         width: 60,
                         child: MaterialButton(
-                            onPressed: _showDatePicker,
+                            onPressed: _click,
                             child: Icon(Icons.calendar_month),
                             color: globals.mainColor,
                             shape: StadiumBorder()),
