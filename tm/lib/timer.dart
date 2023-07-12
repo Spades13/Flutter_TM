@@ -503,10 +503,21 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
                           FirebaseFirestore.instance
                               .collection(user.email!)
-                              .add({
-                            "Time": time.hour.toString() +
+                              .doc(time.year.toString() +
+                                  "/" +
+                                  time.month.toString() +
+                                  "/" +
+                                  time.day.toString() +
+                                  "/" +
+                                  time.weekday.toString() +
+                                  "/" +
+                                  time.hour.toString() +
+                                  ":" +
+                                  time.minute.toString())
+                              .set({
+                            "Time": time.hour.toString().padLeft(2, "0") +
                                 ":" +
-                                time.minute.toString(),
+                                time.minute.toString().padLeft(2, "0"),
                             "Weekday": time.weekday.toString(),
                             "Day": time.day.toString(),
                             "Month": time.month.toString(),

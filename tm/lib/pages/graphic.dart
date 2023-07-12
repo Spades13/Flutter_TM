@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/globals.dart' as globals;
 import '/theme/theme_manager.dart';
 import '/theme/theme_constants.dart';
+import 'dart:async';
+import 'dart:math';
 
 ThemeManager _themeManager = ThemeManager();
 
@@ -59,6 +63,64 @@ List<double> weeklySummary = [1, 2, 3, 4, 5, 6, 7];
 
 class _GraphsState extends State<Graphs> {
   //List<double> weeklySummary = [1, 2, 3, 4, 5, 6, 7];
+  final user = FirebaseAuth.instance.currentUser!;
+
+  DateTime _date = DateTime.now();
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2060),
+    ).then((value) {
+      setState(() {
+        _date = value!;
+        print(_date);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+
+    var year = _date.year.toString();
+    print(year);
+    var month = _date.month.toString();
+    print(month);
+    var day = _date.day.toString();
+    print(day);
+
+    var user_email = user.email!;
+
+    StreamSubscription<QuerySnapshot>? _studyData;
+
+    //List _studyDataMessages = [];
+
+    FirebaseAuth.instance.userChanges().listen((user) {
+      FirebaseFirestore.instance
+          .collection(user_email)
+          .doc(year + "/" + month + "/" + day)
+          .get()
+          .then((DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        print(data);
+      });
+
+      //.orderBy("Time", descending: true)
+      //.snapshots()
+      //.listen((snapshot) {
+      //_studyDataMessages = [];
+      // snapshot.docs.forEach((document) {
+      // print(document.get("Time"));
+      //print(document.get("Eff"));
+      //print(document.get("TT"));
+      /*_studyDataMessages.add(StudyDataMessage(
+                                  time: document.data()["Time"],
+                                  eff: document.data()["Eff"],
+                                ));*/
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
@@ -79,117 +141,156 @@ class _GraphsState extends State<Graphs> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Text("Statistics", style: _textTheme.headlineMedium),
-            ),
-          ),
-          Container(
-            child: Text("Total Work Time", style: _textTheme.headlineSmall),
-          ),
-          SizedBox(
-              height: 150,
-              child: BarChart(BarChartData(
-                  alignment: BarChartAlignment.center,
-                  titlesData: FlTitlesData(
-                      show: true,
-                      topTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                              showTitles: true, getTitlesWidget: getTopTitles)),
-                      leftTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                              showTitles: true,
-                              getTitlesWidget: getBottomTitles))),
-                  maxY: 24,
-                  minY: 0,
-                  groupsSpace: 35,
-                  gridData: FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  barGroups: myBarData.barData
-                      .map((data) => BarChartGroupData(x: data.x, barRods: [
-                            BarChartRodData(
-                                toY: data.y,
-                                width: 19,
-                                color: _textTheme.headlineLarge?.color!,
-                                borderRadius: BorderRadius.circular(4),
-                                backDrawRodData: BackgroundBarChartRodData(
-                                  show: true,
-                                  toY: 24,
-                                  color:
-                                      const Color.fromRGBO(39, 39, 39, 0.957),
-                                ))
-                          ]))
-                      .toList()))),
-          Container(
-            child: Text("Work Efficiency", style: _textTheme.headlineSmall),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 20, 10),
-              child: SizedBox(
-                  width: 500,
-                  height: 250,
-                  child: LineChart(LineChartData(
-                      titlesData: FlTitlesData(
-                          show: true,
-                          topTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                  showTitles: true,
-                                  reservedSize: 50,
-                                  getTitlesWidget: getSideTitles)),
-                          rightTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: getHourTitles))),
-                      minX: 0,
-                      maxX: 24,
-                      minY: 0,
-                      maxY: 100,
-                      gridData: FlGridData(
-                        show: false,
-                        getDrawingHorizontalLine: (value) {
-                          return FlLine(
-                            color: _textTheme.headlineLarge?.color!,
-                            strokeWidth: 1,
-                          );
-                        },
-                        drawVerticalLine: true,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 25, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Container(
+                          child: Text("Statistics",
+                              style: _textTheme.headlineMedium),
+                        ),
                       ),
-                      borderData: FlBorderData(show: false),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: [
-                            FlSpot(0, 30),
-                            FlSpot(2.6, 20),
-                            FlSpot(4.9, 5),
-                            FlSpot(6.8, 25),
-                            FlSpot(8, 40),
-                            FlSpot(9.5, 30),
-                            FlSpot(11, 40),
-                          ],
-                          isCurved: true,
-                          color: globals.mainColor,
-                          barWidth: 5.5,
-                          belowBarData: BarAreaData(
-                              show: true,
-                              color: globals.mainColor!.withOpacity(0.3)),
-                        )
-                      ]))),
-            ),
-          ),
-        ]),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        width: 60,
+                        child: MaterialButton(
+                            onPressed: _showDatePicker,
+                            child: Icon(Icons.calendar_month),
+                            color: globals.mainColor,
+                            shape: StadiumBorder()),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Container(
+                  child:
+                      Text("Total Work Time", style: _textTheme.headlineSmall),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                SizedBox(
+                    height: 150,
+                    child: BarChart(BarChartData(
+                        alignment: BarChartAlignment.center,
+                        titlesData: FlTitlesData(
+                            show: true,
+                            topTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                    showTitles: true,
+                                    getTitlesWidget: getTopTitles)),
+                            leftTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                    showTitles: true,
+                                    getTitlesWidget: getBottomTitles))),
+                        maxY: 24,
+                        minY: 0,
+                        groupsSpace: 35,
+                        gridData: FlGridData(show: false),
+                        borderData: FlBorderData(show: false),
+                        barGroups: myBarData.barData
+                            .map((data) =>
+                                BarChartGroupData(x: data.x, barRods: [
+                                  BarChartRodData(
+                                      toY: data.y,
+                                      width: 19,
+                                      color: _textTheme.headlineLarge?.color!,
+                                      borderRadius: BorderRadius.circular(4),
+                                      backDrawRodData:
+                                          BackgroundBarChartRodData(
+                                        show: true,
+                                        toY: 24,
+                                        color: const Color.fromRGBO(
+                                            39, 39, 39, 0.957),
+                                      ))
+                                ]))
+                            .toList()))),
+                SizedBox(
+                  height: 40,
+                ),
+                Container(
+                  child:
+                      Text("Work Efficiency", style: _textTheme.headlineSmall),
+                ),
+                SizedBox(height: 25),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 20, 10),
+                    child: SizedBox(
+                        width: 500,
+                        height: 250,
+                        child: LineChart(LineChartData(
+                            titlesData: FlTitlesData(
+                                show: true,
+                                topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false)),
+                                leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 50,
+                                        getTitlesWidget: getSideTitles)),
+                                rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false)),
+                                bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                        showTitles: true,
+                                        getTitlesWidget: getHourTitles))),
+                            minX: 0,
+                            maxX: 24,
+                            minY: 0,
+                            maxY: 100,
+                            gridData: FlGridData(
+                              show: false,
+                              getDrawingHorizontalLine: (value) {
+                                return FlLine(
+                                  color: _textTheme.headlineLarge?.color!,
+                                  strokeWidth: 1,
+                                );
+                              },
+                              drawVerticalLine: true,
+                            ),
+                            borderData: FlBorderData(show: false),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: [
+                                  FlSpot(0, 30),
+                                  FlSpot(2.5, 30),
+                                  FlSpot(2.5, 5),
+                                  FlSpot(6.8, 5),
+                                  FlSpot(8, 40),
+                                  FlSpot(9.5, 30),
+                                  FlSpot(11, 40),
+                                ],
+                                isCurved: false,
+                                color: globals.mainColor,
+                                barWidth: 5.5,
+                                belowBarData: BarAreaData(
+                                    show: true,
+                                    color: globals.mainColor!.withOpacity(0.3)),
+                              )
+                            ]))),
+                  ),
+                ),
+              ]),
+        ),
       ),
     );
   }
