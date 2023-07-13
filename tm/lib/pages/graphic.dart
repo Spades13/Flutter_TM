@@ -7,6 +7,7 @@ import '/theme/theme_manager.dart';
 import '/theme/theme_constants.dart';
 import 'dart:async';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 
 ThemeManager _themeManager = ThemeManager();
 
@@ -61,11 +62,112 @@ class BarData {
 
 List<double> weeklySummary = [1, 2, 3, 4, 5, 6, 7];
 
+class Test extends ChangeNotifier {
+  void getData(variableDate) {
+    StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+    List<GuestBookMessage> _guestBookMessages = [];
+    //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+    final user = FirebaseAuth.instance.currentUser!;
+    var user_email = user.email;
+    var year = variableDate.year.toString();
+    var month = variableDate.month.toString();
+    var day = globals.date.day.toString();
+    var weekday = variableDate.weekday.toString();
+    List _times = [];
+    List _effs = [];
+    print(day);
+
+    print("testy");
+    FirebaseAuth.instance.userChanges().listen((user) {
+      _guestBookSubscription = FirebaseFirestore.instance
+          .collection(user_email!)
+          .doc(year)
+          .collection(month)
+          .doc(day)
+          .collection(weekday)
+          // .orderBy('Time', descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        _guestBookMessages = [];
+        print("testyyyyy");
+        snapshot.docs.forEach((document) {
+          double hours_line = double.parse(document.get("Hours"));
+          double minutes_line = double.parse(document.get("Minutes"));
+          double eff_line = document.get("Eff");
+
+          double math_time = hours_line + (minutes_line / 60);
+          double math_eff = eff_line * 100;
+
+          // double math_eff = docSnapshot.get("Eff") * 100
+          _times.add(math_time);
+          _effs.add(math_eff);
+
+          globals.times_list = _times;
+          globals.effs_list = _effs;
+          print(_times);
+        });
+
+        notifyListeners();
+      });
+    });
+  }
+}
+
+class GuestBookMessage {
+  GuestBookMessage({required this.time, required this.eff});
+  final String time;
+  final String eff;
+}
+
 class _GraphsState extends State<Graphs> {
   //List<double> weeklySummary = [1, 2, 3, 4, 5, 6, 7];
-  final user = FirebaseAuth.instance.currentUser!;
 
   DateTime _date = DateTime.now();
+
+  /*
+    final user = FirebaseAuth.instance.currentUser!;
+    var user_email = user.email;
+    var year = variableDate.year.toString();
+    var month = variableDate.month.toString();
+    var day = globals.date.day.toString();
+    var weekday = variableDate.weekday.toString();
+    print(day);
+
+    List _times = [];
+    List _effs = [];
+    print("test 1");
+    final docRef = FirebaseFirestore.instance
+        .collection(user_email!)
+        .doc(year)
+        .collection(month)
+        .doc(day)
+        .collection(weekday)
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        print("${docSnapshot.id} => ${docSnapshot.get("Eff")}");
+
+        double hours_line = double.parse(docSnapshot.get("Hours"));
+        double minutes_line = double.parse(docSnapshot.get("Minutes"));
+        double eff_line = docSnapshot.get("Eff");
+
+        double math_time = hours_line + (minutes_line / 60);
+        double math_eff = eff_line * 100;
+
+        // double math_eff = docSnapshot.get("Eff") * 100
+        _times.add(math_time);
+        _effs.add(math_eff);
+        print(_times);
+      }
+    });
+
+    globals.times_list = _times;
+    globals.effs_list = _effs;
+
+    print(_times);
+  }
+  */
+
   void _showDatePicker() {
     showDatePicker(
       context: context,
@@ -74,56 +176,24 @@ class _GraphsState extends State<Graphs> {
       lastDate: DateTime(2060),
     ).then((value) {
       setState(() {
-        _date = value!;
-        print(_date);
+        DateTime _date = value!;
+        globals.date = _date;
+        var day = _date.day.toString();
+        globals.day = day;
+        //  print(day);
+        //  print(_date);
+        Test().getData(_date);
       });
     });
-    var user_email = user.email!;
-    var year = _date.year.toString();
-    var month = _date.month.toString();
-    var day = _date.day.toString();
-    var weekday = _date.weekday.toString();
+  }
 
-    StreamSubscription<QuerySnapshot>? _studyData;
+  @override
+  void initState() {
+    Test().getData(DateTime.now());
 
-    List _studyDataMessages = [];
-    List _times = [1];
-    List _effs = [1];
-    FirebaseAuth.instance.userChanges().listen((user) {
-      _studyData = FirebaseFirestore.instance
-          .collection(user_email)
-          .doc(year)
-          .collection(month)
-          .doc(day)
-          .collection(weekday)
-          .orderBy("Time", descending: true)
-          .snapshots()
-          .listen((snapshot) {
-        _studyDataMessages = [];
-        snapshot.docs.forEach((document) {
-          double time = document.get("Hours") + document.get("Minutes") / 60;
-          double eff = document.get("Eff") * 100;
-          _times.add(time);
-          _effs.add(eff);
-
-          print(_times);
-          print("hi");
-
-          globals.times_list = _times;
-          globals.effs_list = _effs;
-
-          //final graph_time = globals.hours_line + globals.minutes_line / 60;
-          //final graph_eff = globals.eff_line * 100;
-
-          /*_studyDataMessages.add(StudyDataMessage(
-                                  time: document.data()["Time"],
-                                  eff: document.data()["Eff"],
-                                ));*/
-        });
-      });
-    });
-
-    /* Widget okButton = TextButton(
+    super.initState();
+  }
+  /* Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () {},
       );
@@ -134,31 +204,30 @@ class _GraphsState extends State<Graphs> {
         actions: [
           okButton,
         ],*/
-    //);
+  //);
 
-    // show the dialog
-    //  showDialog(
-    //  context: context,
-    //  builder: (BuildContext context) {
-    //    return alert;
-    //  },
-    // );
-    // ...
-    //});
+  // show the dialog
+  //  showDialog(
+  //  context: context,
+  //  builder: (BuildContext context) {
+  //    return alert;
+  //  },
+  // );
+  // ...
+  //});
 
-    //.orderBy("Time", descending: true)
-    //.snapshots()
-    //.listen((snapshot) {
-    //_studyDataMessages = [];
-    // snapshot.docs.forEach((document) {
-    // print(document.get("Time"));
-    //print(document.get("Eff"));
-    //print(document.get("TT"));
-    /*_studyDataMessages.add(StudyDataMessage(
+  //.orderBy("Time", descending: true)
+  //.snapshots()
+  //.listen((snapshot) {
+  //_studyDataMessages = [];
+  // snapshot.docs.forEach((document) {
+  // print(document.get("Time"));
+  //print(document.get("Eff"));
+  //print(document.get("TT"));
+  /*_studyDataMessages.add(StudyDataMessage(
                                   time: document.data()["Time"],
                                   eff: document.data()["Eff"],
                                 ));*/
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +239,7 @@ class _GraphsState extends State<Graphs> {
         List.generate(globals.times_list.length, (index) {
       return FlSpot(globals.times_list[index], globals.effs_list[index]);
     });
+
     //print(datalist);
     //print(globals.times_list.length);
     //List<String>.generate(1000,(counter) => "Item $counter");
@@ -265,7 +335,7 @@ class _GraphsState extends State<Graphs> {
                                         toY: 24,
                                         color: const Color.fromRGBO(
                                             39, 39, 39, 0.957),
-                                      ))
+                                      )),
                                 ]))
                             .toList()))),
                 SizedBox(
@@ -323,7 +393,7 @@ class _GraphsState extends State<Graphs> {
                                 belowBarData: BarAreaData(
                                     show: true,
                                     color: globals.mainColor!.withOpacity(0.3)),
-                              )
+                              ),
                             ]))),
                   ),
                 ),

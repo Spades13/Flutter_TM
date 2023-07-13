@@ -25,3 +25,10 @@ double minutes_line = 0;
 double eff_line = 0;
 List times_list = [];
 List effs_list = [];
+
+DateTime date = DateTime.now();
+
+String year = DateTime.now().year.toString();
+String month = DateTime.now().month.toString();
+String day = DateTime.now().day.toString();
+String weekday = DateTime.now().weekday.toString();

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
 import 'package:usage_stats/usage_stats.dart';
 //import 'package:permission_handler/permission_handler.dart';
@@ -17,6 +17,7 @@ import 'theme/theme_constants.dart';
 import 'utils/user_simple_preferences.dart';
 import 'package:confetti/confetti.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
 
 ThemeManager _themeManager = ThemeManager();
 
@@ -511,7 +512,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                         onPrimary: Color.fromRGBO(234, 245, 132, 12),
                       ),
                       child: Text('QUIT'),
-                      onPressed: () {
+                      onPressed: () async {
                         //check if cycles are over and display confetti, if not just quit.
                         if (cycle == 0 && count_study.inSeconds == 0) {
                           int divider = count_total.inSeconds;
@@ -554,10 +555,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                             "userId": FirebaseAuth.instance.currentUser!.uid,
                           });
 
-                          StreamSubscription<QuerySnapshot>? _studyData;
-                          List _studyDataMessages = [];
+/////
+/*
+                          
 
                           FirebaseAuth.instance.userChanges().listen((user) {
+                            
                             _studyData = FirebaseFirestore.instance
                                 .collection(user_email)
                                 .orderBy("Time", descending: true)
@@ -565,16 +568,17 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                                 .listen((snapshot) {
                               _studyDataMessages = [];
                               snapshot.docs.forEach((document) {
-                                print(/*document.get("Time")*/ document
-                                    .get("Time"));
+                                print(document.get("Time"));
                                 print(document.get("Eff"));
+                                print("test 1");
                                 /*_studyDataMessages.add(StudyDataMessage(
                                   time: document.data()["Time"],
                                   eff: document.data()["Eff"],
                                 ));*/
                               });
+                              notifyListeners();
                             });
-                          });
+                          }); */ /////////////
                         }
 
                         if (cycle <= 0) {
