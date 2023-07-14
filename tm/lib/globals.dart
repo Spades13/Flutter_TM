@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 int study_hour = 0;
@@ -32,3 +33,6 @@ String year = DateTime.now().year.toString();
 String month = DateTime.now().month.toString();
 String day = DateTime.now().day.toString();
 String weekday = DateTime.now().weekday.toString();
+List<FlSpot> datalist = [];
+
+var varbar = 0;
