@@ -35,4 +35,4 @@ String day = DateTime.now().day.toString();
 String weekday = DateTime.now().weekday.toString();
 List<FlSpot> datalist = [];
 
-var varbar = 0;
+int globalIndex = 0;

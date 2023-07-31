@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,18 @@ import 'utils/user_simple_preferences.dart';
 import 'pages/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'globals.dart' as globals;
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:tm/globals.dart' as globals;
+import '/theme/theme_manager.dart';
+import '/theme/theme_constants.dart';
+import 'dart:async';
+import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +35,76 @@ Future main() async {
 }
 
 ThemeManager _themeManager = ThemeManager();
+
+class Test extends ChangeNotifier {
+  //DateTime _date = DateTime.now();
+  getData(variableDate) {
+    //setState(() {
+    StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+    // List<GuestBookMessage> _guestBookMessages = [];
+    //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+
+    final user = FirebaseAuth.instance.currentUser!;
+    var user_email = user.email;
+    var year = variableDate.year.toString();
+    var month = variableDate.month.toString();
+    var day = globals.date.day.toString();
+    var weekday = variableDate.weekday.toString();
+
+    List _times = [];
+    List _effs = [];
+    //  print(day);
+
+    //print("testy");
+
+    print("firebase print");
+    _guestBookSubscription = FirebaseFirestore.instance
+        .collection(user_email!)
+        .doc(year)
+        .collection(month)
+        .doc(day)
+        .collection(weekday)
+        // .orderBy('Time', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      print("testyyyyy");
+      snapshot.docs.forEach((document) {
+        double hours_line = double.parse(document.get("Hours"));
+        double minutes_line = double.parse(document.get("Minutes"));
+        double eff_line = document.get("Eff");
+
+        double math_time = hours_line + (minutes_line / 60);
+        double math_eff = eff_line * 100;
+
+        // double math_eff = docSnapshot.get("Eff") * 100
+        _times.add(math_time);
+        _effs.add(math_eff);
+
+        //print("test 709");
+      });
+      //print(_times);
+      //print(_effs);
+      print("test 69");
+
+      if (_effs.isEmpty || _times.isEmpty) {
+        _times = [0.toDouble(), 24.toDouble()];
+        _effs = [0.toDouble(), 0.toDouble()];
+      } else {
+        _times = _times;
+        _effs = _effs;
+      }
+
+      globals.times_list = _times;
+      globals.effs_list = _effs;
+
+      print("Global Time: " + globals.times_list.toString());
+      print("Local Time: " + _times.toString());
+      //print(_effs);
+
+      notifyListeners();
+    });
+  }
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -38,6 +121,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _themeManager.addListener(themeListener);
+    var _date = globals.date;
+    Test().getData(_date);
     super.initState();
   }
 

@@ -12,6 +12,7 @@ import 'pages/graphic.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'main.dart';
 import 'theme/theme_constants.dart';
+import 'pages/graphic_backbone.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     UserHome(),
     Settings(),
-    Graphs(),
+    const HomePag(),
   ];
   @override
   Widget build(BuildContext context) {

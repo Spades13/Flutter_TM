@@ -198,6 +198,7 @@ class _GraphsState extends State<Graphs> {
         globals.date = _date;
         var day = _date.day.toString();
         globals.day = day;
+        globals.globalIndex = 1;
         //  print(day);
         //  print(_date);
         Test().getData(_date);
@@ -207,7 +208,7 @@ class _GraphsState extends State<Graphs> {
 
   @override
   void initState() {
-    Test().getData(DateTime.now());
+    //Test().getData(DateTime.now());
 
     super.initState();
   }
