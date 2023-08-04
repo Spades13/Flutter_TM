@@ -36,3 +36,4 @@ String weekday = DateTime.now().weekday.toString();
 List<FlSpot> datalist = [];
 
 int globalIndex = 0;
+int current_index = 0;

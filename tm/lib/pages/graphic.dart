@@ -8,12 +8,14 @@ import '/theme/theme_constants.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
+import '/pages/loading.dart';
 
 ThemeManager _themeManager = ThemeManager();
 
 class Graphs extends StatefulWidget {
   @override
   State<Graphs> createState() => _GraphsState();
+  const Graphs({super.key});
 }
 
 class IndividualBar {
@@ -202,6 +204,8 @@ class _GraphsState extends State<Graphs> {
         //  print(day);
         //  print(_date);
         Test().getData(_date);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FutureBuilderExample()));
       });
     });
   }
@@ -252,6 +256,7 @@ class _GraphsState extends State<Graphs> {
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
     Color? mainColor = _textTheme.headlineLarge?.color!;
+    Color? scaffoldColor = Theme.of(context).scaffoldBackgroundColor;
     globals.mainColor = mainColor;
 
     final List<FlSpot> datalist =
@@ -284,7 +289,7 @@ class _GraphsState extends State<Graphs> {
     myBarData.initializeBarData();
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: scaffoldColor,
       body: SafeArea(
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,

@@ -13,6 +13,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'main.dart';
 import 'theme/theme_constants.dart';
 import 'pages/graphic_backbone.dart';
+import 'package:tm/globals.dart' as globals;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,18 +28,18 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     UserHome(),
     Settings(),
-    const HomePag(),
+    Graphs(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: _pages[globals.current_index],
       //backgroundColor: Color.fromARGB(255, 5, 4, 51),
       bottomNavigationBar: GNav(
-        selectedIndex: _currentIndex,
+        selectedIndex: globals.current_index,
         onTabChange: (index) {
           setState(() {
-            _currentIndex = index;
+            globals.current_index = index;
           });
         },
         backgroundColor: Color.fromARGB(38, 0, 0, 0),

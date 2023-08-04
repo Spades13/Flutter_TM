@@ -3,11 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/globals.dart' as globals;
+import '../homepage.dart';
 import '/theme/theme_manager.dart';
 import '/theme/theme_constants.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:threading/threading.dart';
+import 'graphic.dart';
 
 void main() => runApp(const FutureBuilderExampleApp());
 
@@ -93,9 +96,11 @@ class Test extends ChangeNotifier {
 }
 
 @override
-void initState() {
+void initState() async {
   Test().getData(globals.date);
 
+  var thread = Thread(_FutureBuilderExampleState().update());
+  thread.start();
   //super.initState();
 }
 
@@ -112,18 +117,43 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
     () => 0,
   );
 
+  update() async {
+    await Thread.sleep(500);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomePage()));
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.displayMedium!,
       textAlign: TextAlign.center,
       child: FutureBuilder<int>(
-        future: globalIndex, // a previously-obtained Future<String> or null
+        future: globalIndex,
+
+        // a previously-obtained Future<String> or null
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           List<Widget> children;
+
           if (snapshot.hasData) {
-            globals.globalIndex = snapshot.data!;
+            //  globals.globalIndex = snapshot.data!;
+
+            /*Navigator.pop(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FutureBuilderExample()));*/
             children = <Widget>[
+              /* Container(
+                  child: ElevatedButton(
+                      child: Icon(Icons.face),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                     })),*/
               const Icon(
                 Icons.check_circle_outline,
                 color: Colors.green,
@@ -155,7 +185,7 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
+                child: Text('Fetching data...'),
               ),
             ];
           }
