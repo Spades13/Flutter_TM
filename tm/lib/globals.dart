@@ -37,3 +37,5 @@ List<FlSpot> datalist = [];
 
 int globalIndex = 0;
 int current_index = 0;
+
+double avg_eff = 0;

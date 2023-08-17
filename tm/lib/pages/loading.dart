@@ -9,7 +9,6 @@ import '/theme/theme_constants.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:threading/threading.dart';
 import 'graphic.dart';
 
 void main() => runApp(const FutureBuilderExampleApp());
@@ -27,6 +26,53 @@ class FutureBuilderExampleApp extends StatelessWidget {
 
 class Test extends ChangeNotifier {
   //DateTime _date = DateTime.now();
+  getBarData(variableDate) {
+    StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+
+    final user = FirebaseAuth.instance.currentUser!;
+    var user_email = user.email;
+    var year = variableDate.year.toString();
+    var month = variableDate.month.toString();
+    var day = globals.date.day.toString();
+    var weekday = variableDate.weekday.toString();
+
+    List mean_eff_list = [];
+
+    _guestBookSubscription = FirebaseFirestore.instance
+        .collection(user_email!)
+        .doc(year)
+        .collection(month)
+        .doc(day)
+        .collection(weekday)
+        // .orderBy('Time', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      print("testyyyyy");
+      snapshot.docs.forEach((document) {
+        double mean_eff = document.get("Eff");
+        double math_mean_eff = mean_eff * 100;
+        mean_eff_list.add(math_mean_eff);
+
+        // double math_eff = docSnapshot.get("Eff") * 100
+
+        //print("test 709");
+      });
+
+      if (mean_eff_list.isEmpty) {
+        mean_eff_list = [0.toDouble()];
+      } else {
+        mean_eff_list = mean_eff_list;
+      }
+
+      int len_mean_eff = mean_eff_list.length;
+      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      globals.avg_eff = avg_eff;
+      print(len_mean_eff);
+
+      notifyListeners();
+    });
+  }
+
   getData(variableDate) {
     //setState(() {
     StreamSubscription<QuerySnapshot>? _guestBookSubscription;
@@ -98,9 +144,7 @@ class Test extends ChangeNotifier {
 @override
 void initState() async {
   Test().getData(globals.date);
-
-  var thread = Thread(_FutureBuilderExampleState().update());
-  thread.start();
+  Test().getBarData(globals.date);
   //super.initState();
 }
 
@@ -113,12 +157,11 @@ class FutureBuilderExample extends StatefulWidget {
 
 class _FutureBuilderExampleState extends State<FutureBuilderExample> {
   final Future<int> globalIndex = Future<int>.delayed(
-    const Duration(seconds: 3),
+    const Duration(seconds: 1),
     () => 0,
   );
 
   update() async {
-    await Thread.sleep(500);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomePage()));
 
@@ -145,24 +188,30 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
                 MaterialPageRoute(
                     builder: (context) => FutureBuilderExample()));*/
             children = <Widget>[
-              /* Container(
-                  child: ElevatedButton(
-                      child: Icon(Icons.face),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()));
-                     })),*/
-              const Icon(
+              Expanded(
+                child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        child: Text("Tap the screen"),
+                        style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(0, 255, 145, 0)),
+                        onPressed: () {
+                          globals.current_index = 3;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        })),
+              ),
+              /*const Icon(
                 Icons.check_circle_outline,
                 color: Colors.green,
                 size: 60,
-              ),
-              Padding(
+              ),*/
+              /*Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Text('Result: ${snapshot.data}'),
-              ),
+              ),*/
             ];
           } else if (snapshot.hasError) {
             children = <Widget>[
@@ -183,10 +232,10 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
                 height: 60,
                 child: CircularProgressIndicator(),
               ),
-              Padding(
+              /*Padding(
                 padding: EdgeInsets.only(top: 16),
                 child: Text('Fetching data...'),
-              ),
+              ),*/
             ];
           }
           return Center(

@@ -38,11 +38,8 @@ ThemeManager _themeManager = ThemeManager();
 
 class Test extends ChangeNotifier {
   //DateTime _date = DateTime.now();
-  getData(variableDate) {
-    //setState(() {
+  getBarData(variableDate) {
     StreamSubscription<QuerySnapshot>? _guestBookSubscription;
-    // List<GuestBookMessage> _guestBookMessages = [];
-    //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
     final user = FirebaseAuth.instance.currentUser!;
     var user_email = user.email;
@@ -51,13 +48,8 @@ class Test extends ChangeNotifier {
     var day = globals.date.day.toString();
     var weekday = variableDate.weekday.toString();
 
-    List _times = [];
-    List _effs = [];
-    //  print(day);
+    List mean_eff_list = [];
 
-    //print("testy");
-
-    print("firebase print");
     _guestBookSubscription = FirebaseFirestore.instance
         .collection(user_email!)
         .doc(year)
@@ -69,40 +61,100 @@ class Test extends ChangeNotifier {
         .listen((snapshot) {
       print("testyyyyy");
       snapshot.docs.forEach((document) {
-        double hours_line = double.parse(document.get("Hours"));
-        double minutes_line = double.parse(document.get("Minutes"));
-        double eff_line = document.get("Eff");
-
-        double math_time = hours_line + (minutes_line / 60);
-        double math_eff = eff_line * 100;
+        double mean_eff = document.get("Eff");
+        double math_mean_eff = mean_eff * 100;
+        mean_eff_list.add(math_mean_eff);
 
         // double math_eff = docSnapshot.get("Eff") * 100
-        _times.add(math_time);
-        _effs.add(math_eff);
 
         //print("test 709");
       });
-      //print(_times);
-      //print(_effs);
-      print("test 69");
 
-      if (_effs.isEmpty || _times.isEmpty) {
-        _times = [0.toDouble(), 24.toDouble()];
-        _effs = [0.toDouble(), 0.toDouble()];
+      if (mean_eff_list.isEmpty) {
+        mean_eff_list = [0.toDouble()];
       } else {
-        _times = _times;
-        _effs = _effs;
+        mean_eff_list = mean_eff_list;
       }
 
-      globals.times_list = _times;
-      globals.effs_list = _effs;
-
-      print("Global Time: " + globals.times_list.toString());
-      print("Local Time: " + _times.toString());
-      //print(_effs);
+      int len_mean_eff = mean_eff_list.length;
+      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      globals.avg_eff = avg_eff;
+      print(len_mean_eff);
 
       notifyListeners();
     });
+  }
+
+  getData(variableDate) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      //pass
+    } else {
+      //setState(() {
+      StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+      // List<GuestBookMessage> _guestBookMessages = [];
+      //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+
+      //final user = FirebaseAuth.instance.currentUser!;
+      var user_email = user.email;
+      var year = variableDate.year.toString();
+      var month = variableDate.month.toString();
+      var day = globals.date.day.toString();
+      var weekday = variableDate.weekday.toString();
+
+      List _times = [];
+      List _effs = [];
+      //  print(day);
+
+      //print("testy");
+
+      print("firebase print");
+      _guestBookSubscription = FirebaseFirestore.instance
+          .collection(user_email!)
+          .doc(year)
+          .collection(month)
+          .doc(day)
+          .collection(weekday)
+          // .orderBy('Time', descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        print("testyyyyy");
+        snapshot.docs.forEach((document) {
+          double hours_line = double.parse(document.get("Hours"));
+          double minutes_line = double.parse(document.get("Minutes"));
+          double eff_line = document.get("Eff");
+
+          double math_time = hours_line + (minutes_line / 60);
+          double math_eff = eff_line * 100;
+
+          // double math_eff = docSnapshot.get("Eff") * 100
+          _times.add(math_time);
+          _effs.add(math_eff);
+
+          //print("test 709");
+        });
+        //print(_times);
+        //print(_effs);
+        print("test 69");
+
+        if (_effs.isEmpty || _times.isEmpty) {
+          _times = [0.toDouble(), 24.toDouble()];
+          _effs = [0.toDouble(), 0.toDouble()];
+        } else {
+          _times = _times;
+          _effs = _effs;
+        }
+
+        globals.times_list = _times;
+        globals.effs_list = _effs;
+
+        print("Global Time: " + globals.times_list.toString());
+        print("Local Time: " + _times.toString());
+        //print(_effs);
+
+        notifyListeners();
+      });
+    }
   }
 }
 
@@ -123,6 +175,7 @@ class _MyAppState extends State<MyApp> {
     _themeManager.addListener(themeListener);
     var _date = globals.date;
     Test().getData(_date);
+    Test().getBarData(_date);
     super.initState();
   }
 

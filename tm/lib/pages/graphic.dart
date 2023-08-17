@@ -32,19 +32,11 @@ class BarData {
   final double monAmount;
   final double tueAmount;
   final double wedAmount;
-  final double thuAmount;
-  final double friAmount;
-  final double satAmount;
-  final double sunAmount;
 
   BarData({
     required this.monAmount,
     required this.tueAmount,
     required this.wedAmount,
-    required this.thuAmount,
-    required this.friAmount,
-    required this.satAmount,
-    required this.sunAmount,
   });
 
   List<IndividualBar> barData = [];
@@ -54,18 +46,60 @@ class BarData {
       IndividualBar(x: 0, y: monAmount),
       IndividualBar(x: 1, y: tueAmount),
       IndividualBar(x: 2, y: wedAmount),
-      IndividualBar(x: 3, y: thuAmount),
-      IndividualBar(x: 4, y: friAmount),
-      IndividualBar(x: 5, y: satAmount),
-      IndividualBar(x: 6, y: sunAmount),
     ];
   }
 }
 
-List<double> weeklySummary = [1, 2, 3, 4, 5, 6, 7];
-
 class Test extends ChangeNotifier {
   //DateTime _date = DateTime.now();
+  getBarData(variableDate) {
+    StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+
+    final user = FirebaseAuth.instance.currentUser!;
+    var user_email = user.email;
+    var year = variableDate.year.toString();
+    var month = variableDate.month.toString();
+    var day = globals.date.day.toString();
+    var weekday = variableDate.weekday.toString();
+
+    List mean_eff_list = [];
+
+    _guestBookSubscription = FirebaseFirestore.instance
+        .collection(user_email!)
+        .doc(year)
+        .collection(month)
+        .doc(day)
+        .collection(weekday)
+        // .orderBy('Time', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      print("testyyyyy");
+      snapshot.docs.forEach((document) {
+        double mean_eff = document.get("Eff");
+        double math_mean_eff = mean_eff * 100;
+        mean_eff_list.add(math_mean_eff);
+
+        // double math_eff = docSnapshot.get("Eff") * 100
+
+        //print("test 709");
+      });
+
+      if (mean_eff_list.isEmpty) {
+        mean_eff_list = [0.toDouble()];
+      } else {
+        mean_eff_list = mean_eff_list;
+      }
+
+      int len_mean_eff = mean_eff_list.length;
+      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      globals.avg_eff = avg_eff;
+      print(len_mean_eff);
+      List<double> weeklySummary = [69, 25, globals.avg_eff];
+
+      notifyListeners();
+    });
+  }
+
   getData(variableDate) {
     //setState(() {
     StreamSubscription<QuerySnapshot>? _guestBookSubscription;
@@ -204,6 +238,7 @@ class _GraphsState extends State<Graphs> {
         //  print(day);
         //  print(_date);
         Test().getData(_date);
+        Test().getBarData(_date);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => FutureBuilderExample()));
       });
@@ -278,13 +313,10 @@ class _GraphsState extends State<Graphs> {
     //print(globals.times_list.length);
     //List<String>.generate(1000,(counter) => "Item $counter");
     BarData myBarData = BarData(
-      monAmount: weeklySummary[0],
-      tueAmount: weeklySummary[1],
-      wedAmount: weeklySummary[2],
-      thuAmount: weeklySummary[3],
-      friAmount: weeklySummary[4],
-      satAmount: weeklySummary[5],
-      sunAmount: weeklySummary[6],
+      monAmount: /*Test().getBarData(globals.date).weeklySummary[0]*/ 1,
+      tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/ 2,
+      wedAmount: /*Test().getBarData(globals.date).weeklySummary[2]*/ globals
+          .avg_eff,
     );
     myBarData.initializeBarData();
 
@@ -350,9 +382,9 @@ class _GraphsState extends State<Graphs> {
                                   sideTitles: SideTitles(
                                       showTitles: true,
                                       getTitlesWidget: getBottomTitles))),
-                          maxY: 24,
+                          maxY: 100,
                           minY: 0,
-                          groupsSpace: 35,
+                          groupsSpace: 95,
                           gridData: FlGridData(show: false),
                           borderData: FlBorderData(show: false),
                           barGroups: myBarData.barData
@@ -360,13 +392,13 @@ class _GraphsState extends State<Graphs> {
                                   BarChartGroupData(x: data.x, barRods: [
                                     BarChartRodData(
                                         toY: data.y,
-                                        width: 19,
+                                        width: 35,
                                         color: _textTheme.headlineLarge?.color!,
                                         borderRadius: BorderRadius.circular(4),
                                         backDrawRodData:
                                             BackgroundBarChartRodData(
                                           show: true,
-                                          toY: 24,
+                                          toY: 100,
                                           color: const Color.fromRGBO(
                                               39, 39, 39, 0.957),
                                         )),
@@ -447,26 +479,15 @@ Widget getBottomTitles(double value, TitleMeta meta) {
   Widget text;
   switch (value.toInt()) {
     case 0:
-      text = Text("Mon", style: style);
+      text = Text("Study Time", style: style);
       break;
     case 1:
-      text = Text("Tue", style: style);
+      text = Text("Break Time", style: style);
       break;
     case 2:
-      text = Text("Wed", style: style);
+      text = Text("Mean. Eff.", style: style);
       break;
-    case 3:
-      text = Text("Thu", style: style);
-      break;
-    case 4:
-      text = Text("Fri", style: style);
-      break;
-    case 5:
-      text = Text("Sat", style: style);
-      break;
-    case 6:
-      text = Text("Sun", style: style);
-      break;
+
     default:
       text = Text('', style: style);
       break;
@@ -481,26 +502,15 @@ Widget getTopTitles(double value, TitleMeta meta) {
   Widget text;
   switch (value.toInt()) {
     case 0:
-      text = Text(weeklySummary[0].toString() + " h", style: style);
+      text = Text(50.toString() + " h", style: style);
       break;
     case 1:
-      text = Text(weeklySummary[1].toString() + " h", style: style);
+      text = Text(50.toString() + " h", style: style);
       break;
     case 2:
-      text = Text(weeklySummary[2].toString() + " h", style: style);
+      text = Text(globals.avg_eff.toString() + " %", style: style);
       break;
-    case 3:
-      text = Text(weeklySummary[3].toString() + " h", style: style);
-      break;
-    case 4:
-      text = Text(weeklySummary[4].toString() + " h", style: style);
-      break;
-    case 5:
-      text = Text(weeklySummary[5].toString() + " h", style: style);
-      break;
-    case 6:
-      text = Text(weeklySummary[6].toString() + " h", style: style);
-      break;
+
     default:
       text = Text('', style: style);
       break;
