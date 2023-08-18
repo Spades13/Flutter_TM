@@ -57,6 +57,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   bool active_active = true;
   final user = FirebaseAuth.instance.currentUser!;
 
+  late Timer study_data_timer;
+  Duration count_study_data = Duration(hours: 0, minutes: 0);
+
+  late Timer break_data_timer;
+  Duration count_break_data = Duration(hours: 0, minutes: 0);
+
 //list to overlap timers
   //final audioPlayer = AudioPlayer();
 
@@ -127,6 +133,26 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
       }
     });
 
+    study_data_timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active == true) {
+        setState(() {
+          count_study_data += Duration(seconds: 1);
+        });
+      } else {
+        //pass
+      }
+    });
+
+    break_data_timer = Timer.periodic(Duration(seconds: 1), (tm) {
+      if (active_break == true || active_active == false) {
+        setState(() {
+          count_break_data += Duration(seconds: 1);
+        });
+      } else {
+        //pass
+      }
+    });
+
     if (count_study <= Duration(minutes: 15)) {
       int time_block = count_study.inSeconds;
       double full_block = 0;
@@ -185,7 +211,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
         int time_block = globals.time_block;
 
-        if (cycle == 0 && count_study.inSeconds == 0) {
+        /*if (cycle == 0 &&
+            count_study.inSeconds == 0 /*count_total.inSeconds != 0*/) {
           int time_worked = count_active.inSeconds;
           double total_eff = (time_worked / (count_total.inSeconds));
           print("complete");
@@ -219,58 +246,70 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             "Year": time.year.toString(),
             "Eff": total_eff,
             "TT": count_total.inSeconds,
+            "Study Time": count_study_data.inSeconds,
+            "Break Time": count_break_data.inSeconds,
             "userId": FirebaseAuth.instance.currentUser!.uid,
           });
 
+          count_study_data = Duration(seconds: 0);
+          count_break_data = Duration(seconds: 0);
+
+          study_data_timer.cancel();
+          break_data_timer.cancel();
           total_timer.cancel();
-          active_timer.cancel();
+          active_timer.cancel();*/
+        //} else {
+        print(time_block);
+        if (count_total >= Duration(seconds: time_block)) {
+          int time_worked = count_active.inSeconds;
+          double total_eff = (time_worked / (time_block));
+          print("finished");
+          print(total_eff);
+          var time = DateTime.now();
+          print(time.hour.toString() + ":" + time.minute.toString());
+          print("Weekday: " + time.weekday.toString());
+          print("Day: " + time.day.toString());
+          print("Month: " + time.month.toString());
+          print("Year: " + time.year.toString());
+
+          FirebaseFirestore.instance
+              .collection(user.email!)
+              .doc(time.year.toString() +
+                  "/" +
+                  time.month.toString() +
+                  "/" +
+                  time.day.toString() +
+                  "/" +
+                  time.weekday.toString() +
+                  "/" +
+                  time.hour.toString().padLeft(2, "0") +
+                  ":" +
+                  time.minute.toString().padLeft(2, "0"))
+              .set({
+            "Hours": time.hour.toString(),
+            "Minutes": time.minute.toString(),
+            "Weekday": time.weekday.toString(),
+            "Day": time.day.toString(),
+            "Month": time.month.toString(),
+            "Year": time.year.toString(),
+            "Eff": total_eff,
+            "TT": count_total.inSeconds,
+            "Study Time": count_study_data.inSeconds,
+            "Break Time": count_break_data.inSeconds,
+            "userId": FirebaseAuth.instance.currentUser!.uid,
+          });
+          count_study_data = Duration(seconds: 0);
+          count_break_data = Duration(seconds: 0);
+
+          count_total = Duration(seconds: -1);
+          count_active = Duration(seconds: -1);
         } else {
-          if (count_total >= Duration(seconds: time_block)) {
-            int time_worked = count_active.inSeconds;
-            double total_eff = (time_worked / (time_block));
-            print("finished");
-            print(total_eff);
-            var time = DateTime.now();
-            print(time.hour.toString() + ":" + time.minute.toString());
-            print("Weekday: " + time.weekday.toString());
-            print("Day: " + time.day.toString());
-            print("Month: " + time.month.toString());
-            print("Year: " + time.year.toString());
-
-            FirebaseFirestore.instance
-                .collection(user.email!)
-                .doc(time.year.toString() +
-                    "/" +
-                    time.month.toString() +
-                    "/" +
-                    time.day.toString() +
-                    "/" +
-                    time.weekday.toString() +
-                    "/" +
-                    time.hour.toString().padLeft(2, "0") +
-                    ":" +
-                    time.minute.toString().padLeft(2, "0"))
-                .set({
-              "Hours": time.hour.toString(),
-              "Minutes": time.minute.toString(),
-              "Weekday": time.weekday.toString(),
-              "Day": time.day.toString(),
-              "Month": time.month.toString(),
-              "Year": time.year.toString(),
-              "Eff": total_eff,
-              "TT": count_total.inSeconds,
-              "userId": FirebaseAuth.instance.currentUser!.uid,
-            });
-
-            count_total = Duration(seconds: -1);
-            count_active = Duration(seconds: -1);
-          } else {
-            //pass
-          }
+          //pass
         }
       }
-      //}
-    });
+    }
+        //}
+        /*}*/);
 
     active_timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active_break == true) {
@@ -287,6 +326,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         }
       }
     });
+
+    //here//
   }
 
   checkTimer() {
@@ -324,6 +365,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     break_timer.cancel();
     total_timer.cancel();
     active_timer.cancel();
+    study_data_timer.cancel();
+    break_data_timer.cancel();
     WidgetsBinding.instance.removeObserver(this);
     //audioPlayer.dispose();
     _controller.dispose();
@@ -552,8 +595,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                             "Year": time.year.toString(),
                             "Eff": total_eff,
                             "TT": count_total.inSeconds,
+                            "Study Time": count_study_data.inSeconds,
+                            "Break Time": count_break_data.inSeconds,
                             "userId": FirebaseAuth.instance.currentUser!.uid,
                           });
+                          count_study_data = Duration(seconds: 0);
+                          count_break_data = Duration(seconds: 0);
 
 /////
 /*

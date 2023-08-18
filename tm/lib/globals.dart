@@ -39,3 +39,10 @@ int globalIndex = 0;
 int current_index = 0;
 
 double avg_eff = 0;
+int avg_eff_int = 0;
+
+double sum_study_time = 0;
+int sum_study_time_int = 0;
+
+double sum_break_time = 0;
+int sum_break_time_int = 0;

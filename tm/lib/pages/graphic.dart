@@ -63,6 +63,8 @@ class Test extends ChangeNotifier {
     var weekday = variableDate.weekday.toString();
 
     List mean_eff_list = [];
+    List study_time_list = [];
+    List break_time_list = [];
 
     _guestBookSubscription = FirebaseFirestore.instance
         .collection(user_email!)
@@ -76,8 +78,16 @@ class Test extends ChangeNotifier {
       print("testyyyyy");
       snapshot.docs.forEach((document) {
         double mean_eff = document.get("Eff");
+        double study_time = document.get("Study Time");
+        double break_time = document.get("Break Time");
+
         double math_mean_eff = mean_eff * 100;
+        double hours_study = study_time / 3600;
+        double hours_break = break_time / 3600;
+
         mean_eff_list.add(math_mean_eff);
+        study_time_list.add(hours_study);
+        break_time_list.add(hours_break);
 
         // double math_eff = docSnapshot.get("Eff") * 100
 
@@ -86,15 +96,45 @@ class Test extends ChangeNotifier {
 
       if (mean_eff_list.isEmpty) {
         mean_eff_list = [0.toDouble()];
+      } else if (study_time_list.isEmpty) {
+        study_time_list = [0.toDouble()];
+      } else if (break_time_list.isEmpty) {
+        break_time_list = [0.toDouble()];
       } else {
         mean_eff_list = mean_eff_list;
+        study_time_list = study_time_list;
+        break_time_list = break_time_list;
       }
 
       int len_mean_eff = mean_eff_list.length;
       double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      int avg_eff_int = avg_eff.ceil();
+
+      double sum_study_time =
+          study_time_list.reduce((value, element) => value + element);
+      int sum_study_time_int = sum_study_time.ceil();
+
+      double sum_break_time =
+          break_time_list.reduce((value, element) => value + element);
+      int sum_break_time_int = sum_break_time.ceil();
+
       globals.avg_eff = avg_eff;
+      globals.avg_eff_int = avg_eff_int;
+
+      globals.sum_break_time = sum_break_time;
+      globals.sum_break_time_int = sum_break_time_int;
+
+      globals.sum_study_time = sum_study_time;
+      globals.sum_study_time_int = sum_study_time_int;
+
       print(len_mean_eff);
-      List<double> weeklySummary = [69, 25, globals.avg_eff];
+      List<double> weeklySummary = [
+        globals.sum_study_time_int.toDouble(),
+        globals.sum_break_time_int.toDouble(),
+        1,
+        2,
+        globals.avg_eff_int.toDouble()
+      ];
 
       notifyListeners();
     });
@@ -148,13 +188,8 @@ class Test extends ChangeNotifier {
       //print(_effs);
       print("test 69");
 
-      if (_effs.isEmpty || _times.isEmpty) {
-        _times = [0.toDouble(), 24.toDouble()];
-        _effs = [0.toDouble(), 0.toDouble()];
-      } else {
-        _times = _times;
-        _effs = _effs;
-      }
+      _times = _times;
+      _effs = _effs;
 
       globals.times_list = _times;
       globals.effs_list = _effs;
@@ -248,7 +283,9 @@ class _GraphsState extends State<Graphs> {
   @override
   void initState() {
     //Test().getData(DateTime.now());
-
+    var _date = DateTime.now();
+    Test().getData(_date);
+    Test().getBarData(_date);
     super.initState();
   }
   /* Widget okButton = TextButton(
@@ -313,10 +350,15 @@ class _GraphsState extends State<Graphs> {
     //print(globals.times_list.length);
     //List<String>.generate(1000,(counter) => "Item $counter");
     BarData myBarData = BarData(
-      monAmount: /*Test().getBarData(globals.date).weeklySummary[0]*/ 1,
-      tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/ 2,
+      monAmount: /*Test().getBarData(globals.date).weeklySummary[0]*/ globals
+          .sum_study_time_int
+          .toDouble(),
+      tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/ globals
+          .sum_break_time_int
+          .toDouble(),
       wedAmount: /*Test().getBarData(globals.date).weeklySummary[2]*/ globals
-          .avg_eff,
+          .avg_eff_int
+          .toDouble(),
     );
     myBarData.initializeBarData();
 
@@ -355,14 +397,14 @@ class _GraphsState extends State<Graphs> {
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
                   Container(
                     child: Text("Total Work Time",
                         style: _textTheme.headlineSmall),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   SizedBox(
                       height: 150,
@@ -394,7 +436,7 @@ class _GraphsState extends State<Graphs> {
                                         toY: data.y,
                                         width: 35,
                                         color: _textTheme.headlineLarge?.color!,
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius: BorderRadius.circular(5),
                                         backDrawRodData:
                                             BackgroundBarChartRodData(
                                           show: true,
@@ -411,14 +453,14 @@ class _GraphsState extends State<Graphs> {
                     child: Text("Work Efficiency",
                         style: _textTheme.headlineSmall),
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 10),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
+                      padding: EdgeInsets.fromLTRB(0, 60, 20, 10),
                       child: SizedBox(
-                          width: 500,
-                          height: 250,
+                          width: 1000,
+                          height: 225,
                           child: LineChart(LineChartData(
                               titlesData: FlTitlesData(
                                   show: true,
@@ -441,6 +483,7 @@ class _GraphsState extends State<Graphs> {
                               maxX: 24,
                               minY: 0,
                               maxY: 100,
+                              baselineY: 120,
                               gridData: FlGridData(
                                 show: false,
                                 getDrawingHorizontalLine: (value) {
@@ -502,13 +545,13 @@ Widget getTopTitles(double value, TitleMeta meta) {
   Widget text;
   switch (value.toInt()) {
     case 0:
-      text = Text(50.toString() + " h", style: style);
+      text = Text(globals.sum_study_time_int.toString() + " h", style: style);
       break;
     case 1:
-      text = Text(50.toString() + " h", style: style);
+      text = Text(globals.sum_break_time_int.toString() + " h", style: style);
       break;
     case 2:
-      text = Text(globals.avg_eff.toString() + " %", style: style);
+      text = Text(globals.avg_eff_int.toString() + " %", style: style);
       break;
 
     default:
@@ -573,38 +616,74 @@ Widget getHourTitles(double value, TitleMeta meta) {
     case 0:
       text = Text("0h", style: style);
       break;
+    case 1:
+      text = Text("1h", style: style);
+      break;
     case 2:
       text = Text("2h", style: style);
+      break;
+    case 3:
+      text = Text("3h", style: style);
       break;
     case 4:
       text = Text("4h", style: style);
       break;
+    case 5:
+      text = Text("5h", style: style);
+      break;
     case 6:
       text = Text("6h", style: style);
+      break;
+    case 7:
+      text = Text("7h", style: style);
       break;
     case 8:
       text = Text("8h", style: style);
       break;
+    case 9:
+      text = Text("9h", style: style);
+      break;
     case 10:
       text = Text("10h", style: style);
+      break;
+    case 11:
+      text = Text("11h", style: style);
       break;
     case 12:
       text = Text("12h", style: style);
       break;
+    case 13:
+      text = Text("13h", style: style);
+      break;
     case 14:
       text = Text("14h", style: style);
+      break;
+    case 15:
+      text = Text("15h", style: style);
       break;
     case 16:
       text = Text("16h", style: style);
       break;
+    case 17:
+      text = Text("17h", style: style);
+      break;
     case 18:
       text = Text("18h", style: style);
+      break;
+    case 19:
+      text = Text("19h", style: style);
       break;
     case 20:
       text = Text("20h", style: style);
       break;
+    case 21:
+      text = Text("21h", style: style);
+      break;
     case 22:
       text = Text("22h", style: style);
+      break;
+    case 23:
+      text = Text("23h", style: style);
       break;
     case 24:
       text = Text("24h", style: style);

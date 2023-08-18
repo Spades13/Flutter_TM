@@ -37,6 +37,8 @@ class Test extends ChangeNotifier {
     var weekday = variableDate.weekday.toString();
 
     List mean_eff_list = [];
+    List study_time_list = [];
+    List break_time_list = [];
 
     _guestBookSubscription = FirebaseFirestore.instance
         .collection(user_email!)
@@ -50,8 +52,18 @@ class Test extends ChangeNotifier {
       print("testyyyyy");
       snapshot.docs.forEach((document) {
         double mean_eff = document.get("Eff");
+
+        double study_time = document.get("Study Time");
+        print(study_time);
+        double break_time = document.get("Break Time");
+
         double math_mean_eff = mean_eff * 100;
+        double hours_study = study_time / 3600;
+        double hours_break = break_time / 3600;
+
         mean_eff_list.add(math_mean_eff);
+        study_time_list.add(hours_study);
+        break_time_list.add(hours_break);
 
         // double math_eff = docSnapshot.get("Eff") * 100
 
@@ -60,13 +72,36 @@ class Test extends ChangeNotifier {
 
       if (mean_eff_list.isEmpty) {
         mean_eff_list = [0.toDouble()];
+      } else if (study_time_list.isEmpty) {
+        study_time_list = [0.toDouble()];
+      } else if (break_time_list.isEmpty) {
+        break_time_list = [0.toDouble()];
       } else {
         mean_eff_list = mean_eff_list;
+        study_time_list = study_time_list;
+        break_time_list = break_time_list;
       }
 
       int len_mean_eff = mean_eff_list.length;
       double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      int avg_eff_int = avg_eff.ceil();
+
+      double sum_study_time =
+          study_time_list.reduce((value, element) => value + element);
+      int sum_study_time_int = sum_study_time.ceil();
+
+      double sum_break_time =
+          break_time_list.reduce((value, element) => value + element);
+      int sum_break_time_int = sum_break_time.ceil();
+
       globals.avg_eff = avg_eff;
+      globals.avg_eff_int = avg_eff_int;
+
+      globals.sum_break_time = sum_break_time;
+      globals.sum_break_time_int = sum_break_time_int;
+
+      globals.sum_study_time = sum_study_time;
+      globals.sum_study_time_int = sum_study_time_int;
       print(len_mean_eff);
 
       notifyListeners();
