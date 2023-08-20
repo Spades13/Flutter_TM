@@ -53,9 +53,9 @@ class Test extends ChangeNotifier {
       snapshot.docs.forEach((document) {
         double mean_eff = document.get("Eff");
 
-        double study_time = document.get("Study Time");
-        print(study_time);
-        double break_time = document.get("Break Time");
+        double study_time = 3.00; //document.get("Study Time");
+
+        double break_time = 3.00; //document.get("Break Time");
 
         double math_mean_eff = mean_eff * 100;
         double hours_study = study_time / 3600;
@@ -123,6 +123,10 @@ class Test extends ChangeNotifier {
 
     List _times = [];
     List _effs = [];
+
+    List mean_eff_list = [];
+    List study_time_list = [];
+    List break_time_list = [];
     //  print(day);
 
     //print("testy");
@@ -149,6 +153,9 @@ class Test extends ChangeNotifier {
         // double math_eff = docSnapshot.get("Eff") * 100
         _times.add(math_time);
         _effs.add(math_eff);
+
+        double study_time = double.parse(document.get("Study Time"));
+        double break_time = double.parse(document.get("Break Time"));
 
         //print("test 709");
       });
@@ -179,7 +186,7 @@ class Test extends ChangeNotifier {
 @override
 void initState() async {
   Test().getData(globals.date);
-  Test().getBarData(globals.date);
+  //Test().getBarData(globals.date);
   //super.initState();
 }
 

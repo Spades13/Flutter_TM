@@ -53,7 +53,7 @@ class BarData {
 class Test extends ChangeNotifier {
   //DateTime _date = DateTime.now();
   getBarData(variableDate) {
-    StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+    StreamSubscription<QuerySnapshot>? _guestBookSubscription1;
 
     final user = FirebaseAuth.instance.currentUser!;
     var user_email = user.email;
@@ -66,7 +66,7 @@ class Test extends ChangeNotifier {
     List study_time_list = [];
     List break_time_list = [];
 
-    _guestBookSubscription = FirebaseFirestore.instance
+    _guestBookSubscription1 = FirebaseFirestore.instance
         .collection(user_email!)
         .doc(year)
         .collection(month)
@@ -78,6 +78,7 @@ class Test extends ChangeNotifier {
       print("testyyyyy");
       snapshot.docs.forEach((document) {
         double mean_eff = document.get("Eff");
+
         double study_time = document.get("Study Time");
         double break_time = document.get("Break Time");
 
@@ -88,8 +89,6 @@ class Test extends ChangeNotifier {
         mean_eff_list.add(math_mean_eff);
         study_time_list.add(hours_study);
         break_time_list.add(hours_break);
-
-        // double math_eff = docSnapshot.get("Eff") * 100
 
         //print("test 709");
       });
@@ -155,6 +154,10 @@ class Test extends ChangeNotifier {
 
     List _times = [];
     List _effs = [];
+
+    List mean_eff_list = [];
+    List study_time_list = [];
+    List break_time_list = [];
     //  print(day);
 
     //print("testy");
@@ -181,6 +184,11 @@ class Test extends ChangeNotifier {
         // double math_eff = docSnapshot.get("Eff") * 100
         _times.add(math_time);
         _effs.add(math_eff);
+
+        //double mean_eff = document.get("Eff");
+
+        double study_time = double.parse(document.get("Study Time"));
+        double break_time = double.parse(document.get("Break Time"));
 
         //print("test 709");
       });
@@ -273,7 +281,7 @@ class _GraphsState extends State<Graphs> {
         //  print(day);
         //  print(_date);
         Test().getData(_date);
-        Test().getBarData(_date);
+        //Test().getBarData(_date);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => FutureBuilderExample()));
       });
@@ -285,7 +293,7 @@ class _GraphsState extends State<Graphs> {
     //Test().getData(DateTime.now());
     var _date = DateTime.now();
     Test().getData(_date);
-    Test().getBarData(_date);
+    //Test().getBarData(_date);
     super.initState();
   }
   /* Widget okButton = TextButton(
