@@ -595,8 +595,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                             "Year": time.year.toString(),
                             "Eff": total_eff,
                             "TT": count_total.inSeconds,
-                            "Study Time": count_study_data.inSeconds,
-                            "Break Time": count_break_data.inSeconds,
+                            "Study Time": count_study_data.inSeconds.toString(),
+                            "Break Time": count_break_data.inSeconds.toString(),
                             "userId": FirebaseAuth.instance.currentUser!.uid,
                           });
                           count_study_data = Duration(seconds: 0);

@@ -157,25 +157,65 @@ class Test extends ChangeNotifier {
         double study_time = double.parse(document.get("Study Time"));
         double break_time = double.parse(document.get("Break Time"));
 
+        print("Global Time: " + globals.times_list.toString());
+        print("Local Time: " + _times.toString());
+
+        double math_mean_eff = eff_line * 100;
+        double hours_study = study_time / 3600;
+        double hours_break = break_time / 3600;
+
+        mean_eff_list.add(math_mean_eff);
+        study_time_list.add(hours_study);
+        break_time_list.add(hours_break);
+
         //print("test 709");
       });
       //print(_times);
       //print(_effs);
       print("test 69");
 
-      if (_effs.isEmpty || _times.isEmpty) {
-        _times = [0.toDouble(), 24.toDouble()];
-        _effs = [0.toDouble(), 0.toDouble()];
-      } else {
-        _times = _times;
-        _effs = _effs;
-      }
-
       globals.times_list = _times;
       globals.effs_list = _effs;
 
-      print("Global Time: " + globals.times_list.toString());
-      print("Local Time: " + _times.toString());
+      if (mean_eff_list.isEmpty) {
+        mean_eff_list = [0.toDouble()];
+      } else if (study_time_list.isEmpty) {
+        study_time_list = [0.toDouble()];
+      } else if (break_time_list.isEmpty) {
+        break_time_list = [0.toDouble()];
+      } else {
+        mean_eff_list = mean_eff_list;
+        study_time_list = study_time_list;
+        break_time_list = break_time_list;
+      }
+
+      int len_mean_eff = mean_eff_list.length;
+      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+      //int avg_eff_int = avg_eff.toInt(); //.ceil();
+
+      double sum_study_time =
+          study_time_list.reduce((value, element) => value + element);
+      //int sum_study_time_int = sum_study_time.toInt(); //.ceil();
+
+      double sum_break_time =
+          break_time_list.reduce((value, element) => value + element);
+      //int sum_break_time_int = sum_break_time.toInt(); //.ceil();
+
+      globals.avg_eff = double.parse(avg_eff.toStringAsFixed(2));
+      //globals.avg_eff_int = avg_eff_int;
+
+      globals.sum_break_time = double.parse(sum_break_time.toStringAsFixed(2));
+      //globals.sum_break_time_int = sum_break_time_int;
+
+      globals.sum_study_time = double.parse(sum_study_time.toStringAsFixed(2));
+
+      print(len_mean_eff);
+      List<double> weeklySummary = [
+        globals.sum_study_time, //_int.toDouble(),
+        globals.sum_break_time, //_int.toDouble(),
+        globals.avg_eff, //_int.toDouble()
+      ];
+
       //print(_effs);
 
       notifyListeners();
