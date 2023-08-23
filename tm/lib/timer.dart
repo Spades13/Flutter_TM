@@ -140,8 +140,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         });
       } else {
         //pass
+
       }
     });
+
+    /*if (count_study_data > count_study) {
+      count_study_data = count_study;
+    } else {
+      //pass
+    }*/
 
     break_data_timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active_break == true || active_active == false) {
@@ -211,7 +218,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 
         int time_block = globals.time_block;
 
-        /*if (cycle == 0 &&
+        if (cycle == 0 &&
             count_study.inSeconds == 0 /*count_total.inSeconds != 0*/) {
           int time_worked = count_active.inSeconds;
           double total_eff = (time_worked / (count_total.inSeconds));
@@ -257,59 +264,59 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           study_data_timer.cancel();
           break_data_timer.cancel();
           total_timer.cancel();
-          active_timer.cancel();*/
-        //} else {
-        print(time_block);
-        if (count_total >= Duration(seconds: time_block)) {
-          int time_worked = count_active.inSeconds;
-          double total_eff = (time_worked / (time_block));
-          print("finished");
-          print(total_eff);
-          var time = DateTime.now();
-          print(time.hour.toString() + ":" + time.minute.toString());
-          print("Weekday: " + time.weekday.toString());
-          print("Day: " + time.day.toString());
-          print("Month: " + time.month.toString());
-          print("Year: " + time.year.toString());
-
-          FirebaseFirestore.instance
-              .collection(user.email!)
-              .doc(time.year.toString() +
-                  "/" +
-                  time.month.toString() +
-                  "/" +
-                  time.day.toString() +
-                  "/" +
-                  time.weekday.toString() +
-                  "/" +
-                  time.hour.toString().padLeft(2, "0") +
-                  ":" +
-                  time.minute.toString().padLeft(2, "0"))
-              .set({
-            "Hours": time.hour.toString(),
-            "Minutes": time.minute.toString(),
-            "Weekday": time.weekday.toString(),
-            "Day": time.day.toString(),
-            "Month": time.month.toString(),
-            "Year": time.year.toString(),
-            "Eff": total_eff,
-            "TT": count_total.inSeconds,
-            "Study Time": count_study_data.inSeconds.toString(),
-            "Break Time": count_break_data.inSeconds.toString(),
-            "userId": FirebaseAuth.instance.currentUser!.uid,
-          });
-          count_study_data = Duration(seconds: 0);
-          count_break_data = Duration(seconds: 0);
-
-          count_total = Duration(seconds: -1);
-          count_active = Duration(seconds: -1);
+          active_timer.cancel();
         } else {
-          //pass
+          print(time_block);
+          if (count_total >= Duration(seconds: time_block)) {
+            int time_worked = count_active.inSeconds;
+            double total_eff = (time_worked / (time_block));
+            print("finished");
+            print(total_eff);
+            var time = DateTime.now();
+            print(time.hour.toString() + ":" + time.minute.toString());
+            print("Weekday: " + time.weekday.toString());
+            print("Day: " + time.day.toString());
+            print("Month: " + time.month.toString());
+            print("Year: " + time.year.toString());
+
+            FirebaseFirestore.instance
+                .collection(user.email!)
+                .doc(time.year.toString() +
+                    "/" +
+                    time.month.toString() +
+                    "/" +
+                    time.day.toString() +
+                    "/" +
+                    time.weekday.toString() +
+                    "/" +
+                    time.hour.toString().padLeft(2, "0") +
+                    ":" +
+                    time.minute.toString().padLeft(2, "0"))
+                .set({
+              "Hours": time.hour.toString(),
+              "Minutes": time.minute.toString(),
+              "Weekday": time.weekday.toString(),
+              "Day": time.day.toString(),
+              "Month": time.month.toString(),
+              "Year": time.year.toString(),
+              "Eff": total_eff,
+              "TT": count_total.inSeconds,
+              "Study Time": studyData().inSeconds.toString(),
+              "Break Time": count_break_data.inSeconds.toString(),
+              "userId": FirebaseAuth.instance.currentUser!.uid,
+            });
+            count_study_data = Duration(seconds: 0);
+            count_break_data = Duration(seconds: 0);
+
+            count_total = Duration(seconds: -1);
+            count_active = Duration(seconds: -1);
+          } else {
+            //pass
+          }
         }
       }
-    }
-        //}
-        /*}*/);
+      //}
+    });
 
     active_timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active_break == true) {
@@ -341,6 +348,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     }
   }
 
+  studyData() {
+    if (count_study_data >
+        Duration(hours: globals.study_hour, minutes: globals.study_minutes)) {
+      return Duration(
+          hours: globals.study_hour, minutes: globals.study_minutes);
+    } else {
+      return count_study_data;
+    }
+  }
   /*Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.release);
     final player = AudioCache(prefix: 'assets/audio/');
@@ -595,7 +611,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                             "Year": time.year.toString(),
                             "Eff": total_eff,
                             "TT": count_total.inSeconds,
-                            "Study Time": count_study_data.inSeconds.toString(),
+                            "Study Time": studyData().inSeconds.toString(),
                             "Break Time": count_break_data.inSeconds.toString(),
                             "userId": FirebaseAuth.instance.currentUser!.uid,
                           });

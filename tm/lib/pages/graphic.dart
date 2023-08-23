@@ -215,44 +215,39 @@ class Test extends ChangeNotifier {
       //print(_effs);
 
       if (mean_eff_list.isEmpty) {
-        mean_eff_list = [0.toDouble()];
-      } else if (study_time_list.isEmpty) {
-        study_time_list = [0.toDouble()];
-      } else if (break_time_list.isEmpty) {
-        break_time_list = [0.toDouble()];
+        globals.avg_eff = 0.0;
       } else {
-        mean_eff_list = mean_eff_list;
-        study_time_list = study_time_list;
-        break_time_list = break_time_list;
+        int len_mean_eff = mean_eff_list.length;
+        double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+        globals.avg_eff = double.parse(avg_eff.toStringAsFixed(2));
       }
 
-      int len_mean_eff = mean_eff_list.length;
-      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
-      //int avg_eff_int = avg_eff.toInt(); //.ceil();
+      if (study_time_list.isEmpty) {
+        globals.sum_study_time = 0.0;
+      } else {
+        double sum_study_time =
+            study_time_list.reduce((value, element) => value + element);
+        globals.sum_study_time =
+            double.parse(sum_study_time.toStringAsFixed(2));
+      }
 
-      double sum_study_time =
-          study_time_list.reduce((value, element) => value + element);
-      //int sum_study_time_int = sum_study_time.toInt(); //.ceil();
+      if (break_time_list.isEmpty) {
+        globals.sum_break_time = 0.0;
+      } else {
+        double sum_break_time =
+            break_time_list.reduce((value, element) => value + element);
+        globals.sum_break_time =
+            double.parse(sum_break_time.toStringAsFixed(2));
+      }
 
-      double sum_break_time =
-          break_time_list.reduce((value, element) => value + element);
-      //int sum_break_time_int = sum_break_time.toInt(); //.ceil();
-
-      globals.avg_eff = double.parse(avg_eff.toStringAsFixed(2));
-      //globals.avg_eff_int = avg_eff_int;
-
-      globals.sum_break_time = double.parse(sum_break_time.toStringAsFixed(2));
-      //globals.sum_break_time_int = sum_break_time_int;
-
-      globals.sum_study_time = double.parse(sum_study_time.toStringAsFixed(2));
-      //globals.sum_study_time_int = sum_study_time_int;
-
-      print(len_mean_eff);
+      //print(len_mean_eff);
       List<double> weeklySummary = [
         globals.sum_study_time, //_int.toDouble(),
         globals.sum_break_time, //_int.toDouble(),
         globals.avg_eff, //_int.toDouble()
       ];
+
+      //print(_effs);
 
       notifyListeners();
     });
@@ -599,12 +594,31 @@ Widget getTopTitles(double value, TitleMeta meta) {
       color: globals.mainColor, fontWeight: FontWeight.bold, fontSize: 14);
 
   Widget text;
+  double decimalStudyTime =
+      globals.sum_study_time - globals.sum_study_time.toInt();
+  double minutesStudy = decimalStudyTime * 60;
+
+  double decimalBreakTime =
+      globals.sum_break_time - globals.sum_break_time.toInt();
+  double minutesBreak = decimalBreakTime * 60;
+  print(minutesBreak);
   switch (value.toInt()) {
     case 0:
-      text = Text(globals.sum_study_time.toString() + " h", style: style);
+      //Takes time , which gets split in to its minutes above, and writes it above the graph in hours and minutes.
+      text = Text(
+          globals.sum_study_time.toInt().toString() +
+              "h" +
+              minutesStudy.ceil().toString() +
+              "m",
+          style: style);
       break;
     case 1:
-      text = Text(globals.sum_break_time.toString() + " h", style: style);
+      text = Text(
+          globals.sum_break_time.toInt().toString() +
+              "h" +
+              minutesBreak.ceil().toString() +
+              "m",
+          style: style);
       break;
     case 2:
       text = Text(globals.avg_eff.toString() + " %", style: style);

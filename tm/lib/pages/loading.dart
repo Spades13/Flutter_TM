@@ -178,38 +178,32 @@ class Test extends ChangeNotifier {
       globals.effs_list = _effs;
 
       if (mean_eff_list.isEmpty) {
-        mean_eff_list = [0.toDouble()];
-      } else if (study_time_list.isEmpty) {
-        study_time_list = [0.toDouble()];
-      } else if (break_time_list.isEmpty) {
-        break_time_list = [0.toDouble()];
+        globals.avg_eff = 0.0;
       } else {
-        mean_eff_list = mean_eff_list;
-        study_time_list = study_time_list;
-        break_time_list = break_time_list;
+        int len_mean_eff = mean_eff_list.length;
+        double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
+        globals.avg_eff = double.parse(avg_eff.toStringAsFixed(2));
       }
 
-      int len_mean_eff = mean_eff_list.length;
-      double avg_eff = mean_eff_list.reduce((a, b) => a + b) / len_mean_eff;
-      //int avg_eff_int = avg_eff.toInt(); //.ceil();
+      if (study_time_list.isEmpty) {
+        globals.sum_study_time = 0.0;
+      } else {
+        double sum_study_time =
+            study_time_list.reduce((value, element) => value + element);
+        globals.sum_study_time =
+            double.parse(sum_study_time.toStringAsFixed(2));
+      }
 
-      double sum_study_time =
-          study_time_list.reduce((value, element) => value + element);
-      //int sum_study_time_int = sum_study_time.toInt(); //.ceil();
+      if (break_time_list.isEmpty) {
+        globals.sum_break_time = 0.0;
+      } else {
+        double sum_break_time =
+            break_time_list.reduce((value, element) => value + element);
+        globals.sum_break_time =
+            double.parse(sum_break_time.toStringAsFixed(2));
+      }
 
-      double sum_break_time =
-          break_time_list.reduce((value, element) => value + element);
-      //int sum_break_time_int = sum_break_time.toInt(); //.ceil();
-
-      globals.avg_eff = double.parse(avg_eff.toStringAsFixed(2));
-      //globals.avg_eff_int = avg_eff_int;
-
-      globals.sum_break_time = double.parse(sum_break_time.toStringAsFixed(2));
-      //globals.sum_break_time_int = sum_break_time_int;
-
-      globals.sum_study_time = double.parse(sum_study_time.toStringAsFixed(2));
-
-      print(len_mean_eff);
+      //print(len_mean_eff);
       List<double> weeklySummary = [
         globals.sum_study_time, //_int.toDouble(),
         globals.sum_break_time, //_int.toDouble(),
@@ -278,7 +272,7 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
                         style: ElevatedButton.styleFrom(
                             primary: Color.fromARGB(0, 255, 145, 0)),
                         onPressed: () {
-                          globals.current_index = 3;
+                          globals.current_index = 2;
                           Navigator.push(
                               context,
                               MaterialPageRoute(

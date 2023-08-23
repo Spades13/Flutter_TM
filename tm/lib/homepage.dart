@@ -30,13 +30,14 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     UserHome(),
     Settings(),
-    FutureBuilderExample(),
     Graphs(),
   ];
 
   selectIndex() {
-    if (globals.current_index == 3) {
+    if (globals.current_index == 2) {
       globals.current_index = 2;
+      //Navigator.push(context,
+      //MaterialPageRoute(builder: (context) => FutureBuilderExample()));
       return globals.current_index;
     } else {
       return globals.current_index;
@@ -53,6 +54,17 @@ class _HomePageState extends State<HomePage> {
         onTabChange: (index) {
           setState(() {
             globals.current_index = index;
+
+            if (globals.current_index == 2) {
+              globals.current_index = 2;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FutureBuilderExample()));
+              //return globals.current_index;
+            } else {
+              //return globals.current_index;
+            }
           });
         },
         backgroundColor: Color.fromARGB(38, 0, 0, 0),
