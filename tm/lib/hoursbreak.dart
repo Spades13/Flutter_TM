@@ -13,7 +13,7 @@ class BHours extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
           child: Center(
-        child: Text(bhours.toString(),
+        child: Text(bhours.toString().padLeft(2, "0"),
             style: _textTheme.headlineSmall),
       )),
     );

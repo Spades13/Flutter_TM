@@ -117,7 +117,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           if (cycle > 0) {
             //print(cycle);
             count_study = Duration(
-                hours: globals.break_hour, minutes: globals.break_minutes);
+                hours: globals.study_hour, minutes: globals.study_minutes);
           } else {
             count_study = Duration(hours: 0, minutes: 0);
             break_timer.cancel();
@@ -223,48 +223,60 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           int time_worked = count_active.inSeconds;
           double total_eff = (time_worked / (count_total.inSeconds));
           print("complete");
-          print(total_eff);
-          var time = DateTime.now();
-          print(time.hour.toString() + ":" + time.minute.toString());
-          print("Weekday: " + time.weekday.toString());
-          print("Day: " + time.day.toString());
-          print("Month: " + time.month.toString());
-          print("Year: " + time.year.toString());
+          if (total_eff.toString() == "NaN") {
+            //pass
+            print("NaN value confirmed");
 
-          FirebaseFirestore.instance
-              .collection(user.email!)
-              .doc(time.year.toString() +
-                  "/" +
-                  time.month.toString() +
-                  "/" +
-                  time.day.toString() +
-                  "/" +
-                  time.weekday.toString() +
-                  "/" +
-                  time.hour.toString().padLeft(2, "0") +
-                  ":" +
-                  time.minute.toString().padLeft(2, "0"))
-              .set({
-            "Hours": time.hour.toString(),
-            "Minutes": time.minute.toString(),
-            "Weekday": time.weekday.toString(),
-            "Day": time.day.toString(),
-            "Month": time.month.toString(),
-            "Year": time.year.toString(),
-            "Eff": total_eff,
-            "TT": count_total.inSeconds,
-            "Study Time": count_study_data.inSeconds,
-            "Break Time": count_break_data.inSeconds,
-            "userId": FirebaseAuth.instance.currentUser!.uid,
-          });
+            //study_data_timer.cancel();
+            //break_data_timer.cancel();
+            total_timer.cancel();
+            active_timer.cancel();
+          } else {
+            print(total_eff);
+            var time = DateTime.now();
+            print(time.hour.toString() + ":" + time.minute.toString());
+            print("Weekday: " + time.weekday.toString());
+            print("Day: " + time.day.toString());
+            print("Month: " + time.month.toString());
+            print("Year: " + time.year.toString());
 
-          count_study_data = Duration(seconds: 0);
-          count_break_data = Duration(seconds: 0);
+            FirebaseFirestore.instance
+                .collection(user.email!)
+                .doc(time.year.toString() +
+                    "/" +
+                    time.month.toString() +
+                    "/" +
+                    time.day.toString() +
+                    "/" +
+                    time.weekday.toString() +
+                    "/" +
+                    time.hour.toString().padLeft(2, "0") +
+                    ":" +
+                    time.minute.toString().padLeft(2, "0") +
+                    ":" +
+                    time.second.toString().padLeft(2, "0"))
+                .set({
+              "Hours": time.hour.toString(),
+              "Minutes": time.minute.toString(),
+              "Weekday": time.weekday.toString(),
+              "Day": time.day.toString(),
+              "Month": time.month.toString(),
+              "Year": time.year.toString(),
+              "Eff": total_eff,
+              "TT": count_total.inSeconds,
+              "Study Time": count_study_data.inSeconds.toString(),
+              "Break Time": count_break_data.inSeconds.toString(),
+              "userId": FirebaseAuth.instance.currentUser!.uid,
+            });
 
-          study_data_timer.cancel();
-          break_data_timer.cancel();
-          total_timer.cancel();
-          active_timer.cancel();
+            count_study_data = Duration(seconds: 0);
+            count_break_data = Duration(seconds: 0);
+
+            study_data_timer.cancel();
+            break_data_timer.cancel();
+            total_timer.cancel();
+            active_timer.cancel();
+          }
         } else {
           print(time_block);
           if (count_total >= Duration(seconds: time_block)) {
@@ -291,7 +303,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                     "/" +
                     time.hour.toString().padLeft(2, "0") +
                     ":" +
-                    time.minute.toString().padLeft(2, "0"))
+                    time.minute.toString().padLeft(2, "0") +
+                    ":" +
+                    time.second.toString().padLeft(2, "0"))
                 .set({
               "Hours": time.hour.toString(),
               "Minutes": time.minute.toString(),
@@ -301,7 +315,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
               "Year": time.year.toString(),
               "Eff": total_eff,
               "TT": count_total.inSeconds,
-              "Study Time": studyData().inSeconds.toString(),
+              "Study Time": count_study_data.inSeconds.toString(),
               "Break Time": count_break_data.inSeconds.toString(),
               "userId": FirebaseAuth.instance.currentUser!.uid,
             });
@@ -601,7 +615,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                                   "/" +
                                   time.hour.toString().padLeft(2, "0") +
                                   ":" +
-                                  time.minute.toString().padLeft(2, "0"))
+                                  time.minute.toString().padLeft(2, "0") +
+                                  ":" +
+                                  time.second.toString().padLeft(2, "0"))
                               .set({
                             "Hours": time.hour.toString(),
                             "Minutes": time.minute.toString(),
@@ -611,7 +627,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
                             "Year": time.year.toString(),
                             "Eff": total_eff,
                             "TT": count_total.inSeconds,
-                            "Study Time": studyData().inSeconds.toString(),
+                            "Study Time": count_study_data.inSeconds.toString(),
                             "Break Time": count_break_data.inSeconds.toString(),
                             "userId": FirebaseAuth.instance.currentUser!.uid,
                           });

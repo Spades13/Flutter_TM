@@ -13,7 +13,7 @@ class BMinutes extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
           child: Center(
-        child: Text(bmins.toString(),
+        child: Text(bmins.toString().padLeft(2, "0"),
             style: _textTheme.headlineSmall),
       )),
     );
