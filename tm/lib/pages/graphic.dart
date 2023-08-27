@@ -28,15 +28,25 @@ class IndividualBar {
   });
 }
 
+class BarData2 {
+  final double eff;
+
+  BarData2({required this.eff});
+
+  List<IndividualBar> barData2 = [];
+
+  void initializeBarData2() {
+    barData2 = [IndividualBar(x: 2, y: eff)];
+  }
+}
+
 class BarData {
   final double monAmount;
   final double tueAmount;
-  final double wedAmount;
 
   BarData({
     required this.monAmount,
     required this.tueAmount,
-    required this.wedAmount,
   });
 
   List<IndividualBar> barData = [];
@@ -45,7 +55,6 @@ class BarData {
     barData = [
       IndividualBar(x: 0, y: monAmount),
       IndividualBar(x: 1, y: tueAmount),
-      IndividualBar(x: 2, y: wedAmount),
     ];
   }
 }
@@ -407,11 +416,14 @@ class _GraphsState extends State<Graphs> {
       tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/ globals
           .sum_break_time
           .toDouble(),
-      wedAmount: /*Test().getBarData(globals.date).weeklySummary[2]*/ globals
-          .avg_eff
-          .toDouble(),
     );
+
+    BarData2 myBarData2 = BarData2(
+      eff: globals.avg_eff.toDouble(),
+    );
+
     myBarData.initializeBarData();
+    myBarData2.initializeBarData2();
 
     return Scaffold(
       backgroundColor: scaffoldColor,
@@ -448,7 +460,20 @@ class _GraphsState extends State<Graphs> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Container(
+                      child: Text(
+                          "Date: " +
+                              globals.date.day.toString() +
+                              " / " +
+                              globals.date.month.toString() +
+                              " / " +
+                              globals.date.year.toString(),
+                          style: _textTheme.labelSmall),
+                    ),
                   ),
                   Container(
                     child: Text("Total Work Time",
@@ -457,9 +482,127 @@ class _GraphsState extends State<Graphs> {
                   SizedBox(
                     height: 15,
                   ),
+                  //    Row(
+                  //  children: [
+
                   SizedBox(
-                      height: 150,
-                      child: BarChart(BarChartData(
+                    height: 150,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(65, 0, 0, 0),
+                          child: SizedBox(
+                            //height: 100,
+                            width: 50,
+                            child: BarChart(
+                              BarChartData(
+                                  alignment: BarChartAlignment.center,
+                                  titlesData: FlTitlesData(
+                                      show: true,
+                                      topTitles: AxisTitles(
+                                          sideTitles: SideTitles(
+                                              showTitles: true,
+                                              getTitlesWidget: getTopTitles)),
+                                      leftTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      rightTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      bottomTitles: AxisTitles(
+                                          sideTitles: SideTitles(
+                                              showTitles: true,
+                                              getTitlesWidget:
+                                                  getBottomTitles))),
+                                  maxY: 24,
+                                  minY: 0,
+                                  groupsSpace: 95,
+                                  gridData: FlGridData(show: false),
+                                  borderData: FlBorderData(show: false),
+                                  barGroups: myBarData.barData
+                                      .map((data) => BarChartGroupData(
+                                              x: data.x,
+                                              barRods: [
+                                                BarChartRodData(
+                                                    toY: data.y,
+                                                    width: 35,
+                                                    color: _textTheme
+                                                        .headlineLarge?.color!,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    backDrawRodData:
+                                                        BackgroundBarChartRodData(
+                                                      show: true,
+                                                      toY: 24,
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              39,
+                                                              39,
+                                                              39,
+                                                              0.957),
+                                                    )),
+                                              ]))
+                                      .toList()),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(145, 0, 0, 0),
+                          child: SizedBox(
+                            // height: 50,
+
+                            width: 50,
+                            child: BarChart(BarChartData(
+                                alignment: BarChartAlignment.center,
+                                titlesData: FlTitlesData(
+                                    show: true,
+                                    topTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                            showTitles: true,
+                                            getTitlesWidget: getTopTitles)),
+                                    leftTitles: AxisTitles(
+                                        sideTitles:
+                                            SideTitles(showTitles: false)),
+                                    rightTitles: AxisTitles(
+                                        sideTitles:
+                                            SideTitles(showTitles: false)),
+                                    bottomTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                            showTitles: true,
+                                            getTitlesWidget: getBottomTitles))),
+                                maxY: 100,
+                                minY: 0,
+                                groupsSpace: 100,
+                                gridData: FlGridData(show: false),
+                                borderData: FlBorderData(show: false),
+                                barGroups: myBarData2.barData2
+                                    .map((data) =>
+                                        BarChartGroupData(x: data.x, barRods: [
+                                          BarChartRodData(
+                                              toY: data.y,
+                                              width: 35,
+                                              color: _textTheme
+                                                  .headlineLarge?.color!,
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              backDrawRodData:
+                                                  BackgroundBarChartRodData(
+                                                show: true,
+                                                toY: 100,
+                                                color: const Color.fromRGBO(
+                                                    39, 39, 39, 0.957),
+                                              )),
+                                        ]))
+                                    .toList())),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /*BarChart(BarChartData(
                           alignment: BarChartAlignment.center,
                           titlesData: FlTitlesData(
                               show: true,
@@ -477,15 +620,15 @@ class _GraphsState extends State<Graphs> {
                                       getTitlesWidget: getBottomTitles))),
                           maxY: 100,
                           minY: 0,
-                          groupsSpace: 95,
+                          groupsSpace: 5,
                           gridData: FlGridData(show: false),
                           borderData: FlBorderData(show: false),
-                          barGroups: myBarData.barData
+                          barGroups: myBarData2.barData2
                               .map((data) =>
                                   BarChartGroupData(x: data.x, barRods: [
                                     BarChartRodData(
                                         toY: data.y,
-                                        width: 35,
+                                        width: 10,
                                         color: _textTheme.headlineLarge?.color!,
                                         borderRadius: BorderRadius.circular(5),
                                         backDrawRodData:
@@ -496,7 +639,8 @@ class _GraphsState extends State<Graphs> {
                                               39, 39, 39, 0.957),
                                         )),
                                   ]))
-                              .toList()))),
+                              .toList())),*/
+
                   SizedBox(
                     height: 40,
                   ),
@@ -601,7 +745,7 @@ Widget getTopTitles(double value, TitleMeta meta) {
   double decimalBreakTime =
       globals.sum_break_time - globals.sum_break_time.toInt();
   double minutesBreak = decimalBreakTime * 60;
-  print(minutesBreak);
+
   switch (value.toInt()) {
     case 0:
       //Takes time , which gets split in to its minutes above, and writes it above the graph in hours and minutes.
@@ -622,6 +766,7 @@ Widget getTopTitles(double value, TitleMeta meta) {
       break;
     case 2:
       text = Text(globals.avg_eff.toString() + " %", style: style);
+
       break;
 
     default:

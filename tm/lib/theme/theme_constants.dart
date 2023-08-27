@@ -23,6 +23,11 @@ ThemeData darkTheme = ThemeData(
         //color: Color.fromARGB(255, 30, 217, 230),
         fontWeight: FontWeight.bold,
       ),
+      labelSmall: TextStyle(
+        fontSize: 15,
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //color: Color.fromARGB(255, 30, 217, 230),
+      ),
     ));
 
 ThemeData lightTheme = ThemeData(
@@ -45,6 +50,11 @@ ThemeData lightTheme = ThemeData(
       color: Color.fromRGBO(92, 91, 91, 0.957),
       //color: Color.fromARGB(255, 30, 217, 230),
       fontWeight: FontWeight.bold,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 15,
+      color: Color.fromRGBO(92, 91, 91, 0.957),
+      //color: Color.fromARGB(255, 30, 217, 230),
     ),
   ),
 

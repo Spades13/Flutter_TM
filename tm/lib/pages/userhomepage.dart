@@ -104,11 +104,11 @@ class UserHome extends StatelessWidget {
                         Container(
                           //color: Colors.black,
                           child:
-                              Text("Study", style: _textTheme.headlineMedium),
+                              Text(" Study", style: _textTheme.headlineMedium),
                         ),
                         Container(
                             //color: Colors.black,
-                            child: Text("Break",
+                            child: Text("Break ",
                                 style: _textTheme.headlineMedium)),
                       ],
                     ),
@@ -119,124 +119,160 @@ class UserHome extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 30, 50),
-                        child: Container(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                  //color: Colors.black,
-                                  width: 60,
-                                  height: 250,
-                                  child: ListWheelScrollView.useDelegate(
-                                      onSelectedItemChanged: (value) =>
-                                          globals.study_hour = value,
-                                      itemExtent: 40,
-                                      perspective: 0.005,
-                                      diameterRatio: 1.2,
-                                      useMagnifier: true,
-                                      magnification: 1.5,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      childDelegate:
-                                          ListWheelChildBuilderDelegate(
-                                              childCount: 24,
-                                              builder: (context, index) {
-                                                return SHours(
-                                                  shours: index,
-                                                );
-                                              }))),
-                              Container(
-                                  child: const Text(":",
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold,
-                                      ))),
-                              Container(
-                                  //color: Colors.black,
-                                  width: 60,
-                                  height: 250,
-                                  child: ListWheelScrollView.useDelegate(
-                                      onSelectedItemChanged: (value1) =>
-                                          globals.study_minutes = value1,
-                                      itemExtent: 40,
-                                      perspective: 0.005,
-                                      diameterRatio: 1.2,
-                                      useMagnifier: true,
-                                      magnification: 1.5,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      childDelegate:
-                                          ListWheelChildBuilderDelegate(
-                                              childCount: 60,
-                                              builder: (context, index) {
-                                                return SMinutes(
-                                                  smins: index,
-                                                );
-                                              }))),
-                            ],
-                          ),
-                        ),
+                      Row(
+                        //mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(45, 50, 0, 0),
+                            child: Text("Hours", style: _textTheme.labelSmall),
+                          )),
+                          Container(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 50, 20, 0),
+                            child:
+                                Text("Minutes", style: _textTheme.labelSmall),
+                          )),
+                          Container(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(45, 50, 0, 0),
+                            child: Text("Hours", style: _textTheme.labelSmall),
+                          )),
+                          Container(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 50, 20, 0),
+                            child:
+                                Text("Minutes", style: _textTheme.labelSmall),
+                          )),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 20, 50),
-                        child: Container(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                  width: 60,
-                                  height: 250,
-                                  child: ListWheelScrollView.useDelegate(
-                                      onSelectedItemChanged: (value2) =>
-                                          globals.break_hour = value2,
-                                      itemExtent: 40,
-                                      perspective: 0.005,
-                                      diameterRatio: 1.2,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      useMagnifier: true,
-                                      magnification: 1.5,
-                                      childDelegate:
-                                          ListWheelChildBuilderDelegate(
-                                              childCount: 6,
-                                              builder: (context, index) {
-                                                return BHours(
-                                                  bhours: index,
-                                                );
-                                              }))),
-                              Container(
-                                  child: const Text(":",
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold,
-                                      ))),
-                              Container(
-                                  width: 60,
-                                  height: 250,
-                                  child: ListWheelScrollView.useDelegate(
-                                      onSelectedItemChanged: (value3) =>
-                                          globals.break_minutes = value3,
-                                      itemExtent: 40,
-                                      perspective: 0.005,
-                                      diameterRatio: 1.2,
-                                      useMagnifier: true,
-                                      magnification: 1.5,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      childDelegate:
-                                          ListWheelChildBuilderDelegate(
-                                              childCount: 60,
-                                              builder: (context, index) {
-                                                return BMinutes(
-                                                  bmins: index,
-                                                );
-                                              }))),
-                            ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 30, 0),
+                            child: Container(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      //color: Colors.black,
+                                      width: 60,
+                                      height: 250,
+                                      child: ListWheelScrollView.useDelegate(
+                                          onSelectedItemChanged: (value) =>
+                                              globals.study_hour = value,
+                                          itemExtent: 40,
+                                          perspective: 0.005,
+                                          diameterRatio: 1.2,
+                                          useMagnifier: true,
+                                          magnification: 1.5,
+                                          physics:
+                                              const FixedExtentScrollPhysics(),
+                                          childDelegate:
+                                              ListWheelChildBuilderDelegate(
+                                                  childCount: 24,
+                                                  builder: (context, index) {
+                                                    return SHours(
+                                                      shours: index,
+                                                    );
+                                                  }))),
+                                  Container(
+                                      child: const Text(":",
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                          ))),
+                                  Container(
+                                      //color: Colors.black,
+                                      width: 60,
+                                      height: 250,
+                                      child: ListWheelScrollView.useDelegate(
+                                          onSelectedItemChanged: (value1) =>
+                                              globals.study_minutes = value1,
+                                          itemExtent: 40,
+                                          perspective: 0.005,
+                                          diameterRatio: 1.2,
+                                          useMagnifier: true,
+                                          magnification: 1.5,
+                                          physics:
+                                              const FixedExtentScrollPhysics(),
+                                          childDelegate:
+                                              ListWheelChildBuilderDelegate(
+                                                  childCount: 60,
+                                                  builder: (context, index) {
+                                                    return SMinutes(
+                                                      smins: index,
+                                                    );
+                                                  }))),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
+                            child: Container(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      width: 60,
+                                      height: 250,
+                                      child: ListWheelScrollView.useDelegate(
+                                          onSelectedItemChanged: (value2) =>
+                                              globals.break_hour = value2,
+                                          itemExtent: 40,
+                                          perspective: 0.005,
+                                          diameterRatio: 1.2,
+                                          physics:
+                                              const FixedExtentScrollPhysics(),
+                                          useMagnifier: true,
+                                          magnification: 1.5,
+                                          childDelegate:
+                                              ListWheelChildBuilderDelegate(
+                                                  childCount: 6,
+                                                  builder: (context, index) {
+                                                    return BHours(
+                                                      bhours: index,
+                                                    );
+                                                  }))),
+                                  Container(
+                                      child: const Text(":",
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                          ))),
+                                  Container(
+                                      width: 60,
+                                      height: 250,
+                                      child: ListWheelScrollView.useDelegate(
+                                          onSelectedItemChanged: (value3) =>
+                                              globals.break_minutes = value3,
+                                          itemExtent: 40,
+                                          perspective: 0.005,
+                                          diameterRatio: 1.2,
+                                          useMagnifier: true,
+                                          magnification: 1.5,
+                                          physics:
+                                              const FixedExtentScrollPhysics(),
+                                          childDelegate:
+                                              ListWheelChildBuilderDelegate(
+                                                  childCount: 60,
+                                                  builder: (context, index) {
+                                                    return BMinutes(
+                                                      bmins: index,
+                                                    );
+                                                  }))),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
