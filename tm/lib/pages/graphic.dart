@@ -64,8 +64,9 @@ class Test extends ChangeNotifier {
   getBarData(variableDate) {
     StreamSubscription<QuerySnapshot>? _guestBookSubscription1;
 
-    final user = FirebaseAuth.instance.currentUser!;
-    var user_email = user.email;
+    final user = FirebaseAuth.instance.currentUser;
+
+    var user_email = user?.email;
     var year = variableDate.year.toString();
     var month = variableDate.month.toString();
     var day = globals.date.day.toString();
@@ -76,7 +77,7 @@ class Test extends ChangeNotifier {
     List break_time_list = [];
 
     _guestBookSubscription1 = FirebaseFirestore.instance
-        .collection(user_email!)
+        .collection(user_email.toString())
         .doc(year)
         .collection(month)
         .doc(day)
@@ -154,8 +155,8 @@ class Test extends ChangeNotifier {
     // List<GuestBookMessage> _guestBookMessages = [];
     //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
-    final user = FirebaseAuth.instance.currentUser!;
-    var user_email = user.email;
+    final user = FirebaseAuth.instance.currentUser;
+    var user_email = user?.email;
     var year = variableDate.year.toString();
     var month = variableDate.month.toString();
     var day = globals.date.day.toString();
@@ -173,7 +174,7 @@ class Test extends ChangeNotifier {
 
     print("firebase print");
     _guestBookSubscription = FirebaseFirestore.instance
-        .collection(user_email!)
+        .collection(user_email.toString())
         .doc(year)
         .collection(month)
         .doc(day)

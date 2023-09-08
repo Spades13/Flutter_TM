@@ -29,8 +29,8 @@ class Test extends ChangeNotifier {
   getBarData(variableDate) {
     StreamSubscription<QuerySnapshot>? _guestBookSubscription;
 
-    final user = FirebaseAuth.instance.currentUser!;
-    var user_email = user.email;
+    final user = FirebaseAuth.instance.currentUser;
+    var user_email = user?.email;
     var year = variableDate.year.toString();
     var month = variableDate.month.toString();
     var day = globals.date.day.toString();
@@ -114,8 +114,8 @@ class Test extends ChangeNotifier {
     // List<GuestBookMessage> _guestBookMessages = [];
     //List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
-    final user = FirebaseAuth.instance.currentUser!;
-    var user_email = user.email;
+    final user = FirebaseAuth.instance.currentUser;
+    var user_email = user?.email;
     var year = variableDate.year.toString();
     var month = variableDate.month.toString();
     var day = globals.date.day.toString();
@@ -238,8 +238,10 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
   );
 
   update() async {
+    
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomePage()));
+   
 
     setState(() {});
   }
