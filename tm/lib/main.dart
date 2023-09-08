@@ -271,6 +271,9 @@ class _Settings extends State<Settings> {
                         )),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => MyAuth()));
+                      
                     },
                   )
                 ],
