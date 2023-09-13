@@ -123,29 +123,19 @@ class UserHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
-                        //mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(45, 50, 0, 0),
-                            child: Text("Hours", style: _textTheme.labelSmall),
+                            padding: const EdgeInsets.fromLTRB(10, 50, 0, 0),
+                            child: Text("Hours  Minutes",
+                                style: _textTheme.labelSmall),
                           )),
                           Container(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 50, 20, 0),
-                            child:
-                                Text("Minutes", style: _textTheme.labelSmall),
-                          )),
-                          Container(
-                              child: Padding(
-                            padding: const EdgeInsets.fromLTRB(45, 50, 0, 0),
-                            child: Text("Hours", style: _textTheme.labelSmall),
-                          )),
-                          Container(
-                              child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 50, 20, 0),
-                            child:
-                                Text("Minutes", style: _textTheme.labelSmall),
+                            padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                            child: Text("Hours  Minutes",
+                                style: _textTheme.labelSmall),
                           )),
                         ],
                       ),
