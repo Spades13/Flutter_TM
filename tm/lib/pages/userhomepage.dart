@@ -6,7 +6,18 @@ import 'package:tm/minutesstudy.dart';
 import 'package:tm/startbutton.dart';
 import 'package:tm/globals.dart' as globals;
 
-const List<String> list = <String>['1', '2', '3', '4', '5', '6'];
+const List<String> list = <String>[
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10'
+];
 
 class DropdownButtonItem extends StatefulWidget {
   const DropdownButtonItem({super.key});

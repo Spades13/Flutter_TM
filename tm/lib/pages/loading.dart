@@ -238,10 +238,8 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
   );
 
   update() async {
-    
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomePage()));
-   
 
     setState(() {});
   }
@@ -274,6 +272,16 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
                         style: ElevatedButton.styleFrom(
                             primary: Color.fromARGB(0, 255, 145, 0)),
                         onPressed: () {
+                          if (globals.times_list.isEmpty &&
+                              globals.effs_list.isEmpty) {
+                            final snackBar1 = SnackBar(
+                              content: Text("No Data for this Day"),
+                              duration: Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar1);
+                          }
                           globals.current_index = 2;
                           Navigator.push(
                               context,
