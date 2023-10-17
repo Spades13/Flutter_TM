@@ -239,7 +239,7 @@ class _Settings extends State<Settings> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        children: [Text('About us:'), Text("TM:")],
+                      children: [Text('About us: We are two students from Ecole Moser, and we decided to take on the challenge of making a study app'), Text("App: This app uses the pommodoro technique in combination with data recording, to check if the user is distracted by their phone. Then feedback about efficiency is given on the stats page")],
                       ),
                     ],
                   ))
