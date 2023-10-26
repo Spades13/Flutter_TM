@@ -11,15 +11,15 @@ import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'graphic.dart';
 
-void main() => runApp(const FutureBuilderExampleApp());
+void main() => runApp(const FutureBuilderApp());
 
-class FutureBuilderExampleApp extends StatelessWidget {
-  const FutureBuilderExampleApp({super.key});
+class FutureBuilderApp extends StatelessWidget {
+  const FutureBuilderApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: FutureBuilderExample(),
+      home: FutureBuilderX(),
     );
   }
 }
@@ -224,14 +224,14 @@ void initState() async {
   //super.initState();
 }
 
-class FutureBuilderExample extends StatefulWidget {
-  const FutureBuilderExample({super.key});
+class FutureBuilderX extends StatefulWidget {
+  const FutureBuilderX({super.key});
 
   @override
-  State<FutureBuilderExample> createState() => _FutureBuilderExampleState();
+  State<FutureBuilderX> createState() => _FutureBuilderXState();
 }
 
-class _FutureBuilderExampleState extends State<FutureBuilderExample> {
+class _FutureBuilderXState extends State<FutureBuilderX> {
   final Future<int> globalIndex = Future<int>.delayed(
     const Duration(seconds: 1),
     () => 0,

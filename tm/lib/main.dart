@@ -169,28 +169,7 @@ class _Settings extends State<Settings> {
                   ),
                 ],
               ),
-              Column(
-                //one settigns widget
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      //color: Colors.black,
-                      child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      ExpansionTile(
-                        title: Text(
-                          'Sounds/Music',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        children: [Text('select sound')],
-                      ),
-                    ],
-                  ))
-                ],
-              ),
-              Column(
+                          Column(
                 //one settigns widget
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

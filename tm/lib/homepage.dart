@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FutureBuilderExample()));
+                      builder: (context) => FutureBuilderX()));
               //return globals.current_index;
             } else {
               //return globals.current_index;

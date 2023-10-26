@@ -336,7 +336,7 @@ class _GraphsState extends State<Graphs> {
         Test().getData(_date);
         //Test().getBarData(_date);
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FutureBuilderExample()));
+            MaterialPageRoute(builder: (context) => FutureBuilderX()));
       });
     });
   }
