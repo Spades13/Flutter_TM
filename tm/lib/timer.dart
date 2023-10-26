@@ -77,6 +77,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     timer = Timer.periodic(Duration(seconds: 1), (tm) {
       if (active == true) {
         if (count_study > Duration(seconds: 0)) {
+          print("the cycles amount: ");
+          print(cycle);
           setState(() {
             count_study -= Duration(seconds: 1);
           });
@@ -85,6 +87,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           active_break = true;
           active = false;
           cycle--;
+          print(cycle);
           if (cycle > 0) {
             //print(cycle);
             count_break = Duration(
@@ -140,7 +143,6 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         });
       } else {
         //pass
-
       }
     });
 
