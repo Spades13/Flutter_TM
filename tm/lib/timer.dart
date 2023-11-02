@@ -66,6 +66,10 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
 //list to overlap timers
   //final audioPlayer = AudioPlayer();
 
+  //static AudioPlayer player = new AudioPlayer();
+  //const studyAudioPath = "";
+  //const breakAudioPath = "";
+
   int cycle = globals.cycle_num;
   @override
   void initState() {
@@ -422,7 +426,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         //active_break = false;
         //print("Paused");
       } else if (state == AppLifecycleState.paused) {
-        active = false;
+        active = true;
         //active_break = false;
         //print("Paused");
       }
@@ -442,7 +446,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         //active_break = false;
         //print("Paused");
       } else if (state == AppLifecycleState.paused) {
-        active = false;
+        active = true;
         //active_break = false;
         //print("Paused");
       }
@@ -480,7 +484,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         //active_break = false;
         //print("Paused");
       } else if (state == AppLifecycleState.paused) {
-        active_active = false;
+        active_active = true;
         //active_break = false;
         //print("Paused");
       }
@@ -499,7 +503,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
         //active_break = false;
         //print("Paused");
       } else if (state == AppLifecycleState.paused) {
-        active_active = false;
+        active_active = true;
         //active_break = false;
         //print("Paused");
       }
@@ -563,6 +567,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text("Cycles Left: " + cycle.toString(),
+                  style: _textTheme.headlineMedium),
+              SizedBox(height: 50),
               _breakorstudy[checkTimer()],
               Center(child: _timerstate[checkTimer()]),
               SizedBox(height: 80),
