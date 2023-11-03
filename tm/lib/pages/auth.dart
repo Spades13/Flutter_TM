@@ -1,3 +1,4 @@
+//integrates authentication with firebase in to the sign in page. Moves the user to the homepage if sign in succesfull
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/homepage.dart';

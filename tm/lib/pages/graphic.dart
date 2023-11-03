@@ -1,3 +1,4 @@
+//Here we build the statistics page. First we read data from Firebase and put it in to multiple lists that get assigned to graphs, for display. Here there is also a calendar widget for date selection
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -642,9 +643,7 @@ class _GraphsState extends State<Graphs> {
                                   ]))
                               .toList())),*/
 
-                  SizedBox(
-                    height: 40,
-                  ),
+                  
                   Container(
                     child: Text("Work Efficiency",
                         style: _textTheme.headlineSmall),

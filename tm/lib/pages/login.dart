@@ -1,3 +1,4 @@
+//Here we build the Login page. This has the google authentication button aswell
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/components/prompt.dart';

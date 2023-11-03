@@ -1,3 +1,4 @@
+//Here the light and dark modes are toggled using a boolean which is false/true
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 

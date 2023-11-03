@@ -1,3 +1,6 @@
+//This is the main file for the programm, and the entire app runs through this code. We also have the settings page built in main.dart
+//because we needed to change the theme mode which is a main.dart feature
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

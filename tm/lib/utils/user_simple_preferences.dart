@@ -1,3 +1,4 @@
+//this programm sets the user preferences for the selected theme(light or dark mode) and store that locally on the devices
 import 'package:shared_preferences/shared_preferences.dart';
 
 //uses preferences to loacally store data on which theme to use

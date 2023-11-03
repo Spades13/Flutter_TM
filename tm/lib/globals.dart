@@ -1,3 +1,4 @@
+//here we store all global variables, so that files can "communicate" between eachother and so that variables are kept through out the app
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

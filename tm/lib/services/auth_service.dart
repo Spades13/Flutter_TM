@@ -1,3 +1,4 @@
+//this uses the google auth_service so that the user can login with google
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

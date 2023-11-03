@@ -1,3 +1,5 @@
+//here all the theme constants are set so that we can reference these variables, that will change depending on the selected theme(light/dark)
+//This is used mainly for the text and backgrounds in our app(that need to change color)
 import 'package:flutter/material.dart';
 //import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 

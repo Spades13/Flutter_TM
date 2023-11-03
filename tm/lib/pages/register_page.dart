@@ -1,3 +1,4 @@
+//This is where the register page is built, for users who dont have an account.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/components/prompt.dart';
