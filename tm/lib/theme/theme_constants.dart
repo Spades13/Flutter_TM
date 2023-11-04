@@ -7,6 +7,9 @@ ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: const Color.fromARGB(255, 5, 4, 51),
     secondaryHeaderColor: Color.fromRGBO(234, 245, 132, 12),
+    buttonTheme: ButtonThemeData(
+      highlightColor: const Color.fromARGB(255, 5, 4, 51),
+    ),
     textTheme: const TextTheme(
       headlineMedium: TextStyle(
           color: Color.fromRGBO(234, 245, 132, 12),

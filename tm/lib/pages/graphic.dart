@@ -336,8 +336,8 @@ class _GraphsState extends State<Graphs> {
         //  print(_date);
         Test().getData(_date);
         //Test().getBarData(_date);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FutureBuilderX()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => FutureBuilderX()));
       });
     });
   }
@@ -395,7 +395,8 @@ class _GraphsState extends State<Graphs> {
 
     final List<FlSpot> datalist =
         List.generate(globals.times_list.length, (index) {
-      return FlSpot(globals.times_list[index], globals.effs_list[index]);
+      return FlSpot(globals.times_list[index],
+          double.parse((globals.effs_list[index]).toStringAsFixed(1)));
     });
 
     //print("before print");
@@ -412,12 +413,10 @@ class _GraphsState extends State<Graphs> {
     //print(globals.times_list.length);
     //List<String>.generate(1000,(counter) => "Item $counter");
     BarData myBarData = BarData(
-      monAmount: /*Test().getBarData(globals.date).weeklySummary[0]*/ globals
-          .sum_study_time
-          .toDouble(),
-      tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/ globals
-          .sum_break_time
-          .toDouble(),
+      monAmount: /*Test().getBarData(globals.date).weeklySummary[0]*/
+          globals.sum_study_time.toDouble(),
+      tueAmount: /*Test().getBarData(globals.date).weeklySummary[1]*/
+          globals.sum_break_time.toDouble(),
     );
 
     BarData2 myBarData2 = BarData2(
@@ -643,66 +642,76 @@ class _GraphsState extends State<Graphs> {
                                   ]))
                               .toList())),*/
 
-                  
                   Container(
                     child: Text("Work Efficiency",
                         style: _textTheme.headlineSmall),
                   ),
                   SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 60, 20, 10),
-                      child: SizedBox(
-                          width: 1000,
-                          height: 225,
-                          child: LineChart(LineChartData(
-                              titlesData: FlTitlesData(
-                                  show: true,
-                                  topTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                  leftTitles: AxisTitles(
-                                      sideTitles: SideTitles(
-                                          showTitles: true,
-                                          reservedSize: 50,
-                                          getTitlesWidget: getSideTitles)),
-                                  rightTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                  bottomTitles: AxisTitles(
-                                      sideTitles: SideTitles(
-                                          showTitles: true,
-                                          getTitlesWidget: getHourTitles))),
-                              minX: 0,
-                              maxX: 24,
-                              minY: 0,
-                              maxY: 100,
-                              baselineY: 120,
-                              gridData: FlGridData(
-                                show: false,
-                                getDrawingHorizontalLine: (value) {
-                                  return FlLine(
-                                    color: _textTheme.headlineLarge?.color!,
-                                    strokeWidth: 1,
-                                  );
-                                },
-                                drawVerticalLine: true,
-                              ),
-                              borderData: FlBorderData(show: false),
-                              lineBarsData: [
-                                LineChartBarData(
-                                  spots: datalist,
-                                  isCurved: false,
-                                  color: globals.mainColor,
-                                  barWidth: 5.5,
-                                  belowBarData: BarAreaData(
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RotatedBox(
+                            quarterTurns: 3,
+                            child: Text("Efficiency",
+                                style: _textTheme.labelSmall)),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 60, 20, 10),
+                          child: SizedBox(
+                              width: 1000,
+                              height: 225,
+                              child: LineChart(LineChartData(
+                                  titlesData: FlTitlesData(
                                       show: true,
-                                      color:
-                                          globals.mainColor!.withOpacity(0.3)),
-                                ),
-                              ]))),
-                    ),
+                                      topTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      leftTitles: AxisTitles(
+                                          sideTitles: SideTitles(
+                                              showTitles: true,
+                                              reservedSize: 50,
+                                              getTitlesWidget: getSideTitles)),
+                                      rightTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      bottomTitles: AxisTitles(
+                                          sideTitles: SideTitles(
+                                              showTitles: true,
+                                              getTitlesWidget: getHourTitles))),
+                                  minX: 0,
+                                  maxX: 24,
+                                  minY: 0,
+                                  maxY: 100,
+                                  baselineY: 120,
+                                  gridData: FlGridData(
+                                    show: false,
+                                    getDrawingHorizontalLine: (value) {
+                                      return FlLine(
+                                        color: _textTheme.headlineLarge?.color!,
+                                        strokeWidth: 1,
+                                      );
+                                    },
+                                    drawVerticalLine: true,
+                                  ),
+                                  borderData: FlBorderData(show: false),
+                                  lineBarsData: [
+                                    LineChartBarData(
+                                      spots: datalist,
+                                      isCurved: false,
+                                      color: globals.mainColor,
+                                      barWidth: 5.5,
+                                      belowBarData: BarAreaData(
+                                          show: true,
+                                          color: globals.mainColor!
+                                              .withOpacity(0.3)),
+                                    ),
+                                  ]))),
+                        ),
+                      ),
+                    ],
                   ),
                 ])),
       ),
@@ -829,79 +838,79 @@ Widget getHourTitles(double value, TitleMeta meta) {
   Widget text;
   switch (value.toInt()) {
     case 0:
-      text = Text("0h", style: style);
+      text = Text("00:00", style: style);
       break;
     case 1:
-      text = Text("1h", style: style);
+      text = Text("01:00", style: style);
       break;
     case 2:
-      text = Text("2h", style: style);
+      text = Text("02:00", style: style);
       break;
     case 3:
-      text = Text("3h", style: style);
+      text = Text("03:00", style: style);
       break;
     case 4:
-      text = Text("4h", style: style);
+      text = Text("04:00", style: style);
       break;
     case 5:
-      text = Text("5h", style: style);
+      text = Text("05:00", style: style);
       break;
     case 6:
-      text = Text("6h", style: style);
+      text = Text("06:00", style: style);
       break;
     case 7:
-      text = Text("7h", style: style);
+      text = Text("07:00", style: style);
       break;
     case 8:
-      text = Text("8h", style: style);
+      text = Text("08:00", style: style);
       break;
     case 9:
-      text = Text("9h", style: style);
+      text = Text("09:00", style: style);
       break;
     case 10:
-      text = Text("10h", style: style);
+      text = Text("10:00", style: style);
       break;
     case 11:
-      text = Text("11h", style: style);
+      text = Text("11:00", style: style);
       break;
     case 12:
-      text = Text("12h", style: style);
+      text = Text("12:00", style: style);
       break;
     case 13:
-      text = Text("13h", style: style);
+      text = Text("13:00", style: style);
       break;
     case 14:
-      text = Text("14h", style: style);
+      text = Text("14:00", style: style);
       break;
     case 15:
-      text = Text("15h", style: style);
+      text = Text("15:00", style: style);
       break;
     case 16:
-      text = Text("16h", style: style);
+      text = Text("16:00", style: style);
       break;
     case 17:
-      text = Text("17h", style: style);
+      text = Text("17:00", style: style);
       break;
     case 18:
-      text = Text("18h", style: style);
+      text = Text("18:00", style: style);
       break;
     case 19:
-      text = Text("19h", style: style);
+      text = Text("19:00", style: style);
       break;
     case 20:
-      text = Text("20h", style: style);
+      text = Text("20:00", style: style);
       break;
     case 21:
-      text = Text("21h", style: style);
+      text = Text("21:00", style: style);
       break;
     case 22:
-      text = Text("22h", style: style);
+      text = Text("22:00", style: style);
       break;
     case 23:
-      text = Text("23h", style: style);
+      text = Text("23:00", style: style);
       break;
     case 24:
-      text = Text("24h", style: style);
+      text = Text("24:00", style: style);
       break;
     default:
       text = Text('', style: style);
