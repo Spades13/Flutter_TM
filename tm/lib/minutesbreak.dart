@@ -1,3 +1,5 @@
+// Creation of break minutes list for visuals
+
 import 'package:flutter/material.dart';
 
 class BMinutes extends StatelessWidget {

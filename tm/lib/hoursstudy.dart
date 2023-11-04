@@ -1,3 +1,5 @@
+// Creation of study hours list for visuals
+
 import 'package:flutter/material.dart';
 
 class SHours extends StatelessWidget {

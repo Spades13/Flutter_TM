@@ -1,4 +1,5 @@
-//
+// The Home Page of the user where all period lenghts are chosen and where the start button is
+
 import 'package:flutter/material.dart';
 import 'package:tm/hoursbreak.dart';
 import 'package:tm/hoursstudy.dart';

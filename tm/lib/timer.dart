@@ -1,3 +1,5 @@
+//The Timer Page, containing everything from timers to text widgets to the efficiency calculator and sending to firebase method
+
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';

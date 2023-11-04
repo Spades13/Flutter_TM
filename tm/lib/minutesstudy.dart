@@ -1,3 +1,5 @@
+// Creation of study minutes list for visuals
+
 import 'package:flutter/material.dart';
 
 class SMinutes extends StatelessWidget {

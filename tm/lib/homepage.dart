@@ -1,3 +1,5 @@
+// Backend selection of the pages for the user
+
 import 'package:flutter/material.dart';
 import 'package:tm/pages/graphic.dart';
 import 'package:tm/pages/loading.dart';
@@ -57,10 +59,8 @@ class _HomePageState extends State<HomePage> {
 
             if (globals.current_index == 2) {
               globals.current_index = 2;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FutureBuilderX()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FutureBuilderX()));
               //return globals.current_index;
             } else {
               //return globals.current_index;
