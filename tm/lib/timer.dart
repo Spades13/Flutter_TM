@@ -98,10 +98,11 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           active = false;
           cycle--;
 
+          playerBreak.seek(Duration(milliseconds: 0));
           playerBreak.resume();
 
           Future.delayed(const Duration(milliseconds: 2500), () {
-            playerBreak.stop();
+            playerBreak.pause();
           });
 
           print(cycle);
@@ -135,10 +136,11 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           active = true;
           //cycle--;
 
+          playerStudy.seek(Duration(milliseconds: 0));
           playerStudy.resume();
 
           Future.delayed(const Duration(milliseconds: 2500), () {
-            playerStudy.stop();
+            playerStudy.pause();
           });
 
           if (cycle > 0) {
@@ -539,6 +541,17 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     }
   }
 
+  checkcycle(cycle, textTheme) {
+    if (cycle > 1) {
+      return Text("Cycles Left: " + cycle.toString(),
+          style: textTheme.titleSmall);
+    } else if (cycle == 1) {
+      return Text("Last cycle", style: textTheme.titleSmall);
+    } else if (cycle == 0) {
+      return Text("Finished", style: textTheme.titleSmall);
+    }
+  }
+
   checkBg() {
     if (UserSimplePreferences.getValue() == false) {
       return 'assets/lightmode.jpg';
@@ -590,8 +603,9 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Cycles Left: " + cycle.toString(),
-                  style: _textTheme.titleSmall),
+              /*Text("Cycles Left: " + cycle.toString(),
+                  style: _textTheme.titleSmall),*/
+              checkcycle(cycle, _textTheme),
               SizedBox(height: 50),
               _breakorstudy[checkTimer()],
               Center(child: _timerstate[checkTimer()]),

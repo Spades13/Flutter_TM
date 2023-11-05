@@ -345,7 +345,7 @@ class _GraphsState extends State<Graphs> {
   @override
   void initState() {
     //Test().getData(DateTime.now());
-    var _date = DateTime.now();
+    var _date = globals.date;
     Test().getData(_date);
     //Test().getBarData(_date);
     super.initState();
