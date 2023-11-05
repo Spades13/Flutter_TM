@@ -68,8 +68,11 @@ class _MyAppState extends State<MyApp> {
   setTheme() {
     if (UserSimplePreferences.getValue() == false) {
       return ThemeMode.light;
-    } else {
+    } else if (UserSimplePreferences.getValue() == true) {
       return ThemeMode.dark;
+    } else if (UserSimplePreferences.getValue() == null) {
+      print("Value NULL");
+      return ThemeMode.light;
     }
   }
 
@@ -78,8 +81,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyAuth(),
-      theme: darkTheme,
-      darkTheme: lightTheme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       themeMode: setTheme(),
     );
   }
@@ -92,8 +95,8 @@ class Settings extends StatefulWidget {
 
 class _Settings extends State<Settings> {
   List<Widget> lighticon = [
+    Icon(Icons.light_mode_sharp),
     Icon(Icons.dark_mode_sharp),
-    Icon(Icons.light_mode_sharp)
   ];
   bool value = UserSimplePreferences.getValue() ?? false;
   final user = FirebaseAuth.instance.currentUser;
@@ -107,7 +110,7 @@ class _Settings extends State<Settings> {
       return 0;
     }
     if (UserSimplePreferences.getValue() == null) {
-      return 1;
+      return 0;
     }
   }
 
@@ -151,12 +154,12 @@ class _Settings extends State<Settings> {
                             value: value,
                             onChanged: (value) => setState(() {
                                   this.value = value;
-                                  if (value == true) {
+                                  if (value == false) {
                                     _themeManager.toggleTheme(true);
                                     //sets theme preference(bool)
                                     UserSimplePreferences.setValue(value);
                                   }
-                                  if (value == false) {
+                                  if (value == true) {
                                     _themeManager.toggleTheme(false);
                                     //sets theme preference(bool)
 

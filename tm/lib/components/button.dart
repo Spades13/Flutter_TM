@@ -12,12 +12,16 @@ class SigninButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(25),
         margin: EdgeInsets.symmetric(horizontal: 25),
-        decoration: BoxDecoration(color: Color.fromARGB(255, 20, 15, 121),
-        borderRadius: BorderRadius.circular(25)
-        ),
-        child: Center(child: Text(
-          text,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        decoration: BoxDecoration(
+            color: Color.fromARGB(131, 10, 7, 116),
+            borderRadius: BorderRadius.circular(25)),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Theme.of(context).textTheme.titleSmall!.color),
           ),
         ),
       ),

@@ -11,38 +11,39 @@ ThemeData darkTheme = ThemeData(
         dividerColor: Colors.black,
         headerBackgroundColor: Color.fromRGBO(39, 39, 39, 0.957)),
     textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-            color: Color.fromRGBO(234, 245, 132, 12),
-            fontSize: 40,
-            fontWeight: FontWeight.bold),
-        headlineSmall: TextStyle(
-          fontSize: 25,
+      headlineMedium: TextStyle(
           color: Color.fromRGBO(234, 245, 132, 12),
-          //Color.fromRGBO(255, 255, 255, 0.957),
-          //color: Color.fromARGB(255, 30, 217, 230),
-          fontWeight: FontWeight.bold,
-        ),
-        headlineLarge: TextStyle(
-          fontSize: 60,
+          fontSize: 40,
+          fontWeight: FontWeight.bold),
+      headlineSmall: TextStyle(
+        fontSize: 25,
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //Color.fromRGBO(255, 255, 255, 0.957),
+        //color: Color.fromARGB(255, 30, 217, 230),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: TextStyle(
+        fontSize: 60,
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //color: Color.fromARGB(255, 30, 217, 230),
+        fontWeight: FontWeight.bold,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 15,
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //color: Color.fromARGB(255, 30, 217, 230),
+      ),
+      titleSmall: TextStyle(
           color: Color.fromRGBO(234, 245, 132, 12),
-          //color: Color.fromARGB(255, 30, 217, 230),
-          fontWeight: FontWeight.bold,
-        ),
-        labelSmall: TextStyle(
-          fontSize: 15,
-          color: Color.fromRGBO(234, 245, 132, 12),
-          //color: Color.fromARGB(255, 30, 217, 230),
-        ),
-        titleMedium: TextStyle(
-            color: Color.fromRGBO(234, 245, 132, 12),
-            fontSize: 40,
-            fontWeight: FontWeight.bold),
-        titleLarge: TextStyle(
-          fontSize: 60,
-          color: Color.fromRGBO(234, 245, 132, 12),
-          //color: Color.fromARGB(255, 30, 217, 230),
-          fontWeight: FontWeight.bold,
-        )));
+          fontSize: 40,
+          fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(
+        fontSize: 60,
+        color: Color.fromRGBO(234, 245, 132, 12),
+        //color: Color.fromARGB(255, 30, 217, 230),
+        fontWeight: FontWeight.bold,
+      ),
+    ));
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -53,37 +54,38 @@ ThemeData lightTheme = ThemeData(
       dividerColor: Colors.black,
       headerBackgroundColor: Color.fromRGBO(39, 39, 39, 0.957)),
   textTheme: const TextTheme(
-      headlineMedium: TextStyle(
-          color: Color.fromRGBO(39, 39, 39, 0.957),
-          fontSize: 40,
-          fontWeight: FontWeight.bold),
-      headlineSmall: TextStyle(
-        fontSize: 25,
+    headlineMedium: TextStyle(
         color: Color.fromRGBO(39, 39, 39, 0.957),
-        //color: Color.fromARGB(255, 30, 217, 230),
-        fontWeight: FontWeight.bold,
-      ),
-      headlineLarge: TextStyle(
-        fontSize: 60,
-        color: Color.fromRGBO(92, 91, 91, 0.957),
-        //color: Color.fromARGB(255, 30, 217, 230),
-        fontWeight: FontWeight.bold,
-      ),
-      labelSmall: TextStyle(
-        fontSize: 15,
-        color: Color.fromRGBO(92, 91, 91, 0.957),
-        //color: Color.fromARGB(255, 30, 217, 230),
-      ),
-      titleMedium: TextStyle(
-          color: Color.fromRGBO(234, 245, 132, 12),
-          fontSize: 40,
-          fontWeight: FontWeight.bold),
-      titleLarge: TextStyle(
-        fontSize: 60,
+        fontSize: 40,
+        fontWeight: FontWeight.bold),
+    headlineSmall: TextStyle(
+      fontSize: 25,
+      color: Color.fromRGBO(39, 39, 39, 0.957),
+      //color: Color.fromARGB(255, 30, 217, 230),
+      fontWeight: FontWeight.bold,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 60,
+      color: Color.fromRGBO(92, 91, 91, 0.957),
+      //color: Color.fromARGB(255, 30, 217, 230),
+      fontWeight: FontWeight.bold,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 15,
+      color: Color.fromRGBO(92, 91, 91, 0.957),
+      //color: Color.fromARGB(255, 30, 217, 230),
+    ),
+    titleSmall: TextStyle(
         color: Color.fromRGBO(234, 245, 132, 12),
-        //color: Color.fromARGB(255, 30, 217, 230),
-        fontWeight: FontWeight.bold,
-      )),
+        fontSize: 40,
+        fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(
+      fontSize: 60,
+      color: Color.fromRGBO(234, 245, 132, 12),
+      //color: Color.fromARGB(255, 30, 217, 230),
+      fontWeight: FontWeight.bold,
+    ),
+  ),
 
   //textTheme for numbers
 );

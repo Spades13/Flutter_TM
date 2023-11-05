@@ -540,10 +540,12 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
   }
 
   checkBg() {
-    if (UserSimplePreferences.getValue() == true) {
+    if (UserSimplePreferences.getValue() == false) {
       return 'assets/lightmode.jpg';
-    } else {
+    } else if (UserSimplePreferences.getValue() == true) {
       return 'assets/lofi-cozy-house-rainy-night-thumb.jpg';
+    } else if (UserSimplePreferences.getValue() == null) {
+      return 'assets/lightmode.jpg';
     }
   }
 
@@ -560,8 +562,8 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
           style: _textTheme.titleLarge),
     ];
     List<Widget> _breakorstudy = [
-      Text('Study', style: _textTheme.titleMedium),
-      Text('Break', style: _textTheme.titleMedium)
+      Text('Study', style: _textTheme.titleSmall),
+      Text('Break', style: _textTheme.titleSmall)
     ];
     //play music
     //audioPlayer.resume();
@@ -589,7 +591,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Cycles Left: " + cycle.toString(),
-                  style: _textTheme.titleMedium),
+                  style: _textTheme.titleSmall),
               SizedBox(height: 50),
               _breakorstudy[checkTimer()],
               Center(child: _timerstate[checkTimer()]),
