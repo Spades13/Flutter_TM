@@ -452,10 +452,14 @@ class _GraphsState extends State<Graphs> {
                         Container(
                           width: 60,
                           child: MaterialButton(
-                              onPressed: _showDatePicker,
-                              child: Icon(Icons.calendar_month),
-                              color: globals.mainColor,
-                              shape: StadiumBorder()),
+                            onPressed: _showDatePicker,
+                            color: globals.mainColor,
+                            shape: StadiumBorder(),
+                            child: Icon(
+                              Icons.calendar_month,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -642,77 +646,108 @@ class _GraphsState extends State<Graphs> {
                                   ]))
                               .toList())),*/
 
-                  Container(
-                    child: Text("Work Efficiency",
-                        style: _textTheme.headlineSmall),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Container(
+                      child: Text("Work Efficiency",
+                          style: _textTheme.headlineSmall),
+                    ),
                   ),
                   SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Text("Efficiency",
-                                style: _textTheme.labelSmall)),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 60, 20, 10),
-                          child: SizedBox(
-                              width: 1000,
-                              height: 225,
-                              child: LineChart(LineChartData(
-                                  titlesData: FlTitlesData(
-                                      show: true,
-                                      topTitles: AxisTitles(
-                                          sideTitles:
-                                              SideTitles(showTitles: false)),
-                                      leftTitles: AxisTitles(
-                                          sideTitles: SideTitles(
-                                              showTitles: true,
-                                              reservedSize: 50,
-                                              getTitlesWidget: getSideTitles)),
-                                      rightTitles: AxisTitles(
-                                          sideTitles:
-                                              SideTitles(showTitles: false)),
-                                      bottomTitles: AxisTitles(
-                                          sideTitles: SideTitles(
-                                              showTitles: true,
-                                              getTitlesWidget: getHourTitles))),
-                                  minX: 0,
-                                  maxX: 24,
-                                  minY: 0,
-                                  maxY: 100,
-                                  baselineY: 120,
-                                  gridData: FlGridData(
-                                    show: false,
-                                    getDrawingHorizontalLine: (value) {
-                                      return FlLine(
-                                        color: _textTheme.headlineLarge?.color!,
-                                        strokeWidth: 1,
-                                      );
-                                    },
-                                    drawVerticalLine: true,
-                                  ),
-                                  borderData: FlBorderData(show: false),
-                                  lineBarsData: [
-                                    LineChartBarData(
-                                      spots: datalist,
-                                      isCurved: false,
-                                      color: globals.mainColor,
-                                      barWidth: 5.5,
-                                      belowBarData: BarAreaData(
-                                          show: true,
-                                          color: globals.mainColor!
-                                              .withOpacity(0.3)),
-                                    ),
-                                  ]))),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text("Efficiency",
+                                  style: _textTheme.labelSmall)),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 50, 20, 10),
+                              child: SizedBox(
+                                  width: 1000,
+                                  height: 225,
+                                  child: LineChart(LineChartData(
+                                      lineTouchData: LineTouchData(
+                                          touchTooltipData:
+                                              LineTouchTooltipData(
+                                                  getTooltipItems:
+                                                      (touchedSpots) {
+                                        return touchedSpots
+                                            .map((LineBarSpot touchedSpot) {
+                                          final textStyle = TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge!
+                                                  .color);
+                                          return LineTooltipItem(
+                                              touchedSpot.y.toString(),
+                                              textStyle);
+                                        }).toList();
+                                      })),
+                                      titlesData: FlTitlesData(
+                                          show: true,
+                                          topTitles: AxisTitles(
+                                              sideTitles: SideTitles(
+                                                  showTitles: false)),
+                                          leftTitles: AxisTitles(
+                                              sideTitles: SideTitles(
+                                                  showTitles: true,
+                                                  reservedSize: 50,
+                                                  getTitlesWidget:
+                                                      getSideTitles)),
+                                          rightTitles: AxisTitles(
+                                              sideTitles: SideTitles(
+                                                  showTitles: false)),
+                                          bottomTitles: AxisTitles(
+                                              sideTitles: SideTitles(
+                                                  showTitles: true,
+                                                  getTitlesWidget:
+                                                      getHourTitles))),
+                                      minX: 0,
+                                      maxX: 24,
+                                      minY: 0,
+                                      maxY: 100,
+                                      baselineY: 120,
+                                      gridData: FlGridData(
+                                        show: false,
+                                        getDrawingHorizontalLine: (value) {
+                                          return FlLine(
+                                            color: _textTheme
+                                                .headlineLarge?.color!,
+                                            strokeWidth: 1,
+                                          );
+                                        },
+                                        drawVerticalLine: true,
+                                      ),
+                                      borderData: FlBorderData(show: false),
+                                      lineBarsData: [
+                                        LineChartBarData(
+                                          spots: datalist,
+                                          isCurved: false,
+                                          color: globals.mainColor,
+                                          barWidth: 5.5,
+                                          belowBarData: BarAreaData(
+                                              show: true,
+                                              color: globals.mainColor!
+                                                  .withOpacity(0.3)),
+                                        ),
+                                      ]))),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  Container(
+                      child: Text("Time of Day", style: _textTheme.labelSmall))
                 ])),
       ),
     );
@@ -726,7 +761,7 @@ Widget getBottomTitles(double value, TitleMeta meta) {
   Widget text;
   switch (value.toInt()) {
     case 0:
-      text = Text("Study Time", style: style);
+      text = Text("Work Time", style: style);
       break;
     case 1:
       text = Text("Break Time", style: style);

@@ -39,8 +39,6 @@ Future main() async {
 
 ThemeManager _themeManager = ThemeManager();
 
-
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -56,7 +54,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _themeManager.addListener(themeListener);
-  
+
     super.initState();
   }
 
@@ -145,9 +143,7 @@ class _Settings extends State<Settings> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(width: 15),
-                        Text("Dark/Light",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        Text("Dark/Light", style: _textTheme.headlineSmall),
                         SizedBox(width: 120),
                         lighticon[setIcon()],
                         SizedBox(width: 10),
@@ -172,7 +168,7 @@ class _Settings extends State<Settings> {
                   ),
                 ],
               ),
-                          Column(
+              Column(
                 //one settigns widget
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -183,8 +179,7 @@ class _Settings extends State<Settings> {
                       ExpansionTile(
                         title: Text(
                           'Account',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                          style: _textTheme.headlineSmall,
                         ),
                         children: [
                           Padding(
@@ -218,10 +213,14 @@ class _Settings extends State<Settings> {
                       ExpansionTile(
                         title: Text(
                           'FAQ',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                          style: _textTheme.headlineSmall,
                         ),
-                      children: [Text('About us: We are two students from Ecole Moser, and we decided to take on the challenge of making a study app'), Text("App: This app uses the pommodoro technique in combination with data recording, to check if the user is distracted by their phone. Then feedback about efficiency is given on the stats page")],
+                        children: [
+                          Text(
+                              'About us: We are two students from Ecole Moser, and we decided to take on the challenge of making a study app'),
+                          Text(
+                              "App: This app uses the pommodoro technique in combination with data recording, to check if the user is distracted by their phone. Then feedback about efficiency is given on the stats page")
+                        ],
                       ),
                     ],
                   ))
@@ -239,7 +238,7 @@ class _Settings extends State<Settings> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: StadiumBorder(),
-                        primary: Color.fromARGB(127, 15, 6, 141)),
+                        primary: Color.fromARGB(61, 21, 142, 223)),
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
@@ -253,9 +252,8 @@ class _Settings extends State<Settings> {
                         )),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => MyAuth()));
-                      
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyAuth()));
                     },
                   )
                 ],

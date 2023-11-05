@@ -80,7 +80,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     //print(cycle);
 
     final playerStudy = AudioPlayer();
-    playerStudy.setSource(AssetSource('audio/glitter.mp3'));
+    playerStudy.setSource(AssetSource('audio/alarm.mp3'));
     final playerBreak = AudioPlayer();
     playerBreak.setSource(AssetSource('audio/glitter.mp3'));
 
@@ -553,15 +553,15 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
     List<Widget> _timerstate = [
       Text(
         "${(count_study.inHours).toString().padLeft(2, "0")}:${(count_study.inMinutes % 60).toString().padLeft(2, "0")}:${(count_study.inSeconds % 60).toString().padLeft(2, "0")}",
-        style: _textTheme.headlineLarge,
+        style: _textTheme.titleLarge,
       ),
       Text(
           "${(count_break.inHours).toString().padLeft(2, "0")}:${(count_break.inMinutes % 60).toString().padLeft(2, "0")}:${(count_break.inSeconds % 60).toString().padLeft(2, "0")}",
-          style: _textTheme.headlineLarge),
+          style: _textTheme.titleLarge),
     ];
     List<Widget> _breakorstudy = [
-      Text('Study', style: _textTheme.headlineMedium),
-      Text('Break', style: _textTheme.headlineMedium)
+      Text('Study', style: _textTheme.titleMedium),
+      Text('Break', style: _textTheme.titleMedium)
     ];
     //play music
     //audioPlayer.resume();
@@ -589,7 +589,7 @@ class _TrackingState extends State<Tracking> with WidgetsBindingObserver {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Cycles Left: " + cycle.toString(),
-                  style: _textTheme.headlineMedium),
+                  style: _textTheme.titleMedium),
               SizedBox(height: 50),
               _breakorstudy[checkTimer()],
               Center(child: _timerstate[checkTimer()]),

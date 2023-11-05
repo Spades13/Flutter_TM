@@ -237,7 +237,7 @@ class UserHome extends StatelessWidget {
                                           magnification: 1.5,
                                           childDelegate:
                                               ListWheelChildBuilderDelegate(
-                                                  childCount: 6,
+                                                  childCount: 24,
                                                   builder: (context, index) {
                                                     return BHours(
                                                       bhours: index,
