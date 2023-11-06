@@ -73,8 +73,8 @@ class _LoginPageState extends State<LoginPage> {
               size: 80,
               ),*/
               //REPLACE WITH LOGO WHEN LOGO IS MADE FOR APP
-              Lottie.network(
-                  'https://assets1.lottiefiles.com/packages/lf20_UHhZXv9VWn.json',
+              Lottie.asset(
+                  'assets/cosmos.json',
                   width: 150,
                   height: 150,
                   fit: BoxFit.fill),
