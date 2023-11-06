@@ -672,7 +672,7 @@ class _GraphsState extends State<Graphs> {
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(0, 50, 20, 10),
                               child: SizedBox(
-                                  width: 1000,
+                                  width: 1100,
                                   height: 225,
                                   child: LineChart(LineChartData(
                                       lineTouchData: LineTouchData(
