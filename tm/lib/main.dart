@@ -147,7 +147,7 @@ class _Settings extends State<Settings> {
                       children: [
                         SizedBox(width: 15),
                         Text("Dark/Light", style: _textTheme.headlineSmall),
-                        SizedBox(width: 50),
+                        SizedBox(width: 90),
                         lighticon[setIcon()],
                         SizedBox(width: 10),
                         CupertinoSwitch(
